@@ -1,23 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
+import Routes from "./routes/Routers";
+import "./App.css";
+
+import Bag from "./pages/Bag";
+import { useSelector } from "react-redux";
 
 function App() {
+  const showBag = useSelector((state) => state.bagUi.bagIsVisible);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header />
+      {showBag && <Bag />}
+
+      <div>
+        <Routes />
+      </div>
+      <Footer />
     </div>
   );
 }
