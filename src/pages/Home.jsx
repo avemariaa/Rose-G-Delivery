@@ -5,102 +5,54 @@ import HomeSlider from "../components/UI/HomeSlider";
 import FoodCategorySlider from "../components/UI/FoodCategorySlider";
 import Testimonials from "../components/UI/Testimonials";
 import FeaturedProducts from "../components/UI/FeaturedProducts";
-import AboutUsImg from "../assets/images/aboutUsImage.jpg";
-import AiceIceCreamLogo from "../assets/images/aiceIceCreamLogo.jpg";
-import useCollapse from "react-collapsed";
+import CompanyBackground from "../components/UI/CompanyBackground";
+import OurPartners from "../components/UI/OurPartners";
 
 const Home = () => {
-  const [isExpanded, setExpanded] = useState(false);
-  const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
-
   return (
-    <section>
+    <div>
       {/*Home Slider Section*/}
-      <div>
-        {" "}
-        <HomeSlider />
-      </div>
-
-      {/*About Us Section*/}
       <section>
         <Container>
-          <Row>
-            <Col lg="6" md="6" className="aboutUs__img">
-              <img src={AboutUsImg} alt="aboutUsImage" />
-            </Col>
-            <Col lg="6" md="6" className="aboutUs__desc">
-              <h2>Rose Garden - Special Palabok</h2>
-              <p className="mt-3">
-                {" "}
-                The business was established in 2010 as a sole proprietorship
-                under the name Rose Garden Special Palabok. Mrs. Rosita Valencia
-                Santos fondness for cooking resulted in the creation of the now
-                popular PALABOK. Her first branch was located at 60 Camerino
-                Street Project 4 Quezon City.
-              </p>
-              <p {...getCollapseProps()}>
-                After 12 years of existence offering low budget meals for the
-                public, Mr. Reyes decided to incorporate Rose Garden Special
-                Palabok. This would ensure that management of the Rose Garden
-                Special Palabok will be passed on to their children. True
-                enough, the children’s zest for expansion moved the Rose Garden
-                into its new place and building. The business now offers
-                catering services. The restaurant offers 12 hours access to good
-                food and cheap meals designed especially for those who are on a
-                restricted budget. Being low priced doesn’t mean that the
-                quality of meals served is of low quality, so come and prove
-                this for yourselves. The company’s carrier specialty is Palabok.
-              </p>
-              <button
-                type="button"
-                className="seeMore__btn"
-                {...getToggleProps({
-                  onClick: () => setExpanded((prevExpanded) => !prevExpanded),
-                })}
-              >
-                {isExpanded ? "See less" : "Read more"}
-              </button>
-            </Col>
-          </Row>
+          <HomeSlider />
         </Container>
       </section>
 
       {/*Featured Product Slider Section*/}
       <section>
-        {" "}
         <Container>
           <FeaturedProducts />
         </Container>
       </section>
 
       {/*Food Category Slider Section*/}
-      <Container>
-        <FoodCategorySlider />
-      </Container>
+      <section>
+        <Container>
+          <FoodCategorySlider />
+        </Container>
+      </section>
 
       {/*Testimonials Section*/}
-      <Container>
-        <Testimonials />
-      </Container>
+      <section>
+        <Container>
+          <Testimonials />
+        </Container>
+      </section>
+
+      {/*About Us Section*/}
+      <section>
+        <Container>
+          <CompanyBackground />
+        </Container>
+      </section>
 
       {/* Our Partner Section */}
       <section>
-        <Container className="ourPartners__section">
-          <Row>
-            <div className="ourPartners__title">
-              <h4>Our Partners</h4>
-            </div>
-          </Row>
-
-          <Row>
-            <Col className="ourPartners__logo">
-              <img src={AiceIceCreamLogo} alt="aice-logo" />
-              <img src={AiceIceCreamLogo} alt="aice-logo" />
-            </Col>
-          </Row>
+        <Container>
+          <OurPartners />
         </Container>
       </section>
-    </section>
+    </div>
   );
 };
 

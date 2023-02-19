@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import "../../style/Header.css";
 
-import RoseGLogo from "../../assets/images/roseG_Logo.png";
+import RoseGLogo from "../../assets/images/roseGLogoName.png";
 import { NavLink, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { bagUiActions } from "../../store/MyBag/bagUiSlice";
@@ -47,7 +47,7 @@ const Header = () => {
           <div className="logo">
             <Link to="/home">
               <img src={RoseGLogo} alt="rose-g-logo" />
-              <span>Rose G</span>
+              {/* <span>Rose G</span> */}
             </Link>
           </div>
         </div>

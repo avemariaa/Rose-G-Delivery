@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
 import Slider from "react-slick";
 import HomeSliderImg1 from "../../assets/images/homeSliderImg1.jpg";
-import HomeSliderImg2 from "../../assets/images/homeSliderImg2.jpg";
-import HomeSliderImg3 from "../../assets/images/homeSliderImg3.png";
+import HomeSliderImg2 from "../../assets/images/homeSliderImg2.png";
+import HomeSliderImg3 from "../../assets/images/homeSliderImg3.jpg";
 import "../../style/HomeSlider.css";
 
 const HomeSlider = () => {
@@ -15,7 +15,7 @@ const HomeSlider = () => {
   const settings = {
     autoplay: true,
     infinite: true,
-    speed: 1000,
+    speed: 3000,
     autoplaySpeed: 2000,
     swipeToSlide: true,
     slideToShow: 1,
@@ -27,7 +27,7 @@ const HomeSlider = () => {
   };
   return (
     <Slider {...settings}>
-      <div className="homeSlider__img object-cover">
+      <div className="homeSlider__img">
         <img src={HomeSliderImg1} />
       </div>
       <div className="homeSlider__img">

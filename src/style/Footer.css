@@ -5,8 +5,8 @@
   text-decoration: none;
 }
 .footer__logo img {
-  width: 80px;
-  margin-bottom: 5px;
+  max-width: 100%;
+  width: 350px;
 }
 .footer__logo p {
   font-size: 0.9rem;

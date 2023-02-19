@@ -2,6 +2,11 @@ import React from "react";
 import "../../style/FoodCategorySlider.css";
 import Slider from "react-slick";
 import FoodCategoryImg1 from "../../assets/images/category-01.png";
+import PalabokIcon from "../../assets/images/Category-Icons/palabok-logo.png";
+import RiceMealIcon from "../../assets/images/Category-Icons/fried-rice.png";
+import BarbecueIcon from "../../assets/images/Category-Icons/bbq.png";
+import DrinksIcon from "../../assets/images/Category-Icons/soft-drink.png";
+import IceCreamIcon from "../../assets/images/Category-Icons/ice-cream.png";
 import { Link } from "react-router-dom";
 const FoodCategorySlider = () => {
   const ArrowLeft = (props) => (
@@ -59,38 +64,32 @@ const FoodCategorySlider = () => {
       <Slider {...settings}>
         <div className="foodCategory__item">
           <Link to="/menu">
-            <img src={FoodCategoryImg1} />
-            <span>Burgir1</span>
+            <img src={PalabokIcon} />
+            <span>Palabok</span>
           </Link>
         </div>
         <div className="foodCategory__item">
           <Link to="/menu">
-            <img src={FoodCategoryImg1} />
-            <span>Burgir2</span>
+            <img src={RiceMealIcon} />
+            <span>Rice Meals</span>
           </Link>
         </div>
         <div className="foodCategory__item">
           <Link to="/menu">
-            <img src={FoodCategoryImg1} />
-            <span>Burgir3</span>
+            <img src={BarbecueIcon} />
+            <span>Barbecue</span>
           </Link>
         </div>
         <div className="foodCategory__item">
           <Link to="/menu">
-            <img src={FoodCategoryImg1} />
-            <span>Burgir4</span>
+            <img src={DrinksIcon} />
+            <span>Drinks</span>
           </Link>
         </div>
         <div className="foodCategory__item">
           <Link to="/menu">
-            <img src={FoodCategoryImg1} />
-            <span>Burgir5</span>
-          </Link>
-        </div>
-        <div className="foodCategory__item">
-          <Link to="/menu">
-            <img src={FoodCategoryImg1} />
-            <span>Burgir6</span>
+            <img src={IceCreamIcon} />
+            <span>Ice Cream</span>
           </Link>
         </div>
       </Slider>

@@ -1,8 +1,8 @@
 .foodCategory__slides {
   position: relative;
-  width: 100%;
-  height: 200px;
-  margin-top: 50px;
+  width: calc(100% + 30px);
+  height: auto;
+  margin: 20px 0 0 0;
 }
 .foodCategory__item {
   text-align: center;

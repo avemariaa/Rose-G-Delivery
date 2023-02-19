@@ -1,9 +1,6 @@
 .testimonials__slides {
-  position: relative;
-  width: 100%;
-  height: 250px;
-  margin: auto;
-  margin-top: 20px;
+  width: calc(100% + 30px);
+  height: 100%;
   display: inline-block;
 }
 .testimonialsPrev__btn,
@@ -24,7 +21,6 @@
 }
 .testimonials__slides-item {
   width: 100%;
-  height: 250px;
   text-align: center;
   align-items: center;
   justify-content: center;

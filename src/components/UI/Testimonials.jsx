@@ -54,7 +54,7 @@ const Testimonials = () => {
   };
   return (
     <div>
-      <h4 className="mt-5">Testimonials</h4>
+      <h4>Testimonials</h4>
       <Slider {...settings}>
         <Col className="p-3">
           <div className="testimonials__slides-item">

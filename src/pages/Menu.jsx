@@ -3,36 +3,91 @@ import MenuProductCard from "../components/UI/MenuProductCard";
 import { Container, Row, Col } from "reactstrap";
 import FoodProductData from "../assets/sample-data/FoodProduct";
 import "../style/Menu.css";
+
+// Connect Firebase
+import {
+  collection,
+  getDoc,
+  deleteDoc,
+  doc,
+  onSnapshot,
+} from "firebase/firestore";
+import { getStorage, ref, deleteObject } from "firebase/storage";
+import { db, storage } from "../firebase.js";
+
 const Menu = () => {
+  //------------------ Retrieve Food Data ------------------//
+  const [foodData, setFoodData] = useState([]);
+  useEffect(() => {
+    //LISTEN (REALTIME)
+    const unsub = onSnapshot(
+      collection(db, "FoodData"),
+      (snapShot) => {
+        let list = [];
+        snapShot.docs.forEach((doc) => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+        setFoodData(list);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    return () => {
+      unsub();
+    };
+  }, []);
+  console.log(foodData);
+
+  // const iceCreamCategory = foodData.filter((iceCream) => {
+  //   return iceCream.categoryTitle === "Ice Cream";
+  // });
+
+  // const drinksCategory = foodData.filter((drinks) => {
+  //   return drinks.categoryTitle === "Drinks";
+  // });
+
+  //------------------ Category Buttons Function (Filter) ------------------//
   const [query, setQuery] = useState("");
-
-  const iceCreamCategory = FoodProductData.filter((iceCream) => {
-    return iceCream.category === "Ice Cream";
-  });
-
-  const drinksCategory = FoodProductData.filter((drinks) => {
-    return drinks.category === "Drinks";
-  });
-
-  //Category Button
   const [category, setCategory] = useState("ALL");
-  const [allProducts, setAllProducts] = useState(FoodProductData);
+  const [allProducts, setAllProducts] = useState(foodData);
 
   useEffect(() => {
     if (category === "ALL") {
-      setAllProducts(FoodProductData);
+      setAllProducts(foodData);
     }
 
-    if (category === "ICE-CREAM") {
-      const filteredProducts = FoodProductData.filter(
-        (item) => item.category === "Ice Cream"
+    if (category === "PALABOK") {
+      const filteredProducts = foodData.filter(
+        (item) => item.categoryTitle === "Palabok"
+      );
+      setAllProducts(filteredProducts);
+    }
+
+    if (category === "RICE MEALS") {
+      const filteredProducts = foodData.filter(
+        (item) => item.categoryTitle === "Rice Meal"
+      );
+      setAllProducts(filteredProducts);
+    }
+
+    if (category === "BARBECUE") {
+      const filteredProducts = foodData.filter(
+        (item) => item.categoryTitle === "Barbecue"
       );
       setAllProducts(filteredProducts);
     }
 
     if (category === "DRINKS") {
-      const filteredProducts = FoodProductData.filter(
-        (item) => item.category === "Drinks"
+      const filteredProducts = foodData.filter(
+        (item) => item.categoryTitle === "Drinks"
+      );
+      setAllProducts(filteredProducts);
+    }
+
+    if (category === "ICE CREAM") {
+      const filteredProducts = foodData.filter(
+        (item) => item.categoryTitle === "Ice Cream"
       );
       setAllProducts(filteredProducts);
     }
@@ -41,30 +96,56 @@ const Menu = () => {
   return (
     <div>
       <Container>
+        {/*------------------ Category Buttons ------------------*/}
         <Row>
           <div className="category__title ">
-            <Col className="d-flex align-items-center gap-5">
+            <Col className="categoryBtn__column">
               <button
                 className="category__btn"
                 onClick={() => setCategory("ALL")}
               >
                 All
               </button>
+
               <button
                 className="category__btn"
-                onClick={() => setCategory("ICE-CREAM")}
+                onClick={() => setCategory("PALABOK")}
               >
-                Ice Cream
+                Palabok
               </button>
+
+              <button
+                className="category__btn"
+                onClick={() => setCategory("RICE MEALS")}
+              >
+                Rice Meals
+              </button>
+
+              <button
+                className="category__btn"
+                onClick={() => setCategory("BARBECUE")}
+              >
+                Barbecue
+              </button>
+
               <button
                 className="category__btn"
                 onClick={() => setCategory("DRINKS")}
               >
                 Drinks
               </button>
+
+              <button
+                className="category__btn"
+                onClick={() => setCategory("ICE CREAM")}
+              >
+                Ice Cream
+              </button>
             </Col>
           </div>
         </Row>
+
+        {/*------------------ Display Food ------------------*/}
         <Row>
           {allProducts
             .filter((post) => {
@@ -83,7 +164,9 @@ const Menu = () => {
               </Col>
             ))}
         </Row>
-        <Row>
+
+        {/*------------------ Rice Meals Row------------------*/}
+        {/* <Row>
           <Col>
             {" "}
             <div className="menu__search">
@@ -95,10 +178,10 @@ const Menu = () => {
               />
             </div>
           </Col>
-        </Row>
+        </Row> */}
 
         {/*Ice Cream Row*/}
-        <Row className="menu__iceCream">
+        {/* <Row className="menu__iceCream">
           <Col lg="12" md="10" sm="8" className="mb-2 mt-3">
             <h5>Ice Cream</h5>
           </Col>{" "}
@@ -118,10 +201,10 @@ const Menu = () => {
                 <MenuProductCard item={item} />
               </Col>
             ))}
-        </Row>
+        </Row> */}
 
         {/*Drinks Row*/}
-        <Row className="menu__drinks">
+        {/* <Row className="menu__drinks">
           <Col lg="12" className="mb-2 mt-3">
             <h5>Drinks</h5>
           </Col>
@@ -142,7 +225,7 @@ const Menu = () => {
                 <MenuProductCard item={item} />
               </Col>
             ))}
-        </Row>
+        </Row> */}
       </Container>
     </div>
   );

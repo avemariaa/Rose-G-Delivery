@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
-import logo from "../../assets/images/roseG_Logo.png";
+import logo from "../../assets/images/roseGLogoFooter.png";
 import "../../style/Footer.css";
 import { Link } from "react-router-dom";
 
@@ -12,10 +12,10 @@ const Footer = () => {
           <Col lg="3" md="4" sm="6">
             <div className="footer__logo text-start">
               <img src={logo} alt="logo" />
-              <p>
+              {/* <p>
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quasi,
                 explicabo.
-              </p>
+              </p> */}
             </div>
           </Col>
           <Col lg="3" md="4" sm="6">
@@ -36,12 +36,12 @@ const Footer = () => {
                 </Link>
               </ListGroupItem>
               <ListGroupItem className="footer__menu-item border-0 ps-0">
-                <Link to="/orders">
+                <Link to="/termsCondition">
                   <span>Terms & Conditions</span>
                 </Link>
               </ListGroupItem>
               <ListGroupItem className="footer__menu-item border-0 ps-0">
-                <Link to="/orders">
+                <Link to="/privacyPolicy">
                   <span>Privacy Policy</span>
                 </Link>
               </ListGroupItem>
