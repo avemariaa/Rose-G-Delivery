@@ -1,10 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../../style/FeaturedProducts.css";
 import Slider from "react-slick";
 import FeaturedProductsData from "../../assets/sample-data/FoodProduct";
 import { Col } from "reactstrap";
 import ProductCard from "./ProductCard";
+
+// Connect Firebase
+import {
+  collection,
+  getDoc,
+  deleteDoc,
+  doc,
+  onSnapshot,
+} from "firebase/firestore";
+import { getStorage, ref, deleteObject } from "firebase/storage";
+import { db, storage } from "../../firebase.js";
+
 const FeaturedProducts = () => {
+  //------------------ Retrieve Food Data ------------------//
+  const [foodData, setFoodData] = useState([]);
+  useEffect(() => {
+    //LISTEN (REALTIME)
+    const unsub = onSnapshot(
+      collection(db, "FoodData"),
+      (snapShot) => {
+        let list = [];
+        snapShot.docs.forEach((doc) => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+        setFoodData(list);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    return () => {
+      unsub();
+    };
+  }, []);
+  console.log(foodData);
+
+  //------------------ Featured Products Slider ------------------//
   const ArrowLeft = (props) => (
     <button
       {...props}
@@ -57,9 +93,9 @@ const FeaturedProducts = () => {
   return (
     <div>
       <h4 className="ftProd__title">Featured Product</h4>
-      <h6>Sheeeshable!!!</h6>
+      <h6>Discover your new favorites here!</h6>
       <Slider {...settings}>
-        {FeaturedProductsData.map((item) => (
+        {foodData.map((item) => (
           <div className="ftProduct__item">
             <Col lg="3" key={item.id}>
               <ProductCard item={item} />

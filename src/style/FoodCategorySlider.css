@@ -16,7 +16,7 @@
   color: #686d5e;
 }
 .foodCategory__item img {
-  width: 40%;
+  max-width: 40%;
   margin: auto;
   margin-bottom: 5px;
 }

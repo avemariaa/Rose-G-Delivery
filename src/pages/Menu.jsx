@@ -146,25 +146,26 @@ const Menu = () => {
         </Row>
 
         {/*------------------ Display Food ------------------*/}
-        <Row>
-          {allProducts
-            .filter((post) => {
-              if (query === "") {
-                return post;
-              } else if (
-                post.title.toLowerCase().includes(query.toLowerCase()) ||
-                post.category.toLowerCase().includes(query.toLowerCase())
-              ) {
-                return post;
-              }
-            })
-            .map((item) => (
-              <Col lg="3" md="6" sm="6" key={item.id}>
-                <MenuProductCard item={item} />
-              </Col>
-            ))}
-        </Row>
-
+        <section>
+          <Row>
+            {allProducts
+              .filter((post) => {
+                if (query === "") {
+                  return post;
+                } else if (
+                  post.title.toLowerCase().includes(query.toLowerCase()) ||
+                  post.category.toLowerCase().includes(query.toLowerCase())
+                ) {
+                  return post;
+                }
+              })
+              .map((item) => (
+                <Col lg="3" md="6" sm="6" key={item.id}>
+                  <MenuProductCard item={item} />
+                </Col>
+              ))}
+          </Row>
+        </section>
         {/*------------------ Rice Meals Row------------------*/}
         {/* <Row>
           <Col>
