@@ -1,14 +1,69 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../style/Login.css";
 import { Link } from "react-router-dom";
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
+// Firebase
+import { auth } from "../firebase";
+import {
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 
-  const handleSubmit = (e) => {
+// Redux
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setActiveUser,
+  setUserLogOutState,
+  selectUserEmail,
+  selectUserPassword,
+} from "../store/UserSlice/userSlice";
+
+const Login = () => {
+  // const [email, setEmail] = useState(null);
+  // const [pass, setPass] = useState(null);
+
+  const [state, setState] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { email, password } = state;
+
+  //Redux
+  const dispatch = useDispatch();
+  const userEmail = useSelector((state) => state.selectUserEmail);
+  const userPassword = useSelector((state) => state.selectUserPassword);
+
+  const handleChange = (e) => {
+    let { name, value } = e.target;
+    setState({ ...setState, [name]: value });
+  };
+
+  const handleSignIn = (e) => {
     e.preventDefault();
-    console.log(email);
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        dispatch(
+          setActiveUser({
+            userEmail: userCredential.user.email,
+            userPasswrod: userCredential.user.password,
+          })
+        );
+
+        console.log(userEmail);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        console.log("sign out successfully");
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -16,11 +71,12 @@ const Login = () => {
       <div className="authForm__container">
         <h3 className="mb-5">Sign in to your account</h3>
         {/*------------------ Login Content ----------------- */}
-        <form className="login__form" onSubmit={handleSubmit}>
+        <form className="login__form" onSubmit={handleSignIn}>
           <label for="email">Email</label>
           <input
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            // onChange={(e) => setEmail(e.target.value)}
+            onChange={handleChange}
             type="email"
             placeholder="youremail@gmail.com"
             id="email"
@@ -28,8 +84,9 @@ const Login = () => {
           />
           <label for="password">Password</label>
           <input
-            value={pass}
-            onChange={(e) => setPass(e.target.value)}
+            value={password}
+            // onChange={(e) => setPass(e.target.value)}
+            onChange={handleChange}
             type="password"
             placeholder="**********"
             id="password"
@@ -38,10 +95,18 @@ const Login = () => {
           <label className="forgotPassTxt d-flex justify-content-end mt-2">
             Forgot Password?
           </label>
+
           <button className="mt-4" type="submit">
             Sign In
           </button>
         </form>
+
+        {/* REDUX LOGIN */}
+        {userEmail ? (
+          <button onClick={handleSignIn}>Sign Out</button>
+        ) : (
+          <button onClick={handleSignOut}>Sign In</button>
+        )}
 
         <label className="d-flex justify-content-center mt-2">
           Don't have an account?
