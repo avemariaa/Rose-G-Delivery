@@ -13,57 +13,62 @@ import {
 // Redux
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setActiveUser,
-  setUserLogOutState,
-  selectUserEmail,
-  selectUserPassword,
+  userLogInState,
+  userLogOutState,
+  selectUser,
 } from "../store/UserSlice/userSlice";
 
 const Login = () => {
-  // const [email, setEmail] = useState(null);
-  // const [pass, setPass] = useState(null);
-
-  const [state, setState] = useState({
-    email: "",
-    password: "",
-  });
-
-  const { email, password } = state;
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
 
   //Redux
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
-  const userEmail = useSelector((state) => state.selectUserEmail);
-  const userPassword = useSelector((state) => state.selectUserPassword);
 
-  const handleChange = (e) => {
-    let { name, value } = e.target;
-    setState({ ...setState, [name]: value });
-  };
+  useEffect(() => {
+    auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        // Logged In Action
+        dispatch(
+          userLogInState({
+            email: authUser.email,
+            lastSignIn: authUser.metadata.lastSignInTime,
+          })
+        );
+        // Clear textfields once successfully logged in
+        setEmail("");
+        setPassword("");
+      } else {
+        // Logged Out action
+        dispatch(userLogOutState());
+        // Clear textfields once successfully logged out
+        setEmail("");
+        setPassword("");
+      }
+    });
+  }, []);
 
   const handleSignIn = (e) => {
     e.preventDefault();
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        dispatch(
-          setActiveUser({
-            userEmail: userCredential.user.email,
-            userPasswrod: userCredential.user.password,
-          })
-        );
-
-        console.log(userEmail);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    //email and password should not be empty
+    if (email && password !== "") {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          alert("Logged in successfully!!!");
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    }
   };
 
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
-        console.log("sign out successfully");
+        alert("Logged out successfully");
       })
-      .catch((error) => console.log(error));
+      .catch((error) => alert(error));
   };
 
   return (
@@ -75,8 +80,7 @@ const Login = () => {
           <label for="email">Email</label>
           <input
             value={email}
-            // onChange={(e) => setEmail(e.target.value)}
-            onChange={handleChange}
+            onChange={(e) => setEmail(e.target.value)}
             type="email"
             placeholder="youremail@gmail.com"
             id="email"
@@ -85,8 +89,7 @@ const Login = () => {
           <label for="password">Password</label>
           <input
             value={password}
-            // onChange={(e) => setPass(e.target.value)}
-            onChange={handleChange}
+            onChange={(e) => setPassword(e.target.value)}
             type="password"
             placeholder="**********"
             id="password"
@@ -96,16 +99,22 @@ const Login = () => {
             Forgot Password?
           </label>
 
-          <button className="mt-4" type="submit">
+          {/* <button className="mt-4" type="submit">
             Sign In
-          </button>
+          </button> */}
         </form>
 
         {/* REDUX LOGIN */}
-        {userEmail ? (
-          <button onClick={handleSignIn}>Sign Out</button>
+        {user ? (
+          // If current user is logged in, it display the email and last sign in
+          <>
+            <p>Email: {user.email}</p>
+            <p>Last Sign In: {user.lastSignIn}</p>
+            <button onClick={handleSignOut}>Sign Out</button>
+          </>
         ) : (
-          <button onClick={handleSignOut}>Sign In</button>
+          // If the current user is not yet logged in or logout, the sign in button should appear
+          <button onClick={handleSignIn}>Sign In</button>
         )}
 
         <label className="d-flex justify-content-center mt-2">
