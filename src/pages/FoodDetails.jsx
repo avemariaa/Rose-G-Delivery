@@ -80,7 +80,7 @@ const FoodDetails = () => {
               <h2 className="foodProduct__title mb-3">{foodData?.foodName}</h2>
 
               <p className="foodProduct__price">
-                ₱ <span>{foodData?.price}</span>
+                ₱ <span>{parseFloat(foodData?.price).toFixed(2)}</span>
               </p>
 
               <p className="foodProduct__category mb-5">

@@ -1,6 +1,7 @@
 .registration__body {
   width: 100%;
-  min-height: 100vh;
+  height: auto;
+  padding: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,6 +21,15 @@
 label {
   text-align: left;
   padding: 0.25rem 0;
+}
+.errorMsg {
+  color: red;
+  font-size: 14px;
+}
+.customErrorMsg {
+  color: red;
+  font-size: 14px;
+  text-align: center;
 }
 input {
   margin: 0.5rem 0;

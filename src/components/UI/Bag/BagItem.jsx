@@ -47,7 +47,9 @@ const BagItem = ({ item }) => {
                 </span>
               </div>
 
-              <span className="bag__product-price">₱ {totalPrice}</span>
+              <span className="bag__product-price">
+                ₱ {parseFloat(totalPrice).toFixed(2)}
+              </span>
             </p>
           </div>
 

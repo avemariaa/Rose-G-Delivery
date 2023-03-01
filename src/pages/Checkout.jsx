@@ -104,13 +104,14 @@ const Checkout = () => {
               )}
               <hr></hr>
               <h6>
-                Subtotal: ₱ <span>{bagSubTotalAmount}</span>
+                Subtotal: ₱{" "}
+                <span>{parseFloat(bagSubTotalAmount).toFixed(2)}</span>
               </h6>
               <h6>
                 Delivery Fee: <span>₱ 50.00</span>
               </h6>
               <h6>
-                Total: ₱ <span>{bagTotalAmount}</span>
+                Total: ₱ <span>{parseFloat(bagTotalAmount).toFixed(2)}</span>
               </h6>
 
               <button className="place__order">Place Order</button>

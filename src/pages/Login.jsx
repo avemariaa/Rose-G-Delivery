@@ -77,6 +77,7 @@ const Login = () => {
         <h3 className="mb-5">Sign in to your account</h3>
         {/*------------------ Login Content ----------------- */}
         <form className="login__form" onSubmit={handleSignIn}>
+          {/*------------------ Email Field ----------------- */}
           <label for="email">Email</label>
           <input
             value={email}
@@ -86,6 +87,8 @@ const Login = () => {
             id="email"
             name="email"
           />
+
+          {/*------------------ Password Field ----------------- */}
           <label for="password">Password</label>
           <input
             value={password}
@@ -98,13 +101,9 @@ const Login = () => {
           <label className="forgotPassTxt d-flex justify-content-end mt-2">
             Forgot Password?
           </label>
-
-          {/* <button className="mt-4" type="submit">
-            Sign In
-          </button> */}
         </form>
 
-        {/* REDUX LOGIN */}
+        {/*------------------ Login - Redux ----------------- */}
         {user ? (
           // If current user is logged in, it display the email and last sign in
           <>
@@ -120,8 +119,16 @@ const Login = () => {
         <label className="d-flex justify-content-center mt-2">
           Don't have an account?
         </label>
-        <button className="createAcc__btn">Create An Account</button>
+
+        {/*------------------ Create An Account Button ----------------- */}
+        <Link to="/registration">
+          <button className="createAcc__btn">Create An Account</button>
+        </Link>
+
+        {/*------------------ Connect With Google Button ----------------- */}
         <button className="connectGoogle__btn">Connect With Google</button>
+
+        {/*------------------ Terms & Condition - Privacy Policy ----------------- */}
         <label>
           By continuing, you agree to our updated{" "}
           <Link to="/termsCondition">
@@ -133,6 +140,8 @@ const Login = () => {
           </Link>
         </label>
         <label className="d-flex justify-content-center">OR</label>
+
+        {/*------------------ Order As Guest Button ----------------- */}
         <button className="guest__btn">Order as Guest</button>
       </div>
     </div>

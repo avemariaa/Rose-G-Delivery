@@ -13,7 +13,7 @@ const ProductCard = (props) => {
         <h6>{foodName}</h6>
         <div className="align-items-center justify-content-between">
           <span className="product__price">
-            <span>₱{price}</span>
+            <span>₱{parseFloat(price).toFixed(2)}</span>
           </span>
           <button className="order__btn">Order</button>
         </div>

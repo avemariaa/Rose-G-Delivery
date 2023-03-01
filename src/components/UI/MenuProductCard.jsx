@@ -14,7 +14,7 @@ const MenuProductCard = (props) => {
         </h6>
         <div className="align-items-center justify-content-between">
           <span className="menu__productPrice">
-            <span>₱{price}</span>
+            <span>₱{parseFloat(price).toFixed(2)}</span>
           </span>
           <button className="menu__orderBtn">
             <Link to={`/foodDetails/${id}`}>Order</Link>

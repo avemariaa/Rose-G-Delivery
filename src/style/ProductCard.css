@@ -4,12 +4,12 @@
   width: 250px;
   height: 250px;
   background: #ffffff;
-  box-shadow: 0px 3px 6px #e8b0af;
+  box-shadow: 0px 3px 6px #bcc998;
   margin: 5px 30px;
   overflow: hidden;
 }
 .single__product:hover {
-  box-shadow: 0px 3px 6px 5px #e8b0af;
+  box-shadow: 0px 3px 6px 5px #bcc998;
 }
 .product__img img {
   display: block;
