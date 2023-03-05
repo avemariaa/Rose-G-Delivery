@@ -28,15 +28,17 @@ const Login = () => {
 
   useEffect(() => {
     auth.onAuthStateChanged((authUser) => {
-      if (authUser) {
+      if (authUser && authUser.emailVerified === true) {
         // Logged In Action
         dispatch(
           userLogInState({
             email: authUser.email,
             lastSignIn: authUser.metadata.lastSignInTime,
+            // emailVerified: authUser.emailVerified.toString(),
           })
         );
         // Clear textfields once successfully logged in
+
         setEmail("");
         setPassword("");
       } else {
@@ -49,24 +51,49 @@ const Login = () => {
     });
   }, []);
 
+  // Validation Error Messagge
+  const [customErrorMsg, setCustomErrorMsg] = useState("");
+
+  // Sign Up Button Function
   const handleSignIn = (e) => {
     e.preventDefault();
-    //email and password should not be empty
-    if (email && password !== "") {
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          alert("Logged in successfully!!!");
-        })
-        .catch((error) => {
-          alert(error);
-        });
-    }
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        // If email is verified, the user can logged in
+        if (auth.currentUser.emailVerified) {
+          alert("Logged in successfully");
+        }
+        // Verify email first to login
+        else {
+          alert("Verify your email first");
+          setEmail("");
+          setPassword("");
+          setCustomErrorMsg("");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        var errorMessage = error.message;
+        if (email === "" && password === "") {
+          setCustomErrorMsg("Please enter email address and password");
+        } else if (
+          errorMessage ===
+          "Firebase: The email address is badly formatted. (auth/invalid-email)."
+        ) {
+          setCustomErrorMsg("Please enter a valid email address");
+        } else {
+          setCustomErrorMsg("Incorrect email or password");
+        }
+      });
   };
 
+  // Sign Out Button Function
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
         alert("Logged out successfully");
+        setCustomErrorMsg();
       })
       .catch((error) => alert(error));
   };
@@ -75,7 +102,14 @@ const Login = () => {
     <div className="login__body">
       <div className="authForm__container">
         <h3 className="mb-5">Sign in to your account</h3>
+
         {/*------------------ Login Content ----------------- */}
+
+        {/*------------------ Validation Error Message ----------------- */}
+        {customErrorMsg !== "" && (
+          <label className="customErrorMsg">{customErrorMsg}</label>
+        )}
+
         <form className="login__form" onSubmit={handleSignIn}>
           {/*------------------ Email Field ----------------- */}
           <label for="email">Email</label>
@@ -109,6 +143,7 @@ const Login = () => {
           <>
             <p>Email: {user.email}</p>
             <p>Last Sign In: {user.lastSignIn}</p>
+            <p>Email Verified: {user.emailVerified}</p>
             <button onClick={handleSignOut}>Sign Out</button>
           </>
         ) : (

@@ -1,19 +1,11 @@
 import React, { useState, useEffect } from "react";
 import MenuProductCard from "../components/UI/MenuProductCard";
 import { Container, Row, Col } from "reactstrap";
-import FoodProductData from "../assets/sample-data/FoodProduct";
 import "../style/Menu.css";
 
 // Connect Firebase
-import {
-  collection,
-  getDoc,
-  deleteDoc,
-  doc,
-  onSnapshot,
-} from "firebase/firestore";
-import { getStorage, ref, deleteObject } from "firebase/storage";
-import { db, storage } from "../firebase.js";
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "../firebase.js";
 
 const Menu = () => {
   //------------------ Retrieve Food Data ------------------//
@@ -91,6 +83,13 @@ const Menu = () => {
       );
       setAllProducts(filteredProducts);
     }
+
+    if (category === "EXTRAS") {
+      const filteredProducts = foodData.filter(
+        (item) => item.categoryTitle === "Extra"
+      );
+      setAllProducts(filteredProducts);
+    }
   });
 
   return (
@@ -140,6 +139,13 @@ const Menu = () => {
                 onClick={() => setCategory("ICE CREAM")}
               >
                 Ice Cream
+              </button>
+
+              <button
+                className="category__btn"
+                onClick={() => setCategory("EXTRAS")}
+              >
+                Extras
               </button>
             </Col>
           </div>

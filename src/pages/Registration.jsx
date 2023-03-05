@@ -4,7 +4,11 @@ import { Link } from "react-router-dom";
 
 // Firebase
 import { auth, db } from "../firebase";
-import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signOut,
+  sendEmailVerification,
+} from "firebase/auth";
 import { addDoc, collection } from "firebase/firestore";
 
 // Navigate
@@ -116,6 +120,12 @@ const Registration = () => {
                 alert("firestore error", error);
               });
           }
+
+          // //Email Verification
+
+          sendEmailVerification(auth.currentUser).then(() => {
+            alert("Email Verification Sent!");
+          });
         })
         .catch((error) => {
           alert("Sign up firebase error", error.message);
@@ -218,7 +228,7 @@ const Registration = () => {
           />
           {/*------------------ Email Validation Msg ----------------- */}
           {checkValidEmail ? (
-            <label className="errorMsg">Wrong email format</label>
+            <label className="errorMsg">Invalid email format</label>
           ) : (
             ""
           )}
