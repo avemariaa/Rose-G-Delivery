@@ -3,12 +3,26 @@ import "../style/Login.css";
 import { Link } from "react-router-dom";
 
 // Firebase
-import { auth } from "../firebase";
+import { db, auth } from "../firebase";
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInAnonymously,
 } from "firebase/auth";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  getDoc,
+  query,
+  where,
+  documentId,
+  setDoc,
+} from "firebase/firestore";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -38,7 +52,6 @@ const Login = () => {
           })
         );
         // Clear textfields once successfully logged in
-
         setEmail("");
         setPassword("");
       } else {
@@ -96,6 +109,49 @@ const Login = () => {
         setCustomErrorMsg();
       })
       .catch((error) => alert(error));
+  };
+
+  // Sign in With Google
+  const [emailExists, setEmailExists] = useState(false);
+  const handleGoogleLogin = () => {
+    const googleProvider = new GoogleAuthProvider();
+
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        const name = result.user.displayName;
+        const email = result.user.email;
+        const googleUid = result.user.uid;
+
+        const userRef = doc(db, "UserData", googleUid); // create a document and use the User UID as the document id
+        try {
+          const docSnap = getDoc(userRef); // get a specific document
+          if (!docSnap.exists) {
+            // user does not exist in database, so add a new document
+            setDoc(userRef, {
+              name: name,
+              email: email,
+            });
+            alert("New user added to Firestore");
+          } else {
+            alert("Document exists");
+          }
+        } catch (error) {
+          alert(error);
+        }
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
+  // Order as Guest Button Function
+  const handleOrderAsGuest = () => {
+    try {
+      signInAnonymously(auth);
+      alert("Logged in as guest");
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
@@ -161,7 +217,9 @@ const Login = () => {
         </Link>
 
         {/*------------------ Connect With Google Button ----------------- */}
-        <button className="connectGoogle__btn">Connect With Google</button>
+        <button className="connectGoogle__btn" onClick={handleGoogleLogin}>
+          Connect With Google
+        </button>
 
         {/*------------------ Terms & Condition - Privacy Policy ----------------- */}
         <label>
@@ -177,7 +235,9 @@ const Login = () => {
         <label className="d-flex justify-content-center">OR</label>
 
         {/*------------------ Order As Guest Button ----------------- */}
-        <button className="guest__btn">Order as Guest</button>
+        <button className="guest__btn" onClick={handleOrderAsGuest}>
+          Order as Guest
+        </button>
       </div>
     </div>
   );
