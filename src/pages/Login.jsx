@@ -13,14 +13,11 @@ import {
   signInAnonymously,
 } from "firebase/auth";
 import {
-  addDoc,
   collection,
   doc,
   getDocs,
-  getDoc,
   query,
   where,
-  documentId,
   setDoc,
 } from "firebase/firestore";
 
@@ -112,32 +109,48 @@ const Login = () => {
   };
 
   // Sign in With Google
-  const [emailExists, setEmailExists] = useState(false);
+  const [displayName, setDisplayName] = useState(null);
+  const [firstName, setFirstName] = useState(null);
+  const [lastName, setLastName] = useState(null);
+
   const handleGoogleLogin = () => {
     const googleProvider = new GoogleAuthProvider();
 
     signInWithPopup(auth, googleProvider)
       .then((result) => {
-        const name = result.user.displayName;
         const email = result.user.email;
         const googleUid = result.user.uid;
 
-        const userRef = doc(db, "UserData", googleUid); // create a document and use the User UID as the document id
-        try {
-          const docSnap = getDoc(userRef); // get a specific document
-          if (!docSnap.exists) {
-            // user does not exist in database, so add a new document
-            setDoc(userRef, {
-              name: name,
-              email: email,
-            });
-            alert("New user added to Firestore");
-          } else {
-            alert("Document exists");
-          }
-        } catch (error) {
-          alert(error);
-        }
+        const displayName = result.user.displayName;
+        setDisplayName(displayName);
+        // Split the display name into first and last name
+        const names = displayName.split(" ");
+        setFirstName(names[0]);
+        setLastName(names[names.length - 1]);
+
+        const userDataRef = collection(db, "UserData"); // getting the UserData collection
+        const queryData = query(userDataRef, where("email", "==", email));
+
+        getDocs(queryData)
+          .then((querySnapshot) => {
+            if (querySnapshot.empty) {
+              // user does not exist in database, so add a new document
+              const userRef = doc(userDataRef);
+              setDoc(userRef, {
+                // fullName: displayName,
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                uid: googleUid,
+              });
+              alert("New user added to Firestore");
+            } else {
+              alert("User already exists in Firestore");
+            }
+          })
+          .catch((error) => {
+            alert(error);
+          });
       })
       .catch((error) => {
         alert(error);
