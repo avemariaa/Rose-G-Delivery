@@ -1,15 +1,25 @@
 /*By Category Products*/
-.categoryBtn__column {
+.categoriesBtn__slides {
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 30px;
+}
+/* .slides__item {
+  width: 100px;
+} */
+/* .categoryBtn__column {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
   padding: 50px;
-}
+} */
 .category__title {
   justify-content: center;
 }
 .category__btn {
-  width: 12%;
+  /* width: 12%; */
+  width: 80%;
   height: auto;
   align-items: center;
   justify-content: center;

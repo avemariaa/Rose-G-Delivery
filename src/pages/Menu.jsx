@@ -2,6 +2,12 @@ import React, { useState, useEffect } from "react";
 import MenuProductCard from "../components/UI/MenuProductCard";
 import { Container, Row, Col } from "reactstrap";
 import "../style/Menu.css";
+import { useLocation } from "react-router-dom";
+
+// React Slick
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 // Connect Firebase
 import { collection, onSnapshot } from "firebase/firestore";
@@ -29,127 +35,143 @@ const Menu = () => {
       unsub();
     };
   }, []);
-  console.log(foodData);
 
-  // const iceCreamCategory = foodData.filter((iceCream) => {
-  //   return iceCream.categoryTitle === "Ice Cream";
-  // });
-
-  // const drinksCategory = foodData.filter((drinks) => {
-  //   return drinks.categoryTitle === "Drinks";
-  // });
+  // Navigation
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const categories = params.get("category");
 
   //------------------ Category Buttons Function (Filter) ------------------//
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("ALL");
+  const [category, setCategory] = useState(categories || "All");
   const [allProducts, setAllProducts] = useState(foodData);
 
   useEffect(() => {
-    if (category === "ALL") {
+    if (category === "All") {
       setAllProducts(foodData);
     }
 
-    if (category === "PALABOK") {
+    if (category === "Palabok") {
       const filteredProducts = foodData.filter(
         (item) => item.categoryTitle === "Palabok"
       );
       setAllProducts(filteredProducts);
     }
 
-    if (category === "RICE MEALS") {
+    if (category === "Rice Meals") {
       const filteredProducts = foodData.filter(
         (item) => item.categoryTitle === "Rice Meal"
       );
       setAllProducts(filteredProducts);
     }
 
-    if (category === "BARBECUE") {
+    if (category === "Barbecue") {
       const filteredProducts = foodData.filter(
         (item) => item.categoryTitle === "Barbecue"
       );
       setAllProducts(filteredProducts);
     }
 
-    if (category === "DRINKS") {
+    if (category === "Drinks") {
       const filteredProducts = foodData.filter(
         (item) => item.categoryTitle === "Drinks"
       );
       setAllProducts(filteredProducts);
     }
 
-    if (category === "ICE CREAM") {
+    if (category === "Ice Creams") {
       const filteredProducts = foodData.filter(
         (item) => item.categoryTitle === "Ice Cream"
       );
       setAllProducts(filteredProducts);
     }
 
-    if (category === "EXTRAS") {
+    if (category === "Extras") {
       const filteredProducts = foodData.filter(
         (item) => item.categoryTitle === "Extra"
       );
       setAllProducts(filteredProducts);
     }
-  });
+  }, [category, foodData]);
+
+  //------------------ Categories Slider Settings ------------------//
+  const settings = {
+    className: "categoriesBtn__slides",
+    speed: 500,
+    infinite: false,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    arrows: true,
+  };
 
   return (
     <div>
       <Container>
         {/*------------------ Category Buttons ------------------*/}
-        <Row>
-          <div className="category__title ">
-            <Col className="categoryBtn__column">
-              <button
-                className="category__btn"
-                onClick={() => setCategory("ALL")}
-              >
-                All
-              </button>
-
-              <button
-                className="category__btn"
-                onClick={() => setCategory("PALABOK")}
-              >
-                Palabok
-              </button>
-
-              <button
-                className="category__btn"
-                onClick={() => setCategory("RICE MEALS")}
-              >
-                Rice Meals
-              </button>
-
-              <button
-                className="category__btn"
-                onClick={() => setCategory("BARBECUE")}
-              >
-                Barbecue
-              </button>
-
-              <button
-                className="category__btn"
-                onClick={() => setCategory("DRINKS")}
-              >
-                Drinks
-              </button>
-
-              <button
-                className="category__btn"
-                onClick={() => setCategory("ICE CREAM")}
-              >
-                Ice Cream
-              </button>
-
-              <button
-                className="category__btn"
-                onClick={() => setCategory("EXTRAS")}
-              >
-                Extras
-              </button>
-            </Col>
+        <Slider {...settings}>
+          <div className="slides__item">
+            <button
+              className="category__btn"
+              onClick={() => setCategory("All")}
+            >
+              All
+            </button>
           </div>
-        </Row>
+
+          <div className="slides__item">
+            <button
+              className="category__btn"
+              onClick={() => setCategory("Palabok")}
+            >
+              Palabok
+            </button>
+          </div>
+
+          <div className="slides__item">
+            <button
+              className="category__btn"
+              onClick={() => setCategory("Rice Meals")}
+            >
+              Rice Meals
+            </button>
+          </div>
+
+          <div className="slides__item">
+            <button
+              className="category__btn"
+              onClick={() => setCategory("Barbecue")}
+            >
+              Barbecue
+            </button>
+          </div>
+
+          <div className="slides__item">
+            <button
+              className="category__btn"
+              onClick={() => setCategory("Drinks")}
+            >
+              Drinks
+            </button>
+          </div>
+
+          <div className="slides__item">
+            <button
+              className="category__btn"
+              onClick={() => setCategory("Ice Creams")}
+            >
+              Ice Cream
+            </button>
+          </div>
+
+          <div className="slides__item">
+            <button
+              className="category__btn"
+              onClick={() => setCategory("Extras")}
+            >
+              Extras
+            </button>
+          </div>
+        </Slider>
 
         {/*------------------ Display Food ------------------*/}
         <section>

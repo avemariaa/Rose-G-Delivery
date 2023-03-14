@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../style/FoodDetails.css";
 import { Container, Row, Col } from "reactstrap";
-import FoodProductsData from "../assets/sample-data/FoodProduct";
 import { useParams } from "react-router-dom";
-import ChocoCup from "../assets/images/Food-Products/Ice-Cream/Choco_Cup.jpg";
-import MenuProductCard from "../components/UI/MenuProductCard";
 import { useDispatch } from "react-redux";
 import { bagActions } from "../store/MyBag/bagSlice";
 
@@ -15,6 +12,7 @@ import {
   deleteDoc,
   doc,
   onSnapshot,
+  addDoc,
 } from "firebase/firestore";
 import { getStorage, ref, deleteObject } from "firebase/storage";
 import { db, storage } from "../firebase.js";
@@ -56,16 +54,31 @@ const FoodDetails = () => {
   /*Bag - Functions*/
   const dispatch = useDispatch();
 
-  // const addToBag = () => {
-  //   dispatch(
-  //     bagActions.addItem({
-  //       id,
-  //       title,
-  //       image01,
-  //       price,
-  //     })
-  //   );
-  // };
+  const addToBag = () => {
+    dispatch(
+      bagActions.addItem({
+        id,
+        title: foodData?.foodName,
+        image01: foodData?.img,
+        price: foodData?.price,
+      })
+    );
+
+    // try {
+    //   // Add item to Firestore
+    //   const bagRef = collection(db, "UserBag");
+    //   addDoc(bagRef, {
+    //     id,
+    //     title: foodData?.foodName,
+    //     image01: foodData?.img,
+    //     price: foodData?.price,
+    //   });
+
+    //   alert("Item added to bag in Firestore.");
+    // } catch (e) {
+    //   alert("Error adding item to bag in Firestore: ", e);
+    // }
+  };
 
   return (
     <section>
@@ -94,14 +107,15 @@ const FoodDetails = () => {
             </div>
           </Col>
 
-          {/* <Col lg="6" md="6">
+          {/* Add to bag function */}
+          <Col lg="6" md="6">
             <div className="customize__order">
               Customize your order:
               <button className="foodProduct__addBtn" onClick={addToBag}>
                 Add to Bag
               </button>
             </div>
-          </Col> */}
+          </Col>
         </Row>
 
         {/* <Row>

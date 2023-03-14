@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../style/Login.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // Firebase
 import { db, auth } from "../firebase";
@@ -32,6 +32,9 @@ import {
 const Login = () => {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+
+  // Navigation
+  const navigate = useNavigate();
 
   //Redux
   const user = useSelector(selectUser);
@@ -73,6 +76,7 @@ const Login = () => {
         // If email is verified, the user can logged in
         if (auth.currentUser.emailVerified) {
           alert("Logged in successfully");
+          navigate("/home");
         }
         // Verify email first to login
         else {
@@ -162,6 +166,7 @@ const Login = () => {
     try {
       signInAnonymously(auth);
       alert("Logged in as guest");
+      navigate("/home");
     } catch (error) {
       alert(error);
     }
@@ -201,9 +206,13 @@ const Login = () => {
             id="password"
             name="password"
           />
-          <label className="forgotPassTxt d-flex justify-content-end mt-2">
-            Forgot Password?
-          </label>
+
+          {/*------------------ Forgot Password ----------------- */}
+          <Link to="/forgotPassword">
+            <label className="forgotPassTxt d-flex justify-content-end mt-2">
+              Forgot Password?
+            </label>
+          </Link>
         </form>
 
         {/*------------------ Login - Redux ----------------- */}
