@@ -6,8 +6,6 @@ import { useLocation } from "react-router-dom";
 
 // React Slick
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 // Connect Firebase
 import { collection, onSnapshot } from "firebase/firestore";
@@ -45,10 +43,11 @@ const Menu = () => {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState(categories || "All");
   const [allProducts, setAllProducts] = useState(foodData);
-
+  const [label, setLabel] = useState("All");
   useEffect(() => {
     if (category === "All") {
       setAllProducts(foodData);
+      setLabel("All");
     }
 
     if (category === "Palabok") {
@@ -56,6 +55,7 @@ const Menu = () => {
         (item) => item.categoryTitle === "Palabok"
       );
       setAllProducts(filteredProducts);
+      setLabel("Palabok");
     }
 
     if (category === "Rice Meals") {
@@ -63,6 +63,7 @@ const Menu = () => {
         (item) => item.categoryTitle === "Rice Meal"
       );
       setAllProducts(filteredProducts);
+      setLabel("Rice Meals");
     }
 
     if (category === "Barbecue") {
@@ -70,6 +71,7 @@ const Menu = () => {
         (item) => item.categoryTitle === "Barbecue"
       );
       setAllProducts(filteredProducts);
+      setLabel("Barbecue");
     }
 
     if (category === "Drinks") {
@@ -77,6 +79,7 @@ const Menu = () => {
         (item) => item.categoryTitle === "Drinks"
       );
       setAllProducts(filteredProducts);
+      setLabel("Drinks");
     }
 
     if (category === "Ice Creams") {
@@ -84,6 +87,7 @@ const Menu = () => {
         (item) => item.categoryTitle === "Ice Cream"
       );
       setAllProducts(filteredProducts);
+      setLabel("Ice Creams");
     }
 
     if (category === "Extras") {
@@ -91,6 +95,7 @@ const Menu = () => {
         (item) => item.categoryTitle === "Extra"
       );
       setAllProducts(filteredProducts);
+      setLabel("Extras");
     }
   }, [category, foodData]);
 
@@ -101,13 +106,42 @@ const Menu = () => {
     infinite: false,
     slidesToShow: 5,
     slidesToScroll: 1,
-    arrows: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+        },
+      },
+    ],
   };
 
   return (
     <div>
       <Container>
         {/*------------------ Category Buttons ------------------*/}
+        <Row>
+          <h6 className="slider__title mt-5">Menu Categories</h6>
+          <p className="slider__subtitle">You selected category "{label}"</p>
+        </Row>
+
         <Slider {...settings}>
           <div className="slides__item">
             <button
@@ -194,67 +228,6 @@ const Menu = () => {
               ))}
           </Row>
         </section>
-        {/*------------------ Rice Meals Row------------------*/}
-        {/* <Row>
-          <Col>
-            {" "}
-            <div className="menu__search">
-              <i class="ri-search-line"></i>
-              <input
-                type="text"
-                placeholder="Search item..."
-                onChange={(event) => setQuery(event.target.value)}
-              />
-            </div>
-          </Col>
-        </Row> */}
-
-        {/*Ice Cream Row*/}
-        {/* <Row className="menu__iceCream">
-          <Col lg="12" md="10" sm="8" className="mb-2 mt-3">
-            <h5>Ice Cream</h5>
-          </Col>{" "}
-          {iceCreamCategory
-            .filter((post) => {
-              if (query === "") {
-                return post;
-              } else if (
-                post.title.toLowerCase().includes(query.toLowerCase()) ||
-                post.category.toLowerCase().includes(query.toLowerCase())
-              ) {
-                return post;
-              }
-            })
-            .map((item) => (
-              <Col lg="3" md="6" sm="6" key={item.id}>
-                <MenuProductCard item={item} />
-              </Col>
-            ))}
-        </Row> */}
-
-        {/*Drinks Row*/}
-        {/* <Row className="menu__drinks">
-          <Col lg="12" className="mb-2 mt-3">
-            <h5>Drinks</h5>
-          </Col>
-
-          {drinksCategory
-            .filter((post) => {
-              if (query === "") {
-                return post;
-              } else if (
-                post.title.toLowerCase().includes(query.toLowerCase()) ||
-                post.category.toLowerCase().includes(query.toLowerCase())
-              ) {
-                return post;
-              }
-            })
-            .map((item) => (
-              <Col lg="3" md="6" sm="6" key={item.id}>
-                <MenuProductCard item={item} />
-              </Col>
-            ))}
-        </Row> */}
       </Container>
     </div>
   );
