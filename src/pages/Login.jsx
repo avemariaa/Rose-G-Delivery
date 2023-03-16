@@ -120,6 +120,9 @@ const Login = () => {
   const handleGoogleLogin = () => {
     const googleProvider = new GoogleAuthProvider();
 
+    // this custom parameter will let the user to select the google account they want to use for signing in
+    googleProvider.setCustomParameters({ prompt: "select_account" });
+
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         const email = result.user.email;
@@ -141,15 +144,17 @@ const Login = () => {
               // user does not exist in database, so add a new document
               const userRef = doc(userDataRef);
               setDoc(userRef, {
-                // fullName: displayName,
+                fullName: displayName,
                 firstName: firstName,
                 lastName: lastName,
                 email: email,
                 uid: googleUid,
               });
               alert("New user added to Firestore");
+              navigate("/home");
             } else {
               alert("User already exists in Firestore");
+              navigate("/home");
             }
           })
           .catch((error) => {

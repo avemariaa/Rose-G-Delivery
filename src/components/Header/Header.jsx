@@ -1,28 +1,28 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../../style/Header.css";
 
-import RoseGLogo from "../../assets/images/roseGLogoName.png";
-import { NavLink, Link } from "react-router-dom";
-import { bagUiActions } from "../../store/MyBag/bagUiSlice";
+// Navigation
+import { NavLink, Link, useNavigate } from "react-router-dom";
 
-import profile from "../../assets/images/sungJinwoo.jpg";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+// Icons or Images
+import RoseGLogo from "../../assets/images/roseGLogoName.png";
+import userIcon from "../../assets/images/user.png";
+import settingIcon from "../../assets/images/setting.png";
+import logoutIcon from "../../assets/images/logout.png";
 
 // Firebase
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { signOut } from "firebase/auth";
+import { collection, where, getDocs, query } from "firebase/firestore";
 
 // Redux
+import { bagUiActions } from "../../store/MyBag/bagUiSlice";
 import { useSelector, useDispatch } from "react-redux";
 import {
   userLogInState,
   userLogOutState,
   selectUser,
 } from "../../store/UserSlice/userSlice";
-
-// Navigation
-import { useNavigate } from "react-router-dom";
-import { Icon } from "@mui/material";
 
 // Main Menu Navigation Links
 const nav__links = [
@@ -52,24 +52,49 @@ const Header = () => {
   const menuRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Navigation
+  //------------------ Navigation ------------------//
   const navigate = useNavigate();
 
-  // User Profile Drop Down
+  //------------------ User Profile Drop Down ------------------//
   const [open, setOpen] = useState(false);
   const toggleProfileMenu = () => {
     setOpen(!open);
   };
 
-  const totalQuantity = useSelector((state) => state.bag.totalQuantity);
+  //------------------ Retrieve User Data ------------------//
+  const [userLoggedUid, setUserLoggedUid] = useState(null);
+  const [userData, setUserData] = useState(null);
 
+  const getUserData = () => {
+    const userDataRef = collection(db, "UserData"); // getting the UserData collection
+    const queryData = query(userDataRef, where("uid", "==", userLoggedUid));
+
+    getDocs(queryData).then((querySnapshot) => {
+      if (!querySnapshot.empty) {
+        querySnapshot.forEach((doc) => {
+          setUserData(doc.data());
+        });
+      } else {
+        //navigation.navigate("Login");
+        console.log("Empty user document");
+      }
+    });
+  };
+  useEffect(() => {
+    getUserData();
+  }, [userLoggedUid]);
+
+  //------------------ User Bag ------------------//
+  const totalQuantity = useSelector((state) => state.bag.totalQuantity);
   const dispatch = useDispatch();
   const toggleBag = () => {
     dispatch(bagUiActions.toggle());
   };
 
-  //Redux
+  //------------------ Redux ------------------//
   const user = useSelector(selectUser);
+
+  console.log(user && user.isAnonymous);
   // onAuthChanged
   useEffect(() => {
     auth.onAuthStateChanged((authUser) => {
@@ -82,13 +107,14 @@ const Header = () => {
             emailVerified: authUser.emailVerified.toString(),
           })
         );
+        setUserLoggedUid(authUser.uid);
       } else {
         // Logged Out action
         dispatch(userLogOutState());
+        setUserLoggedUid(null);
       }
     });
   }, []);
-
   // Only show login and sign up links when user is not logged in
   const authLinks = user ? null : (
     <>
@@ -101,7 +127,7 @@ const Header = () => {
     </>
   );
 
-  // Sign Out Function
+  //------------------ Sign Out Function------------------//
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
@@ -116,13 +142,16 @@ const Header = () => {
     {
       display: "Profile",
       path: "/userProfile",
+      icon: userIcon,
     },
     {
       display: "Settings",
       path: "/settings",
+      icon: settingIcon,
     },
     {
       display: "Logout",
+      icon: logoutIcon,
       onClick: handleSignOut,
     },
   ];
@@ -176,10 +205,17 @@ const Header = () => {
                   className="dropdown__button"
                   onClick={toggleProfileMenu}
                 >
-                  {/* <img src={profile} alt="profile" /> */}
-                  <AccountCircleIcon
-                    style={{ fontSize: 35, marginLeft: -10 }}
+                  <img
+                    className="profile__icon"
+                    src={userIcon}
+                    alt="user-icon"
                   />
+
+                  <span>
+                    {user && user.isAnonymous
+                      ? "Guest"
+                      : userData?.firstName || "User"}
+                  </span>
                 </button>
                 {open && (
                   <div className="dropdown__menu">
@@ -187,20 +223,23 @@ const Header = () => {
                       <>
                         {/* item.onClick is use to not overlap the onClick function from the NavLink */}
                         {item.onClick ? (
+                          // Log out Link
                           <a
                             className="dropdown__menu__item"
                             onClick={item.onClick}
                           >
+                            <img src={item.icon} alt={item.display} />
                             {item.display}
                           </a>
                         ) : (
+                          // Profile & Settings Link
                           <NavLink
                             to={item.path}
                             key={index}
                             className="dropdown__menu__item"
                             onClick={toggleProfileMenu}
                           >
-                            {/* <img src={item.icon} alt={item.display} /> */}
+                            <img src={item.icon} alt={item.display} />
                             {item.display}
                           </NavLink>
                         )}
