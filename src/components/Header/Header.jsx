@@ -57,9 +57,26 @@ const Header = () => {
 
   //------------------ User Profile Drop Down ------------------//
   const [open, setOpen] = useState(false);
+
   const toggleProfileMenu = () => {
     setOpen(!open);
   };
+  // When the user click outside of the drop down menu, the toggle should be off or closed
+  const dropdownMenuRef = useRef(null);
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        dropdownMenuRef.current &&
+        !dropdownMenuRef.current.contains(event.target)
+      ) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [dropdownMenuRef]);
 
   //------------------ Retrieve User Data ------------------//
   const [userLoggedUid, setUserLoggedUid] = useState(null);
@@ -94,7 +111,6 @@ const Header = () => {
   //------------------ Redux ------------------//
   const user = useSelector(selectUser);
 
-  console.log(user && user.isAnonymous);
   // onAuthChanged
   useEffect(() => {
     auth.onAuthStateChanged((authUser) => {
@@ -115,19 +131,26 @@ const Header = () => {
       }
     });
   }, []);
+
+  // Check if user is anonymous
+  const isAnonymous = user?.providerData?.[0]?.providerId === "anonymous";
+
   // Only show login and sign up links when user is not logged in
   const authLinks = user ? null : (
     <>
-      <NavLink to="/login" activeClassName="active__menu">
+      <NavLink
+        to="/login"
+        className={(navClass) => (navClass.isActive ? "active__menu" : "")}
+      >
         Login
       </NavLink>
-      <NavLink to="/registration" activeClassName="active__menu">
+      {/* <NavLink to="/registration"  className={(navClass) => (navClass.isActive ? "active__menu" : "")}>
         Sign up
-      </NavLink>
+      </NavLink> */}
     </>
   );
 
-  //------------------ Sign Out Function------------------//
+  //------------------ Sign Out Function ------------------//
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
@@ -137,7 +160,7 @@ const Header = () => {
       .catch((error) => alert(error));
   };
 
-  // User Profile Drop Down Links
+  //------------------ User Profile Drop Down Links ------------------//
   const userProfile__links = [
     {
       display: "Profile",
@@ -168,7 +191,7 @@ const Header = () => {
           </div>
         </div>
 
-        {/* ===== MENU =====*/}
+        {/*------------------ Menu ------------------*/}
         <div
           className={isMobile ? "menu-mobile" : "navigation"}
           ref={menuRef}
@@ -190,7 +213,7 @@ const Header = () => {
           </div>
         </div>
 
-        {/* BAG */}
+        {/*------------------ Bag ------------------*/}
         <div className="nav__icons d-flex align-items-center gap-4">
           <span className="bag__icon" onClick={toggleBag}>
             <i class="ri-shopping-bag-2-line"></i>
@@ -199,8 +222,8 @@ const Header = () => {
 
           {user && (
             <>
-              {/* USER PROFILE DROPDOWN */}
-              <div className="dropdown">
+              {/*------------------ User Profile Drop Down ------------------*/}
+              <div className="dropdown" ref={dropdownMenuRef}>
                 <button
                   className="dropdown__button"
                   onClick={toggleProfileMenu}
@@ -212,9 +235,7 @@ const Header = () => {
                   />
 
                   <span>
-                    {user && user.isAnonymous
-                      ? "Guest"
-                      : userData?.firstName || "User"}
+                    {isAnonymous ? "Guest" : userData?.firstName || "User"}
                   </span>
                 </button>
                 {open && (
