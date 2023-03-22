@@ -77,7 +77,7 @@ const MenuProductCard = (props) => {
   };
 
   return (
-    <div className=".menu__productCards">
+    <div className="menu__productCards">
       <div className="menu__singleProduct">
         <div className="menu__productImg">
           <img src={img} alt="image01" />
@@ -89,13 +89,10 @@ const MenuProductCard = (props) => {
 
           <p className="menu__productDesc">{description}</p>
 
-          <div className="align-items-center justify-content-between">
+          <div className="menu__productFooter">
             <span className="menu__productPrice">
               <span>₱{parseFloat(price).toFixed(2)}</span>
             </span>
-            {/* <button className="menu__orderBtn">
-              <Link to={`/foodDetails/${id}`}>Order</Link>
-            </button> */}
 
             {/* Add to Bag button */}
             <button className="menu__orderBtn" onClick={addToBag}>
