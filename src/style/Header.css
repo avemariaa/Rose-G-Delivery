@@ -7,7 +7,7 @@
   position: sticky;
   top: 0;
   left: 0;
-  z-index: 99999;
+  z-index: 999;
 }
 
 .logo {
@@ -133,6 +133,18 @@
   height: 30px;
   margin-right: 8px;
   margin-left: -10px;
+}
+
+.dropdown__icon {
+  fill: #000;
+  height: 2rem;
+  width: 2rem;
+
+  transition: transform 0.2s ease-in-out;
+}
+
+.dropdown__button:hover .dropdown__icon {
+  transform: rotate(180deg);
 }
 
 .dropdown__menu {

@@ -1,6 +1,6 @@
 .featuredProduct__slides {
   position: relative;
-  width: calc(100% + 30px);
+  width: 100%;
   height: 300px;
   margin-top: 20px;
   padding: 0 40px;
@@ -9,7 +9,9 @@
 .ftProdPrev__btn,
 .ftProdNext__btn {
   position: absolute;
-  top: 33%;
+  align-items: center;
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 1;
   background: transparent !important;
   color: #bcc998;
@@ -17,8 +19,8 @@
   border: 0;
 }
 .ftProdPrev__btn {
-  left: 1%;
+  left: 0%;
 }
 .ftProdNext__btn {
-  right: 1%;
+  right: 2%;
 }

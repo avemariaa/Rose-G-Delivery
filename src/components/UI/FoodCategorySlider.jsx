@@ -1,14 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../../style/FoodCategorySlider.css";
 import Slider from "react-slick";
-import FoodCategoryImg1 from "../../assets/images/category-01.png";
-import PalabokIcon from "../../assets/images/Category-Icons/palabok-logo.png";
-import RiceMealIcon from "../../assets/images/Category-Icons/fried-rice.png";
-import BarbecueIcon from "../../assets/images/Category-Icons/bbq.png";
-import DrinksIcon from "../../assets/images/Category-Icons/soft-drink.png";
-import IceCreamIcon from "../../assets/images/Category-Icons/ice-cream.png";
 import { Link } from "react-router-dom";
+
+// Firebase
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "../../firebase.js";
+
 const FoodCategorySlider = () => {
+  //------------------ Retrieve Product Categories Data ------------------//
+  const [productCategoriesData, setProductCategoriesData] = useState([]);
+  useEffect(() => {
+    //LISTEN (REALTIME)
+    const unsub = onSnapshot(
+      collection(db, "ProductCategories"),
+      (snapShot) => {
+        let list = [];
+        snapShot.docs.forEach((doc) => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+        setProductCategoriesData(list);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    return () => {
+      unsub();
+    };
+  }, []);
+  // console.log(productCategoriesData);
+
   const ArrowLeft = (props) => (
     <button
       {...props}
@@ -62,36 +84,14 @@ const FoodCategorySlider = () => {
       <h4>Menu</h4>
       <h6>What are you craving for today?</h6>
       <Slider {...settings}>
-        <div className="foodCategory__item">
-          <Link to="/menu?category=Palabok">
-            <img src={PalabokIcon} />
-            <span>Palabok</span>
-          </Link>
-        </div>
-        <div className="foodCategory__item">
-          <Link to="/menu?category=Rice Meals">
-            <img src={RiceMealIcon} />
-            <span>Rice Meals</span>
-          </Link>
-        </div>
-        <div className="foodCategory__item">
-          <Link to="/menu?category=Barbecue">
-            <img src={BarbecueIcon} />
-            <span>Barbecue</span>
-          </Link>
-        </div>
-        <div className="foodCategory__item">
-          <Link to="/menu?category=Drinks">
-            <img src={DrinksIcon} />
-            <span>Drinks</span>
-          </Link>
-        </div>
-        <div className="foodCategory__item">
-          <Link to="/menu?category=Ice Creams">
-            <img src={IceCreamIcon} />
-            <span>Ice Cream</span>
-          </Link>
-        </div>
+        {productCategoriesData.map((category) => (
+          <div className="foodCategory__item" key={category.productCategoryId}>
+            <Link to={`/menu?category=${category.categoryName}`}>
+              <img src={category.categoryImg} alt={category.categoryName} />
+              <span>{category.categoryName}</span>
+            </Link>
+          </div>
+        ))}
       </Slider>
     </div>
   );

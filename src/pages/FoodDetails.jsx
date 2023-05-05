@@ -25,6 +25,9 @@ import {
 } from "firebase/firestore";
 import { db, auth } from "../firebase.js";
 
+// Toast
+import { showSuccessToast, showErrorToast } from "../components/Toast/Toast";
+
 const FoodDetails = () => {
   //------------------ Get Document ID of the selected food ------------------//
   const { id } = useParams();
@@ -70,6 +73,10 @@ const FoodDetails = () => {
   const dispatch = useDispatch();
   // Firebase
   const addToBag = () => {
+    if (!auth.currentUser) {
+      showErrorToast("You need to login first", 1000);
+      return;
+    }
     dispatch(
       bagActions.addItem({
         foodId: id,
@@ -100,27 +107,27 @@ const FoodDetails = () => {
             bag: arrayUnion(data1),
           })
             .then(() => {
-              alert("Item added to bag in Firestore.");
+              showSuccessToast("Item added to bag", 1000);
               navigate("/menu");
             })
             .catch((error) => {
-              alert(`Error adding item to bag in Firestore: ${error}`);
+              showErrorToast(`Item is not added to bag: ${error}`, 1000);
             });
         } else {
           setDoc(docRef, {
             bag: [data1],
           })
             .then(() => {
-              alert("Item added to bag in Firestore.");
+              showSuccessToast("Item added to bag", 1000);
               navigate("/menu");
             })
             .catch((error) => {
-              alert(`Error adding item to bag in Firestore: ${error}`);
+              showErrorToast(`Item is not added to bag: ${error}`, 1000);
             });
         }
       })
       .catch((error) => {
-        alert(`Error checking if document exists in Firestore: ${error}`);
+        showErrorToast(`The data doesn't exist: ${error}`, 1000);
       });
   };
 

@@ -7,6 +7,7 @@
 .testimonialsNext__btn {
   position: absolute;
   top: 25%;
+  transform: translateY(-25%);
   z-index: 1;
   background: transparent !important;
   color: #bcc998;

@@ -1,20 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "../../style/FeaturedProducts.css";
 import Slider from "react-slick";
-import FeaturedProductsData from "../../assets/sample-data/FoodProduct";
 import { Col } from "reactstrap";
 import ProductCard from "./ProductCard";
 
-// Connect Firebase
-import {
-  collection,
-  getDoc,
-  deleteDoc,
-  doc,
-  onSnapshot,
-} from "firebase/firestore";
-import { getStorage, ref, deleteObject } from "firebase/storage";
-import { db, storage } from "../../firebase.js";
+// Firebase
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "../../firebase.js";
 
 const FeaturedProducts = () => {
   //------------------ Retrieve Food Data ------------------//

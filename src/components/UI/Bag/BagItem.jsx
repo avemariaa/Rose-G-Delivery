@@ -23,7 +23,13 @@ const BagItem = ({ item }) => {
   }, [dispatch]);
 
   //------------------ Increment Item Function ------------------//
+  const [isUpdating, setIsUpdating] = useState(false);
   const incrementItem = async () => {
+    if (isUpdating) {
+      return;
+    }
+    setIsUpdating(true);
+
     const userBagRef = doc(db, "UserBag", auth.currentUser.uid);
     const userBagData = await getDoc(userBagRef);
 
@@ -38,11 +44,13 @@ const BagItem = ({ item }) => {
         return item;
       }
     });
-    updateDoc(userBagRef, {
+    await updateDoc(userBagRef, {
       bag: updatedBag,
     });
 
-    // responsible for the data to reflect on the webiste
+    setIsUpdating(false);
+
+    // responsible for the data to reflect on the website
     dispatch(
       bagActions.addItem({
         foodId: foodId,
@@ -56,7 +64,12 @@ const BagItem = ({ item }) => {
   };
 
   //------------------ Decrement Item Function ------------------//
-  const decreaseItem = async () => {
+  const decrementItem = async () => {
+    if (isUpdating) {
+      return;
+    }
+    setIsUpdating(true);
+
     const userBagRef = doc(db, "UserBag", auth.currentUser.uid);
     const userBagData = await getDoc(userBagRef);
 
@@ -76,23 +89,16 @@ const BagItem = ({ item }) => {
       .filter((item) => item.foodQty && item.foodQty > 0);
 
     if (updatedBag.length > 0) {
-      updateDoc(userBagRef, {
+      await updateDoc(userBagRef, {
         bag: updatedBag,
       });
     } else {
-      deleteDoc(userBagRef);
+      await deleteDoc(userBagRef);
     }
 
-    dispatch(
-      bagActions.removeItem(
-        foodId
-        // foodName,
-        // img,
-        // price,
-        // foodQty: foodQty - 1,
-        // totalPrice: updatedItem.totalPrice - price,
-      )
-    );
+    setIsUpdating(false);
+
+    dispatch(bagActions.removeItem(foodId));
   };
 
   //------------------ Delete Item Function ------------------//
@@ -108,16 +114,7 @@ const BagItem = ({ item }) => {
       bag: updatedBag,
     });
 
-    dispatch(
-      bagActions.deleteItem(
-        foodId
-        // foodName,
-        // img,
-        // price,
-        // foodQty,
-        // totalPrice,
-      )
-    );
+    dispatch(bagActions.deleteItem(foodId));
   };
 
   return (
@@ -134,7 +131,7 @@ const BagItem = ({ item }) => {
                   <i class="ri-add-circle-fill"></i>
                 </span>
                 <span className="quantity__title">{foodQty}</span>
-                <span className="decrease__btn" onClick={decreaseItem}>
+                <span className="decrease__btn" onClick={decrementItem}>
                   <i class="ri-indeterminate-circle-fill"></i>
                 </span>
               </div>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "../style/Login.css";
-import { Row } from "reactstrap";
 
 // Icons or  Images
 import registerIcon from "../assets/images/registered.png";
@@ -38,6 +37,9 @@ import {
   selectUser,
 } from "../store/UserSlice/userSlice";
 import { fetchBagItems } from "../store/MyBag/bagSlice";
+
+// Toast
+import { showSuccessToast, showInfoToast } from "../components/Toast/Toast";
 
 const Login = () => {
   const [email, setEmail] = useState(null);
@@ -88,7 +90,7 @@ const Login = () => {
       .then(() => {
         // If email is verified, the user can logged in
         if (auth.currentUser.emailVerified) {
-          alert("Logged in successfully");
+          showSuccessToast("Logged in successfully", 1000);
           navigate("/home");
           dispatch(fetchBagItems(auth.currentUser.uid));
           // Prevent user from going back to login page
@@ -99,7 +101,7 @@ const Login = () => {
         }
         // Verify email first to login
         else {
-          alert("Verify your email first");
+          alert("Verify your email first", 1000);
           setEmail("");
           setPassword("");
           setCustomErrorMsg("");
@@ -165,10 +167,10 @@ const Login = () => {
                 email: email,
                 uid: googleUid,
               });
-              alert("New user added to Firestore, you've login successfully");
+              showSuccessToast("Succesfully sign-in using google");
               navigate("/home");
             } else {
-              alert("Succesfully sign in using google");
+              showSuccessToast("Succesfully sign-in using google");
               navigate("/home");
             }
           })
@@ -185,7 +187,7 @@ const Login = () => {
   const handleOrderAsGuest = () => {
     signInAnonymously(auth)
       .then(() => {
-        alert("Signed in as guest");
+        showSuccessToast("Signed in as guest", 1000);
         navigate("/home");
       })
       .catch((error) => {

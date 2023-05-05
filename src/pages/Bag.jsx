@@ -62,7 +62,7 @@ const Bag = () => {
     }
   }, [dispatch, bagItems, bagProducts]);
 
-  console.log("Bag Items:", bagItems);
+  // console.log("Bag Items:", bagItems);
 
   return (
     <div className="bag__container">

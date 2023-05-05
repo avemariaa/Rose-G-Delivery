@@ -24,6 +24,9 @@ import {
   selectUser,
 } from "../../store/UserSlice/userSlice";
 
+// Toast
+import { showSuccessToast } from "../Toast/Toast";
+
 // Main Menu Navigation Links
 const nav__links = [
   {
@@ -131,10 +134,6 @@ const Header = () => {
     });
   }, []);
 
-  // Check if user is anonymous
-  // const isAnonymous = user?.providerData?.[0]?.providerId === "anonymous";
-  // console.log(isAnonymous);
-
   // Only show login and sign up links when user is not logged in
   const authLinks = user ? null : (
     <>
@@ -154,7 +153,7 @@ const Header = () => {
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
-        alert("Logged out successfully");
+        showSuccessToast("Logged out successfully", 1000);
         navigate("/login");
       })
       .catch((error) => alert(error));
@@ -167,11 +166,11 @@ const Header = () => {
       path: "/userProfile",
       icon: userIcon,
     },
-    {
-      display: "Settings",
-      path: "/settings",
-      icon: settingIcon,
-    },
+    // {
+    //   display: "Settings",
+    //   path: "/settings",
+    //   icon: settingIcon,
+    // },
     {
       display: "Logout",
       icon: logoutIcon,
@@ -213,74 +212,76 @@ const Header = () => {
           </div>
         </div>
 
-        {/*------------------ Bag ------------------*/}
-        <div className="nav__icons d-flex align-items-center gap-4">
-          <span className="bag__icon" onClick={toggleBag}>
-            <i class="ri-shopping-bag-2-line"></i>
-            <span className="bag__badge">{totalQuantity}</span>
-          </span>
+        {user && (
+          <div className="nav__icons d-flex align-items-center gap-4">
+            {/*------------------ Bag ------------------*/}
+            <span className="bag__icon" onClick={toggleBag}>
+              <i class="ri-shopping-bag-2-line"></i>
+              <span className="bag__badge">{totalQuantity}</span>
+            </span>
 
-          {user && (
-            <>
-              {/*------------------ User Profile Drop Down ------------------*/}
-              <div className="dropdown" ref={dropdownMenuRef}>
-                <button
-                  className="dropdown__button"
-                  onClick={toggleProfileMenu}
+            {/*------------------ User Profile Drop Down ------------------*/}
+            <div className="dropdown" ref={dropdownMenuRef}>
+              <button className="dropdown__button" onClick={toggleProfileMenu}>
+                <img className="profile__icon" src={userIcon} alt="user-icon" />
+                {/* Determine if the user log in as a guest or not  */}
+                <span>
+                  {user && user.isAnonymous
+                    ? "Guest"
+                    : userData?.firstName || "User"}
+                </span>
+                <svg
+                  className="dropdown__icon"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <img
-                    className="profile__icon"
-                    src={userIcon}
-                    alt="user-icon"
-                  />
-                  {/* Determine if the user log in as a guest or not  */}
-                  <span>
-                    {user && user.isAnonymous
-                      ? "Guest"
-                      : userData?.firstName || "User"}
-                  </span>
-                </button>
-                {open && (
-                  <div className="dropdown__menu">
-                    {userProfile__links.map((item, index) => (
-                      <>
-                        {/* item.onClick is use to not overlap the onClick function from the NavLink */}
-                        {item.onClick ? (
-                          // Log out Link
-                          <a
-                            className="dropdown__menu__item"
-                            onClick={item.onClick}
-                          >
-                            <img src={item.icon} alt={item.display} />
-                            {item.display}
-                          </a>
-                        ) : (
-                          // Profile & Settings Link
-                          <NavLink
-                            to={item.path}
-                            key={index}
-                            className="dropdown__menu__item"
-                            onClick={toggleProfileMenu}
-                          >
-                            <img src={item.icon} alt={item.display} />
-                            {item.display}
-                          </NavLink>
-                        )}
-                      </>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </>
-          )}
-          <span className="mobile__menu" onClick={() => setIsMobile(!isMobile)}>
-            {isMobile ? (
-              <i class="ri-close-line"></i>
-            ) : (
-              <i class="ri-menu-line"></i>
-            )}
-          </span>
-        </div>
+                  <path d="M7 10l5 5 5-5z" />
+                </svg>
+              </button>
+              {open && (
+                <div className="dropdown__menu">
+                  {userProfile__links.map((item, index) => (
+                    <>
+                      {/* item.onClick is use to not overlap the onClick function from the NavLink */}
+                      {item.onClick ? (
+                        // Log out Link
+                        <a
+                          className="dropdown__menu__item"
+                          onClick={item.onClick}
+                        >
+                          <img src={item.icon} alt={item.display} />
+                          {item.display}
+                        </a>
+                      ) : (
+                        // Profile & Settings Link
+                        <NavLink
+                          to={item.path}
+                          key={index}
+                          className="dropdown__menu__item"
+                          onClick={toggleProfileMenu}
+                        >
+                          <img src={item.icon} alt={item.display} />
+                          {item.display}
+                        </NavLink>
+                      )}
+                    </>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <span
+              className="mobile__menu"
+              onClick={() => setIsMobile(!isMobile)}
+            >
+              {isMobile ? (
+                <i class="ri-close-line"></i>
+              ) : (
+                <i class="ri-menu-line"></i>
+              )}
+            </span>
+          </div>
+        )}
       </div>
     </header>
   );

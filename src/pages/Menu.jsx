@@ -34,6 +34,29 @@ const Menu = () => {
     };
   }, []);
 
+  //------------------ Retrieve Product Categories Data ------------------//
+  const [productCategoriesData, setProductCategoriesData] = useState([]);
+  useEffect(() => {
+    //LISTEN (REALTIME)
+    const unsub = onSnapshot(
+      collection(db, "ProductCategories"),
+      (snapShot) => {
+        let list = [];
+        snapShot.docs.forEach((doc) => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+        setProductCategoriesData(list);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    return () => {
+      unsub();
+    };
+  }, []);
+  // console.log(productCategoriesData);
+
   // Navigation
   const location = useLocation();
   const params = new URLSearchParams(location.search);
@@ -48,54 +71,12 @@ const Menu = () => {
     if (category === "All") {
       setAllProducts(foodData);
       setLabel("All");
-    }
-
-    if (category === "Palabok") {
+    } else {
       const filteredProducts = foodData.filter(
-        (item) => item.categoryTitle === "Palabok"
+        (item) => item.categoryTitle === category
       );
       setAllProducts(filteredProducts);
-      setLabel("Palabok");
-    }
-
-    if (category === "Rice Meals") {
-      const filteredProducts = foodData.filter(
-        (item) => item.categoryTitle === "Rice Meal"
-      );
-      setAllProducts(filteredProducts);
-      setLabel("Rice Meals");
-    }
-
-    if (category === "Barbecue") {
-      const filteredProducts = foodData.filter(
-        (item) => item.categoryTitle === "Barbecue"
-      );
-      setAllProducts(filteredProducts);
-      setLabel("Barbecue");
-    }
-
-    if (category === "Drinks") {
-      const filteredProducts = foodData.filter(
-        (item) => item.categoryTitle === "Drinks"
-      );
-      setAllProducts(filteredProducts);
-      setLabel("Drinks");
-    }
-
-    if (category === "Ice Creams") {
-      const filteredProducts = foodData.filter(
-        (item) => item.categoryTitle === "Ice Cream"
-      );
-      setAllProducts(filteredProducts);
-      setLabel("Ice Creams");
-    }
-
-    if (category === "Extras") {
-      const filteredProducts = foodData.filter(
-        (item) => item.categoryTitle === "Extra"
-      );
-      setAllProducts(filteredProducts);
-      setLabel("Extras");
+      setLabel(category);
     }
   }, [category, foodData]);
 
@@ -152,59 +133,21 @@ const Menu = () => {
             </button>
           </div>
 
-          <div className="slides__item">
-            <button
-              className="category__btn"
-              onClick={() => setCategory("Palabok")}
-            >
-              Palabok
-            </button>
-          </div>
-
-          <div className="slides__item">
-            <button
-              className="category__btn"
-              onClick={() => setCategory("Rice Meals")}
-            >
-              Rice Meals
-            </button>
-          </div>
-
-          <div className="slides__item">
-            <button
-              className="category__btn"
-              onClick={() => setCategory("Barbecue")}
-            >
-              Barbecue
-            </button>
-          </div>
-
-          <div className="slides__item">
-            <button
-              className="category__btn"
-              onClick={() => setCategory("Drinks")}
-            >
-              Drinks
-            </button>
-          </div>
-
-          <div className="slides__item">
-            <button
-              className="category__btn"
-              onClick={() => setCategory("Ice Creams")}
-            >
-              Ice Cream
-            </button>
-          </div>
-
-          <div className="slides__item">
-            <button
-              className="category__btn"
-              onClick={() => setCategory("Extras")}
-            >
-              Extras
-            </button>
-          </div>
+          {productCategoriesData.map((category) => {
+            return (
+              <div className="slides__item" key={category.productCategoryId}>
+                <button
+                  // className="category__btn"
+                  className={`category__btn ${
+                    category.categoryName === categories ? "active" : ""
+                  }`}
+                  onClick={() => setCategory(category.categoryName)}
+                >
+                  {category.categoryName}
+                </button>
+              </div>
+            );
+          })}
         </Slider>
 
         {/*------------------ Display Food ------------------*/}
