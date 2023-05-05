@@ -34,35 +34,35 @@ const bagSlice = createSlice({
     addItem(state, action) {
       const newItem = action.payload;
       const existingItemIndex = state.bagItems.findIndex(
-        (item) => item.foodId === newItem.foodId
+        (item) => item.productId === newItem.productId
       );
 
       if (existingItemIndex === -1) {
         state.bagItems.push({
-          foodId: newItem.foodId,
-          foodName: newItem.foodName,
+          productId: newItem.productId,
+          productName: newItem.productName,
           img: newItem.img,
           price: newItem.price,
-          foodQty: newItem.foodQty,
+          productQty: newItem.productQty,
           totalPrice: newItem.totalPrice,
         });
         // if the item added is not existing, +1 on the bag badge
         state.totalQuantity++;
       } else {
         const existingItem = state.bagItems[existingItemIndex];
-        existingItem.foodQty++;
+        existingItem.productQty++;
         existingItem.totalPrice =
           Number(existingItem.totalPrice) + Number(newItem.price);
       }
 
       state.subTotalAmount = state.bagItems.reduce(
         (subTotal, item) =>
-          subTotal + Number(item.price) * Number(item.foodQty),
+          subTotal + Number(item.price) * Number(item.productQty),
         0
       );
 
       state.totalAmount = state.bagItems.reduce(
-        (total, item) => total + Number(item.price) * Number(item.foodQty),
+        (total, item) => total + Number(item.price) * Number(item.productQty),
         +50,
         0
       );
@@ -72,18 +72,18 @@ const bagSlice = createSlice({
     removeItem(state, action) {
       const itemToRemove = action.payload;
       const existingItem = state.bagItems.find(
-        (item) => item.foodId === itemToRemove
+        (item) => item.productId === itemToRemove
       );
 
       if (existingItem) {
         if (existingItem.foodQty === 1) {
           state.bagItems = state.bagItems.filter(
-            (item) => item.foodId !== itemToRemove
+            (item) => item.productId !== itemToRemove
           );
           // if the  existing item is remove or reaches the foodQty to 0, then -1 on the bag badge
           state.totalQuantity--;
         } else {
-          existingItem.foodQty--;
+          existingItem.productQty--;
           existingItem.totalPrice =
             Number(existingItem.totalPrice) - Number(existingItem.price);
         }
@@ -94,11 +94,11 @@ const bagSlice = createSlice({
 
       state.subTotalAmount = state.bagItems.reduce(
         (subTotal, item) =>
-          subTotal + Number(item.price) * Number(item.foodQty),
+          subTotal + Number(item.price) * Number(item.productQty),
         0
       );
       state.totalAmount = state.bagItems.reduce(
-        (total, item) => total + Number(item.price) * Number(item.foodQty),
+        (total, item) => total + Number(item.price) * Number(item.productQty),
         0
       );
     },
@@ -107,12 +107,12 @@ const bagSlice = createSlice({
     deleteItem(state, action) {
       const itemToDelete = action.payload;
       const existingItem = state.bagItems.find(
-        (item) => item.foodId === itemToDelete
+        (item) => item.productId === itemToDelete
       );
 
       if (existingItem) {
         state.bagItems = state.bagItems.filter(
-          (item) => item.foodId !== itemToDelete
+          (item) => item.productId !== itemToDelete
         );
         // if the  existing item is deleted, then -1 on the bag badge
         state.totalQuantity--;
@@ -120,12 +120,12 @@ const bagSlice = createSlice({
 
       state.subTotalAmount = state.bagItems.reduce(
         (subTotal, item) =>
-          subTotal + Number(item.price) * Number(item.foodQty),
+          subTotal + Number(item.price) * Number(item.productQty),
         0
       );
 
       state.totalAmount = state.bagItems.reduce(
-        (total, item) => total + Number(item.price) * Number(item.foodQty),
+        (total, item) => total + Number(item.price) * Number(item.productQty),
         +50,
         //initial value should be 0
         0
@@ -143,11 +143,11 @@ const bagSlice = createSlice({
       state.totalQuantity = action.payload.totalQuantity;
       state.subTotalAmount = state.bagItems.reduce(
         (subTotal, item) =>
-          subTotal + Number(item.price) * Number(item.foodQty),
+          subTotal + Number(item.price) * Number(item.productQty),
         0
       );
       state.totalAmount = state.bagItems.reduce(
-        (total, item) => total + Number(item.price) * Number(item.foodQty),
+        (total, item) => total + Number(item.price) * Number(item.productQty),
         +50,
         0
       );

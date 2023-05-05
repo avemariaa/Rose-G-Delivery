@@ -13,14 +13,7 @@ import { bagActions } from "../store/MyBag/bagSlice";
 
 // Firebase
 import { db, auth } from "../firebase";
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-  doc,
-  onSnapshot,
-} from "firebase/firestore";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
 
 const Bag = () => {
   const dispatch = useDispatch();
@@ -77,7 +70,7 @@ const Bag = () => {
           {bagItems && bagItems.length === 0 ? (
             <h6 className="text-center mt-5">No item added to the cart</h6>
           ) : (
-            bagItems.map((item) => <BagItem item={item} key={item.foodId} />)
+            bagItems.map((item) => <BagItem item={item} key={item.productId} />)
           )}
         </div>
 

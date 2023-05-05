@@ -6,7 +6,7 @@ import PrivateRoute from "./PrivateRoute";
 import Home from "../pages/Home";
 import Menu from "../pages/Menu";
 import Orders from "../pages/Orders";
-import FoodDetails from "../pages/FoodDetails";
+import ProductDetails from "../pages/ProductDetails";
 import Bag from "../pages/Bag";
 import Checkout from "../pages/Checkout";
 import Login from "../pages/Login";
@@ -24,7 +24,7 @@ const Routers = () => {
       <Route path="/home" element={<Home />} />
       <Route path="/menu" element={<Menu />} />
       <Route path="/orders" element={<Orders />} />
-      <Route path="/foodDetails/:id" element={<FoodDetails />} />
+      <Route path="/productDetails/:id" element={<ProductDetails />} />
       <Route path="/bag" element={<Bag />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/login" element={<Login />} />

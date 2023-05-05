@@ -16,7 +16,7 @@ import { getDoc, setDoc, arrayUnion, updateDoc, doc } from "firebase/firestore";
 import { showSuccessToast, showErrorToast } from "../Toast/Toast";
 
 const MenuProductCard = (props) => {
-  const { id, foodName, img, description, price } = props.item;
+  const { id, productName, img, description, price } = props.item;
 
   //------------------ Navigation ------------------//
   const navigate = useNavigate();
@@ -26,16 +26,16 @@ const MenuProductCard = (props) => {
 
   const addToBag = () => {
     if (!auth.currentUser) {
-      showErrorToast("You need to login first", 1000);
+      showErrorToast("You need to login first", 2000);
       return;
     }
     dispatch(
       bagActions.addItem({
-        foodId: id,
-        foodName: foodName,
+        productId: id,
+        productName: productName,
         img: img,
         price: price,
-        foodQty: 1,
+        productQty: 1,
       })
     );
     const totalPrice = price * 1;
@@ -43,11 +43,11 @@ const MenuProductCard = (props) => {
     // Add item to firebase
     const docRef = doc(db, "UserBag", auth.currentUser.uid);
     const data1 = {
-      foodId: id,
-      foodName: foodName,
+      productId: id,
+      productName: productName,
       img: img,
       price: price,
-      foodQty: 1,
+      productQty: 1,
       totalPrice: totalPrice,
     };
 
@@ -89,7 +89,7 @@ const MenuProductCard = (props) => {
         </div>
         <div className="menu__productContent">
           <h6>
-            <Link to={`/foodDetails/${id}`}>{foodName}</Link>
+            <Link to={`/productDetails/${id}`}>{productName}</Link>
           </h6>
 
           <p className="menu__productDesc">{description}</p>

@@ -12,7 +12,7 @@ import { bagActions } from "../../../store/MyBag/bagSlice";
 import { fetchBagItems } from "../../../store/MyBag/bagSlice";
 
 const BagItem = ({ item }) => {
-  const { foodId, foodName, price, img, foodQty, totalPrice } = item;
+  const { productId, productName, price, img, productQty, totalPrice } = item;
 
   const dispatch = useDispatch();
 
@@ -34,10 +34,10 @@ const BagItem = ({ item }) => {
     const userBagData = await getDoc(userBagRef);
 
     const updatedBag = userBagData.data().bag.map((item) => {
-      if (item.foodId === foodId) {
+      if (item.productId === productId) {
         return {
           ...item,
-          foodQty: item.foodQty + 1,
+          productQty: item.productQty + 1,
           totalPrice: Number(item.totalPrice) + Number(item.price),
         };
       } else {
@@ -53,11 +53,11 @@ const BagItem = ({ item }) => {
     // responsible for the data to reflect on the website
     dispatch(
       bagActions.addItem({
-        foodId: foodId,
-        foodName,
+        productId: productId,
+        productName,
         price,
         img,
-        foodQty: foodQty + 1,
+        productQty: productQty + 1,
         totalPrice: totalPrice + price,
       })
     );
@@ -76,17 +76,17 @@ const BagItem = ({ item }) => {
     const updatedBag = userBagData
       .data()
       .bag.map((item) => {
-        if (item.foodId === foodId) {
+        if (item.productId === productId) {
           return {
             ...item,
-            foodQty: item.foodQty - 1,
+            productQty: item.productQty - 1,
             totalPrice: Number(item.totalPrice) - Number(item.price),
           };
         } else {
           return item;
         }
       })
-      .filter((item) => item.foodQty && item.foodQty > 0);
+      .filter((item) => item.productQty && item.productQty > 0);
 
     if (updatedBag.length > 0) {
       await updateDoc(userBagRef, {
@@ -98,7 +98,7 @@ const BagItem = ({ item }) => {
 
     setIsUpdating(false);
 
-    dispatch(bagActions.removeItem(foodId));
+    dispatch(bagActions.removeItem(productId));
   };
 
   //------------------ Delete Item Function ------------------//
@@ -108,36 +108,36 @@ const BagItem = ({ item }) => {
 
     const updatedBag = userBagData
       .data()
-      .bag.filter((item) => item.foodId !== foodId);
+      .bag.filter((item) => item.productId !== productId);
 
     await updateDoc(userBagRef, {
       bag: updatedBag,
     });
 
-    dispatch(bagActions.deleteItem(foodId));
+    dispatch(bagActions.deleteItem(productId));
   };
 
   return (
     <ListGroupItem className="border-0 bag__item">
-      <div className="bag__item-info d-flex gap-2" key={item.foodId}>
+      <div className="bag__item-info d-flex gap-2" key={item.productId}>
         <img src={item.img} alt="product-img" />
 
         <div className="bag__product-info w-100 d-flex align-items-center gap-4 justify-content-between">
           <div>
-            <h6 className="bag__product-title">{item.foodName}</h6>
+            <h6 className="bag__product-title">{item.productName}</h6>
             <p className="d-flex align-items-center gap-5 ">
               <div className="d-flex align-items-center gap-3 increase__decrease-btn">
                 <span className="increase__btn" onClick={incrementItem}>
                   <i class="ri-add-circle-fill"></i>
                 </span>
-                <span className="quantity__title">{foodQty}</span>
+                <span className="quantity__title">{productQty}</span>
                 <span className="decrease__btn" onClick={decrementItem}>
                   <i class="ri-indeterminate-circle-fill"></i>
                 </span>
               </div>
 
               <span className="bag__product-price">
-                ₱ {parseFloat(price * foodQty).toFixed(2)}
+                ₱ {parseFloat(price * productQty).toFixed(2)}
               </span>
             </p>
           </div>

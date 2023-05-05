@@ -10,17 +10,17 @@ import { db } from "../../firebase.js";
 
 const FeaturedProducts = () => {
   //------------------ Retrieve Food Data ------------------//
-  const [foodData, setFoodData] = useState([]);
+  const [productData, setProductData] = useState([]);
   useEffect(() => {
     //LISTEN (REALTIME)
     const unsub = onSnapshot(
-      collection(db, "FoodData"),
+      collection(db, "ProductData"),
       (snapShot) => {
         let list = [];
         snapShot.docs.forEach((doc) => {
           list.push({ id: doc.id, ...doc.data() });
         });
-        setFoodData(list);
+        setProductData(list);
       },
       (error) => {
         console.log(error);
@@ -86,9 +86,9 @@ const FeaturedProducts = () => {
       <h4 className="ftProd__title">Featured Product</h4>
       <h6>Discover your new favorites here!</h6>
       <Slider {...settings}>
-        {foodData.map((item) => (
+        {productData.map((item) => (
           <div className="ftProduct__item">
-            <Col lg="3" key={item.foodId}>
+            <Col lg="3" key={item.productId}>
               <ProductCard item={item} />
             </Col>
           </div>

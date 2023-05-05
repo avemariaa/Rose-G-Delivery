@@ -13,17 +13,17 @@ import { db } from "../firebase.js";
 
 const Menu = () => {
   //------------------ Retrieve Food Data ------------------//
-  const [foodData, setFoodData] = useState([]);
+  const [productData, setProductData] = useState([]);
   useEffect(() => {
     //LISTEN (REALTIME)
     const unsub = onSnapshot(
-      collection(db, "FoodData"),
+      collection(db, "ProductData"),
       (snapShot) => {
         let list = [];
         snapShot.docs.forEach((doc) => {
           list.push({ id: doc.id, ...doc.data() });
         });
-        setFoodData(list);
+        setProductData(list);
       },
       (error) => {
         console.log(error);
@@ -65,20 +65,20 @@ const Menu = () => {
   //------------------ Category Buttons Function (Filter) ------------------//
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState(categories || "All");
-  const [allProducts, setAllProducts] = useState(foodData);
+  const [allProducts, setAllProducts] = useState(productData);
   const [label, setLabel] = useState("All");
   useEffect(() => {
     if (category === "All") {
-      setAllProducts(foodData);
+      setAllProducts(productData);
       setLabel("All");
     } else {
-      const filteredProducts = foodData.filter(
-        (item) => item.categoryTitle === category
+      const filteredProducts = productData.filter(
+        (item) => item.categoryName === category
       );
       setAllProducts(filteredProducts);
       setLabel(category);
     }
-  }, [category, foodData]);
+  }, [category, productData]);
 
   //------------------ Categories Slider Settings ------------------//
   const settings = {

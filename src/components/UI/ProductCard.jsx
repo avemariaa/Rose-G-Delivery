@@ -5,7 +5,7 @@ import "../../style/ProductCard.css";
 import { Link } from "react-router-dom";
 
 const ProductCard = (props) => {
-  const { id, foodName, img, price } = props.item;
+  const { id, productName, img, price } = props.item;
   return (
     <div className="product__card">
       <div className="single__product">
@@ -14,13 +14,13 @@ const ProductCard = (props) => {
         </div>
         <div className="product__content">
           <h6>
-            <Link to={`/foodDetails/${id}`}>{foodName}</Link>
+            <Link to={`/productDetails/${id}`}>{productName}</Link>
           </h6>
           <div className="productCard__footer">
             <span className="product__price">
               <span>₱{parseFloat(price).toFixed(2)}</span>
             </span>
-            <Link to={`/foodDetails/${id}`}>
+            <Link to={`/productDetails/${id}`}>
               <button className="order__btn">Order</button>
             </Link>
           </div>

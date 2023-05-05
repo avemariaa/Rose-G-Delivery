@@ -28,7 +28,7 @@ import { db, auth } from "../firebase.js";
 // Toast
 import { showSuccessToast, showErrorToast } from "../components/Toast/Toast";
 
-const FoodDetails = () => {
+const ProductDetails = () => {
   //------------------ Get Document ID of the selected food ------------------//
   const { id } = useParams();
   // console.log(id);
@@ -37,15 +37,15 @@ const FoodDetails = () => {
   const navigate = useNavigate();
 
   //------------------ Retrieve Food Data ------------------//
-  const [foodData, setFoodData] = useState();
+  const [productData, setProductData] = useState();
 
-  const getFoodData = async () => {
-    const docRef = doc(db, "FoodData", id);
+  const getProductData = async () => {
+    const docRef = doc(db, "ProductData", id);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
       // console.log("Document data: ", docSnap.data());
-      setFoodData(docSnap.data());
+      setProductData(docSnap.data());
     } else {
       // doc.data() will be undefined in this case
       console.log("No such document!");
@@ -53,7 +53,7 @@ const FoodDetails = () => {
   };
 
   useEffect(() => {
-    getFoodData();
+    getProductData();
   }, []);
 
   // Food Quantity
@@ -74,28 +74,28 @@ const FoodDetails = () => {
   // Firebase
   const addToBag = () => {
     if (!auth.currentUser) {
-      showErrorToast("You need to login first", 1000);
+      showErrorToast("You need to login first", 2000);
       return;
     }
     dispatch(
       bagActions.addItem({
-        foodId: id,
-        foodName: foodData?.foodName,
-        img: foodData?.img,
-        price: foodData?.price,
-        foodQty: quantity,
+        productId: id,
+        productName: productData?.productName,
+        img: productData?.img,
+        price: productData?.price,
+        productQty: quantity,
       })
     );
-    const totalPrice = foodData?.price * quantity;
+    const totalPrice = productData?.price * quantity;
 
     // Add item to firebase
     const docRef = doc(db, "UserBag", auth.currentUser.uid);
     const data1 = {
-      foodId: id,
-      foodName: foodData?.foodName,
-      img: foodData?.img,
-      price: foodData?.price,
-      foodQty: quantity,
+      productId: id,
+      productName: productData?.productName,
+      img: productData?.img,
+      price: productData?.price,
+      productQty: quantity,
       totalPrice: totalPrice,
     };
 
@@ -137,30 +137,30 @@ const FoodDetails = () => {
         <Row className="single__product-row mb-5">
           <Col className="container__leftCol" lg="4" md="4">
             <div className="foodProduct__image">
-              <img src={foodData?.img} alt="product-img" />
+              <img src={productData?.img} alt="product-img" />
             </div>
 
             <div className="single__product-content">
               <Row className="align-items-center justify-content-center m-0 p-0">
                 <Col>
                   <h2 className="foodProduct__title mb-3">
-                    {foodData?.foodName}
+                    {productData?.foodName}
                   </h2>
                 </Col>
                 <Col>
                   <p className="foodProduct__price">
-                    ₱ <span>{parseFloat(foodData?.price).toFixed(2)}</span>
+                    ₱ <span>{parseFloat(productData?.price).toFixed(2)}</span>
                   </p>
                 </Col>
               </Row>
 
               <p className="foodProduct__category mb-3">
-                Category: <span>{foodData?.categoryTitle}</span>
+                Category: <span>{productData?.categoryName}</span>
               </p>
 
               <div className="foodProduct_desc">
                 <p>Description:</p>
-                <span>{foodData?.description}</span>
+                <span>{productData?.description}</span>
               </div>
             </div>
 
@@ -168,7 +168,7 @@ const FoodDetails = () => {
               <Col className="totalPrice__txt">
                 <span>
                   Total Price: ₱&nbsp;
-                  {parseFloat(foodData?.price * quantity).toFixed(2)}
+                  {parseFloat(productData?.price * quantity).toFixed(2)}
                 </span>
               </Col>
               <Col>
@@ -212,4 +212,4 @@ const FoodDetails = () => {
   );
 };
 
-export default FoodDetails;
+export default ProductDetails;
