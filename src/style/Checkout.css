@@ -1,5 +1,7 @@
 /*Customer Details*/
-
+.form__group {
+  margin: 20px 0;
+}
 /*Order Summary*/
 .order__summary {
   background: #e8b0af;
@@ -10,6 +12,11 @@
 tr,
 td {
   border: none !important;
+}
+
+.orderSummary__footer {
+  text-align: center;
+  margin: 30px;
 }
 
 .place__order {

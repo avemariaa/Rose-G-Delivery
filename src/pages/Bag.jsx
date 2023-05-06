@@ -85,7 +85,7 @@ const Bag = () => {
           <h6 className="d-flex align-items-center justify-content-between mt-2">
             Total: <span>₱ {parseFloat(totalAmount).toFixed(2)}</span>
           </h6>
-          <button className="bagCheckout__btn mt-3">
+          <button className="bagCheckout__btn mt-3" onClick={toggleBag}>
             <Link to="/checkout">Proceed to Checkout</Link>
           </button>
         </div>

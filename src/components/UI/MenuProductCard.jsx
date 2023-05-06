@@ -85,7 +85,9 @@ const MenuProductCard = (props) => {
     <div className="menu__productCards">
       <div className="menu__singleProduct">
         <div className="menu__productImg">
-          <img src={img} alt="image01" />
+          <Link to={`/productDetails/${id}`}>
+            <img src={img} alt="image01" />
+          </Link>
         </div>
         <div className="menu__productContent">
           <h6>

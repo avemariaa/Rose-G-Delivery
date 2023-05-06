@@ -39,7 +39,11 @@ import {
 import { fetchBagItems } from "../store/MyBag/bagSlice";
 
 // Toast
-import { showSuccessToast, showInfoToast } from "../components/Toast/Toast";
+import {
+  showSuccessToast,
+  showInfoToast,
+  showErrorToast,
+} from "../components/Toast/Toast";
 
 const Login = () => {
   const [email, setEmail] = useState(null);
@@ -101,7 +105,7 @@ const Login = () => {
         }
         // Verify email first to login
         else {
-          alert("Verify your email first", 1000);
+          showErrorToast("Verify your email first", 1000);
           setEmail("");
           setPassword("");
           setCustomErrorMsg("");

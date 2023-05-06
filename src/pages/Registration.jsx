@@ -14,8 +14,12 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   sendEmailVerification,
+  onAuthStateChanged,
 } from "firebase/auth";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, setDoc, doc, updateDoc } from "firebase/firestore";
+
+// Toast
+import { showSuccessToast, showErrorToast } from "../components/Toast/Toast";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -107,39 +111,47 @@ const Registration = () => {
 
     try {
       createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredentials) => {
-          alert("user created");
-          if (userCredentials?.user.uid) {
-            const userRef = addDoc(collection(db, "UserData"), {
-              firstName: firstName,
-              lastName: lastName,
-              email: email,
-              password: password,
-              uid: userCredentials?.user.uid,
-            })
-              .then(() => {
-                alert("Data added to firestore");
-                signOut(auth);
-                setFirstName("");
-                setLastName("");
-                setEmail("");
-                setPassword("");
-                setConfirmPassword("");
-                navigate("/login");
-              })
-              .catch((error) => {
-                alert("firestore error", error);
-              });
-          }
+        .then(async (userCredential) => {
+          const user = userCredential.user;
 
-          // //Email Verification
-
-          sendEmailVerification(auth.currentUser).then(() => {
-            alert("Email Verification Sent!");
+          // Add user data to Firestore
+          const userDocRef = doc(db, "UserData", user.uid);
+          await setDoc(userDocRef, {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: password,
+            role: "User",
+            uid: user.uid,
           });
+
+          // Send email verification
+          await sendEmailVerification(auth.currentUser);
+          showSuccessToast("Send an email verification", 1000);
+
+          // Listen for changes in authentication state
+          onAuthStateChanged(auth, async (user) => {
+            if (user && user.emailVerified) {
+              // Update user data in Firestore
+              const userDocRef = doc(db, "UserData", user.uid);
+              await updateDoc(userDocRef, {
+                emailVerified: "Verified",
+              });
+
+              showSuccessToast("Email verified", 1000);
+            }
+          });
+
+          signOut(auth);
+          setFirstName("");
+          setLastName("");
+          setEmail("");
+          setPassword("");
+          setConfirmPassword("");
+          navigate("/login");
         })
         .catch((error) => {
-          alert("Sign up firebase error", error.message);
+          showErrorToast("Sign up firebase error", error.message);
           if (
             firstName.length === 0 &&
             lastName.length === 0 &&
@@ -171,13 +183,13 @@ const Registration = () => {
             "Firebase: Password should be at least 6 characters (auth/weak-password)."
           ) {
             setCustomErrorMsg(`Password should be at least 8 characters, 1 numeric character, 1 lowercase letter, 1
-            uppercase letter, 1 special character`);
+              uppercase letter, 1 special character`);
           } else {
             setCustomErrorMsg(error.message);
           }
         });
     } catch (error) {
-      alert("Sign up system error", error.message);
+      showErrorToast("Sign up system error", error.message);
     }
   };
 

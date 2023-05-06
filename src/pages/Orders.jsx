@@ -1,81 +1,94 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import "../style/Orders.css";
+
 import { Container, Row, Col } from "reactstrap";
 import "../style/OrderPage.css";
-import { bagActions } from "../store/MyBag/bagSlice";
+
 import { Link } from "react-router-dom";
+import moment from "moment/moment";
+
+// Firebase
+import { auth, db } from "../firebase";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
 
 const Orders = () => {
-  const bagItems = useSelector((state) => state.bag.bagItems);
-  const subTotalAmount = useSelector((state) => state.bag.subTotalAmount);
+  const [orderData, setOrderData] = useState([]);
+
+  const clearOrderData = () => {
+    setOrderData([]);
+  };
+
+  const getOrdersData = async () => {
+    if (auth.currentUser) {
+      const ordersRef = query(
+        collection(db, "UserOrders"),
+        where("orderUserId", "==", auth.currentUser.uid),
+        where("orderStatus", "in", [
+          "Pending",
+          "Confirmed",
+          "Prepared",
+          "Delivery",
+        ])
+      );
+      onSnapshot(ordersRef, (snapshot) => {
+        setOrderData(snapshot.docs.map((doc) => doc.data()));
+      });
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        getOrdersData();
+      } else {
+        clearOrderData();
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  console.log(orderData);
+
   return (
     <section>
       <Container>
         <Row>
           <Col lg="12">
-            {bagItems.length === 0 ? (
-              <h5 className="text-center">Your Bag is empty</h5>
-            ) : (
-              <table className="table table-bordered">
-                <thead>
-                  <tr>
-                    <th className="text-center">Image</th>
-                    <th className="text-center">Product Title</th>
-                    <th className="text-center">Price</th>
-                    <th className="text-center">Quantity</th>
-                    <th className="text-center">Delete</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {bagItems.map((item) => (
-                    <Tr item={item} key={item.id} />
-                  ))}
-                </tbody>
-              </table>
-            )}
-
-            <div className="mt-4">
-              <h6>
-                Subtotal:{" "}
-                <span className="order__subtotal">₱ {subTotalAmount}</span>
-              </h6>
-              <p>Shipping will calculate at checkout</p>
-              <div className="order__page-btn">
-                <button className="continue__btn me-3">
-                  <Link to="/menu">Continue Shopping</Link>
-                </button>
-                <button className="checkout__btn">
-                  <Link to="/checkout">Proceed to Checkout</Link>
-                </button>
-              </div>
+            <h5>On Going Orders</h5>
+            <div className="orderCards__container">
+              {orderData.map((order, index) => {
+                return (
+                  <Link
+                    to={`/orders/${order.orderId}`}
+                    className="orderCard"
+                    key={index}
+                  >
+                    <div className="orderCard__body">
+                      <h6>{order.orderStatus}</h6>
+                      <p>Order ID: {order.orderId}</p>
+                      <p>
+                        Order Date:&nbsp;
+                        {order.orderDate
+                          ? moment(order.orderDate.toDate()).format(
+                              "MMM D, YYYY h:mm A"
+                            )
+                          : null}
+                      </p>
+                      <p>
+                        Total: ₱{parseFloat(order.orderTotalCost).toFixed(2)}
+                      </p>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </Col>
         </Row>
       </Container>
     </section>
-  );
-};
-
-const Tr = (props) => {
-  const { id, image01, title, price, quantity } = props.item;
-
-  const dispatch = useDispatch();
-
-  const deleteItem = () => {
-    dispatch(bagActions.deleteItem(id));
-  };
-  return (
-    <tr>
-      <td className="text-center bag__img-box">
-        <img src={image01} alt="orderProduct-img" />
-      </td>
-      <td className="text-center">{title}</td>
-      <td className="text-center">{price}</td>
-      <td className="text-center">{quantity}</td>
-      <td className="text-center bag__item-del" onClick={deleteItem}>
-        <i class="ri-delete-bin-line"></i>
-      </td>
-    </tr>
   );
 };
 
