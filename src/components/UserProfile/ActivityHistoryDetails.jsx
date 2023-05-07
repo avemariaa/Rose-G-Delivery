@@ -4,10 +4,10 @@ import { Container, Row, Col } from "reactstrap";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import TitlePageBanner from "../UI/TitlePageBanner";
 // Firebase
 import { db } from "../../firebase";
 import { doc, getDoc, collection } from "firebase/firestore";
-import { Margin } from "@mui/icons-material";
 
 const ActivityHistoryDetails = () => {
   const { orderId } = useParams();
@@ -28,9 +28,7 @@ const ActivityHistoryDetails = () => {
     <section>
       <Container>
         <Row>
-          <h4 style={{ textAlign: "center", marginTop: 10, marginBottom: 50 }}>
-            Activity History Details
-          </h4>
+          <TitlePageBanner title="Activity History Details" />
           <Col lg="6" md="6">
             <div>
               <h5>Order Details</h5>
@@ -59,8 +57,19 @@ const ActivityHistoryDetails = () => {
 
           <Col lg="6" md="6">
             <div className="order__summary">
-              <h6 style={{ textAlign: "center" }}>Order Summary</h6>
-              <hr></hr>
+              <h6
+                style={{
+                  textAlign: "center",
+                  color: "var(--background-color2)",
+                }}
+              >
+                Order Summary
+              </h6>
+              <hr
+                style={{
+                  border: "2px solid var(--background-color2)",
+                }}
+              ></hr>
               {orderData?.orderData.length === 0 ? (
                 <h5 className="text-center">Your Bag is empty</h5>
               ) : (
@@ -72,7 +81,11 @@ const ActivityHistoryDetails = () => {
                   </tbody>
                 </table>
               )}
-              <hr></hr>
+              <hr
+                style={{
+                  border: "2px solid var(--background-color2)",
+                }}
+              ></hr>
               <div className="orderSummary__footer">
                 <h6>
                   Subtotal: ₱{" "}

@@ -16,32 +16,19 @@
   height: auto;
   align-items: center;
   justify-content: center;
-  background: #e8b0af;
-  color: #000000;
+  background: var(--background-color1);
+  color: var(--text-color1);
   border-radius: 5px;
   font-size: 1rem;
   font-weight: 600;
   padding: 8px;
-  border: 2px solid #000000;
+  border: 2px solid var(--background-color2);
   display: flex;
 }
 .category__btn:active,
 .category__btn:focus {
-  background-color: #bcc998;
-}
-.menu__iceCream h5,
-.menu__drinks h5 {
-  display: inline-block;
-  position: relative;
-}
-.menu__iceCream h5:after,
-.menu__drinks h5:after {
-  content: "";
-  height: 5px;
-  width: 80%;
-  background-color: #bcc998;
-  border-radius: 5px;
-  display: block;
+  background-color: var(--background-color2);
+  color: var(--text-color2);
 }
 
 .menu__Title {

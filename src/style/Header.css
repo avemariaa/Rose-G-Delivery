@@ -3,11 +3,14 @@
   height: 100px;
   line-height: 100px;
   padding: 0 40px 0 40px;
-  background: #e8b0af;
+  background: var(--background-color1);
   position: sticky;
   top: 0;
   left: 0;
   z-index: 999;
+  border-bottom: 3px solid var(--background-color2);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
 .logo {
@@ -25,7 +28,7 @@
 .logo span {
   font-weight: 600;
   font-size: 1.2rem;
-  color: #000000;
+  color: var(--text-color1);
   margin-top: -15px;
   margin-bottom: 0;
 }
@@ -33,18 +36,18 @@
 .menu {
   font-weight: 600;
   font-size: 1.1rem;
-  color: #000000;
+  color: var(--background-color2);
   transition: 0.3s;
 }
 .menu a {
   text-decoration: none;
   display: inline-block;
   position: relative;
-  color: #000000;
+  color: var(--text-color1);
   margin: 0 5px;
 }
 .menu a:hover {
-  color: #000000;
+  color: var(--background-color2);
 }
 .menu a:after {
   content: "";
@@ -54,7 +57,7 @@
   height: 2px;
   bottom: 35px;
   left: 0;
-  background-color: #bcc998;
+  background-color: var(--background-color2);
   transform-origin: bottom right;
   transition: transform 0.25s ease-out;
 }
@@ -63,7 +66,7 @@
   transform-origin: bottom left;
 }
 .active__menu {
-  color: #686d5e !important;
+  color: var(--background-color2) !important;
 }
 
 .bag__icon i {
@@ -72,12 +75,12 @@
 .bag__icon i,
 .mobile__menu i {
   font-size: 1.5rem;
-  color: #000000;
+  color: var(--text-color1);
   cursor: pointer;
   padding: 15px;
 }
 .bag__icon i:hover {
-  background: #fffafa;
+  color: var(--background-color2);
   border-radius: 20%;
 }
 .bag__icon {
@@ -87,8 +90,8 @@
   position: absolute;
   top: 30px;
   right: 3px;
-  background: #bcc998;
-  color: #000000;
+  background: var(--background-color2);
+  color: #000;
   width: 15px;
   height: 15px;
   border-radius: 50%;
@@ -126,6 +129,7 @@
 .dropdown__button span {
   font-size: 1rem;
   font-weight: 600;
+  color: var(--text-color1);
 }
 
 .dropdown__button img {
@@ -136,10 +140,9 @@
 }
 
 .dropdown__icon {
-  fill: #000;
+  fill: var(--background-color2);
   height: 2rem;
   width: 2rem;
-
   transition: transform 0.2s ease-in-out;
 }
 
@@ -151,7 +154,7 @@
   position: absolute;
   top: 80%;
   right: 0;
-  background-color: #bcc998;
+  background-color: var(--background-color2);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   /* padding: 10px 0; */
@@ -172,7 +175,7 @@
   color: #000000;
   text-decoration: none;
   transition: background-color 0.2s ease-in-out;
-  border: 1px solid #686d5e;
+  border: 1px solid var(--background-color1);
 }
 .dropdown__menu__item img {
   width: 18px;
@@ -181,9 +184,19 @@
 }
 
 .dropdown__menu__item:hover {
-  background-color: #e8b0af;
-  color: #000000;
+  background-color: var(--background-color1);
+  color: var(--text-color1);
   text-decoration: none;
+}
+
+.dropdown__menu__item:hover .icon-profile {
+  /* Change the src attribute to the URL of the hover icon */
+  content: url("../assets//images/user.png");
+}
+
+.dropdown__menu__item:hover .icon-logout {
+  /* Change the src attribute to the URL of the hover icon */
+  content: url("../assets//images/logout.png");
 }
 
 @media only screen and (max-width: 992px) {
@@ -204,7 +217,7 @@
     right: 0;
     width: 100%;
     height: 150px;
-    background: #e8b0af;
+    background: var(--background-color1);
     z-index: 100;
     line-height: 20px;
   }

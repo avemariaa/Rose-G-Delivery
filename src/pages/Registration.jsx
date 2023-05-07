@@ -230,7 +230,7 @@ const Registration = () => {
             {/*------------------ First Name Validation Msg ----------------- */}
             {checkFirstName ? (
               <label className="registration__errorMsg">
-                It should only contain alphabet
+                First name may only contain alphabet
               </label>
             ) : (
               ""
@@ -262,7 +262,7 @@ const Registration = () => {
             {/*------------------ Last Name Validation Msg ----------------- */}
             {checkLastName ? (
               <label className="registration__errorMsg">
-                It should only contain alphabet
+                Last name may only contain alphabet
               </label>
             ) : (
               ""
@@ -294,7 +294,7 @@ const Registration = () => {
             {/*------------------ Email Validation Msg ----------------- */}
             {checkValidEmail ? (
               <label className="registration__errorMsg">
-                Invalid email format
+                Please enter a valid email address. Example: sample@domain.com
               </label>
             ) : (
               ""
@@ -342,8 +342,8 @@ const Registration = () => {
             {/*------------------ Password Validation Msg ----------------- */}
             {checkValidPassword ? (
               <label className="registration__errorMsg">
-                At least 8 characters, 1 numeric character, 1 lowercase letter,
-                1 uppercase letter, 1 special character
+                Password must be at least 8 characters, 1 numeric character, 1
+                lowercase letter, 1 uppercase letter, 1 special character
               </label>
             ) : (
               ""
@@ -392,7 +392,7 @@ const Registration = () => {
 
           {/*------------------ Terms & Condition - Privacy Policy ----------------- */}
           <div className="youAgree__txt">
-            <label className="d-flex justify-content-center mt-2">
+            <label>
               By registering, you confirm that you accept our&nbsp;
               <Link to="/termsCondition">
                 <span className="termsConditionTxt">Terms & Conditions</span>
@@ -414,12 +414,14 @@ const Registration = () => {
           </button>
 
           {/*------------------ Already have an account? ----------------- */}
-          <label className="d-flex justify-content-center mt-2">
-            Already have an account?&nbsp;
-            <Link to="/login">
-              <span className="signInTxt">Sign In</span>
-            </Link>
-          </label>
+          <div className="alreadyHave__txt">
+            <label className="d-flex justify-content-center mt-2">
+              Already have an account?&nbsp;
+              <Link to="/login">
+                <span className="signInTxt">Sign In</span>
+              </Link>
+            </label>
+          </div>
         </form>
       </div>
     </div>

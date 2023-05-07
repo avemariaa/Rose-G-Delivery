@@ -7,8 +7,10 @@ import { NavLink, Link, useNavigate } from "react-router-dom";
 // Icons or Images
 import RoseGLogo from "../../assets/images/roseGLogoName.png";
 import userIcon from "../../assets/images/user.png";
+import userDarkIcon from "../../assets/images/user-dark.png";
 import settingIcon from "../../assets/images/setting.png";
 import logoutIcon from "../../assets/images/logout.png";
+import logoutDarkIcon from "../../assets/images/logout-dark.png";
 
 // Firebase
 import { auth, db } from "../../firebase";
@@ -164,7 +166,7 @@ const Header = () => {
     {
       display: "Profile",
       path: "/userProfile",
-      icon: userIcon,
+      icon: userDarkIcon,
     },
     // {
     //   display: "Settings",
@@ -173,7 +175,7 @@ const Header = () => {
     // },
     {
       display: "Logout",
-      icon: logoutIcon,
+      icon: logoutDarkIcon,
       onClick: handleSignOut,
     },
   ];
@@ -249,7 +251,11 @@ const Header = () => {
                           className="dropdown__menu__item"
                           onClick={item.onClick}
                         >
-                          <img src={item.icon} alt={item.display} />
+                          <img
+                            className="icon-logout"
+                            src={item.icon}
+                            alt={item.display}
+                          />
                           {item.display}
                         </a>
                       ) : (
@@ -257,10 +263,15 @@ const Header = () => {
                         <NavLink
                           to={item.path}
                           key={index}
+                          // className="dropdown__menu__item"
                           className="dropdown__menu__item"
                           onClick={toggleProfileMenu}
                         >
-                          <img src={item.icon} alt={item.display} />
+                          <img
+                            className="icon-profile"
+                            src={item.icon}
+                            alt={item.display}
+                          />
                           {item.display}
                         </NavLink>
                       )}

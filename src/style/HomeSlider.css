@@ -9,7 +9,7 @@
   transform: translateY(-50%);
   z-index: 1;
   background: transparent !important;
-  color: #bcc998;
+  color: var(--background-color2);
   font-size: 2.5rem;
   border: 0;
 }

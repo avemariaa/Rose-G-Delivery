@@ -14,10 +14,13 @@
 }
 .authForm__container {
   padding: 3rem !important;
-  border: 5px solid #bcc998;
+  border: 5px solid var(--background-color2);
   border-radius: 50px;
-  background-color: #e8b0af;
+  background-color: var(--background-color1);
   width: 40%;
+}
+.authForm__container h5 {
+  color: var(--background-color2);
 }
 /* Registration Form Label, Input and Error Msg */
 .input__field {
@@ -32,6 +35,7 @@
   font-weight: 600;
   width: 80%;
   margin-bottom: 0.25rem 0;
+  color: var(--text-color1);
 }
 .input__container {
   position: relative;
@@ -45,6 +49,7 @@
   border: none;
   border-radius: 10px;
   font-size: 0.9rem;
+  color: var(--text-color2);
 }
 .visibility-icon {
   position: absolute;
@@ -54,41 +59,53 @@
   cursor: pointer;
 }
 .registration__errorMsg {
-  color: red;
+  color: var(--text-color1);
   font-size: 0.8rem !important;
   margin-bottom: 10px;
+  background-color: red;
 }
 .customErrorMsg {
-  color: red;
+  color: var(--text-color1);
   font-size: 1rem;
+  font-weight: 600;
   text-align: center;
+  background-color: red;
+  margin: auto;
 }
 
 .youAgree__txt {
   font-size: 0.8rem;
-  margin: 10px 0;
+  color: var(--text-color1);
 }
 .youAgree__txt label {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
   margin-top: 2rem;
+  color: var(--text-color1);
 }
-.termsConditionTxt,
-.privacyPolicyTxt,
-.signInTxt {
+.youAgree__txt label span {
   text-decoration: underline;
-  color: #c26522;
+  color: var(--background-color2);
   cursor: pointer;
 }
 .signUp__btn {
   width: 80%;
   align-self: center;
   border: none;
-  background-color: #bcc998;
+  background-color: var(--background-color2);
   padding: 10px;
-  border-radius: 20px;
+  border-radius: 5px;
   cursor: pointer;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 500;
+}
+.alreadyHave__txt {
+  color: var(--text-color1);
+}
+.alreadyHave__txt span {
+  color: var(--background-color2);
+  text-decoration: underline;
+  cursor: pointer;
 }

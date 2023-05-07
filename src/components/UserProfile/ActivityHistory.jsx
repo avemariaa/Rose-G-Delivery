@@ -49,11 +49,21 @@ const ActivityHistory = () => {
           return (
             <Link
               to={`/activityHistoryDetails/${order.orderId}`}
-              className="orderCard"
+              className="orderCard no-underline"
               key={index}
             >
-              <div className="orderCard__body">
-                <h6>{order.orderStatus}</h6>
+              <div className="orderCard__body ">
+                <h6
+                  className={`${
+                    order.orderStatus === "Delivered"
+                      ? "delivered"
+                      : order.orderStatus === "Cancelled"
+                      ? "cancelled"
+                      : ""
+                  }`}
+                >
+                  {order.orderStatus}
+                </h6>
                 <p>Order ID: {order.orderId}</p>
                 <p>
                   Order Date:&nbsp;

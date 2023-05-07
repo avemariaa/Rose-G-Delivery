@@ -77,13 +77,24 @@ const Bag = () => {
         <div className="bag__bottom">
           <label className="d-flex align-items-center justify-content-between">
             Subtotal:
-            <span>₱ {parseFloat(subTotalAmount).toFixed(2)}</span>
+            <span>
+              ₱{" "}
+              {parseFloat(subTotalAmount)
+                .toFixed(2)
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            </span>
           </label>
           <label className="d-flex align-items-center justify-content-between">
             Delivery Fee:<span> ₱ 50.00</span>
           </label>
           <h6 className="d-flex align-items-center justify-content-between mt-2">
-            Total: <span>₱ {parseFloat(totalAmount).toFixed(2)}</span>
+            Total:{" "}
+            <span>
+              ₱{" "}
+              {parseFloat(totalAmount)
+                .toFixed(2)
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            </span>
           </h6>
           <button className="bagCheckout__btn mt-3" onClick={toggleBag}>
             <Link to="/checkout">Proceed to Checkout</Link>

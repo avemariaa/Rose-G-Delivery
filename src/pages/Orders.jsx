@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import "../style/Orders.css";
 
 import { Container, Row, Col } from "reactstrap";
-import "../style/OrderPage.css";
 
 import { Link } from "react-router-dom";
 import moment from "moment/moment";
+import TitlePageBanner from "../components/UI/TitlePageBanner";
+import OrderNowImg from "../assets/images/order-now.png";
 
 // Firebase
 import { auth, db } from "../firebase";
@@ -53,42 +54,72 @@ const Orders = () => {
   console.log(orderData);
 
   return (
-    <section>
+    <main>
       <Container>
         <Row>
           <Col lg="12">
-            <h5>On Going Orders</h5>
-            <div className="orderCards__container">
-              {orderData.map((order, index) => {
-                return (
-                  <Link
-                    to={`/orders/${order.orderId}`}
-                    className="orderCard"
-                    key={index}
-                  >
-                    <div className="orderCard__body">
-                      <h6>{order.orderStatus}</h6>
-                      <p>Order ID: {order.orderId}</p>
-                      <p>
-                        Order Date:&nbsp;
-                        {order.orderDate
-                          ? moment(order.orderDate.toDate()).format(
-                              "MMM D, YYYY h:mm A"
-                            )
-                          : null}
-                      </p>
-                      <p>
-                        Total: ₱{parseFloat(order.orderTotalCost).toFixed(2)}
-                      </p>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
+            <header>
+              <TitlePageBanner title="On-Going Orders" />
+            </header>
+            {orderData.length == 0 ? (
+              <div className="order__now">
+                <img src={OrderNowImg} alt="Order-now-img" />
+                <p>You haven't placed any orders yet.</p>
+                <p>When you do, their status will appear here.</p>
+              </div>
+            ) : (
+              <div className="orderCards__container ">
+                {orderData.map((order, index) => {
+                  return (
+                    <Col md="5">
+                      <Row>
+                        <Link
+                          sm="6"
+                          to={`/orders/${order.orderId}`}
+                          className="orderCard no-underline"
+                          key={index}
+                        >
+                          <article className="orderCard__body">
+                            <h4
+                              className={`${
+                                order.orderStatus === "Pending"
+                                  ? "pending"
+                                  : order.orderStatus === "Delivery"
+                                  ? "delivery"
+                                  : order.orderStatus === "Prepared"
+                                  ? "preparing"
+                                  : order.orderStatus === "Confirmed"
+                                  ? "confirmed"
+                                  : ""
+                              }`}
+                            >
+                              {order.orderStatus}
+                            </h4>
+                            <p>Order ID: {order.orderId}</p>
+                            <p>
+                              Order Date:&nbsp;
+                              {order.orderDate
+                                ? moment(order.orderDate.toDate()).format(
+                                    "MMM D, YYYY h:mm A"
+                                  )
+                                : null}
+                            </p>
+                            <p>
+                              Total: ₱
+                              {parseFloat(order.orderTotalCost).toFixed(2)}
+                            </p>
+                          </article>
+                        </Link>
+                      </Row>
+                    </Col>
+                  );
+                })}
+              </div>
+            )}
           </Col>
         </Row>
       </Container>
-    </section>
+    </main>
   );
 };
 

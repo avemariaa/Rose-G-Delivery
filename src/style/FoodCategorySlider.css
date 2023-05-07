@@ -9,11 +9,11 @@
   padding: 10px;
 }
 .foodCategory__item a {
-  color: #000000;
+  color: var(--text-color2);
   text-decoration: none;
 }
 .foodCategory__item a:hover {
-  color: #686d5e;
+  color: var(--background-color1);
 }
 .foodCategory__item img {
   max-width: 40%;
@@ -33,7 +33,7 @@
   transform: translateY(-50%);
   z-index: 1;
   background: transparent !important;
-  color: #bcc998;
+  color: var(--background-color2);
   font-size: 2.5rem;
   border: 0;
 }

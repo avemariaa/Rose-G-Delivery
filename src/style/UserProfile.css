@@ -5,10 +5,10 @@
   align-items: center;
   justify-content: center;
   height: 40px;
-  background: #bcc998;
+  background: var(--background-color2);
   border: none;
   padding: 4px 20px;
-  border-radius: 50px;
+  border-radius: 5px;
   color: #000;
   font-weight: 500;
 }

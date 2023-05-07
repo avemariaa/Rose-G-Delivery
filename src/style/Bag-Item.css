@@ -13,7 +13,7 @@
 .bag__product-price {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #e8b0af;
+  color: var(--background-color1);
 }
 .increase__decrease-btn {
   padding: 2px 5px;
@@ -21,7 +21,7 @@
 }
 .increase__decrease-btn i {
   background: transparent !important;
-  color: #bcc998;
+  color: var(--background-color2);
   font-size: 1.4rem;
 }
 .increase__btn,

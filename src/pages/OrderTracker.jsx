@@ -5,7 +5,14 @@ import { useParams } from "react-router-dom";
 import moment from "moment"; //date format
 
 import CheckCircle from "../assets/images/check_circle.png";
+import Circle from "../assets/images/circle.png";
 import DottedLine from "../assets/images/dotted_line.png";
+import TitlePageBanner from "../components/UI/TitlePageBanner";
+import PendingIcon from "../assets/gif/order-pending.gif";
+import PreparingIcon from "../assets/gif/preparing-food.gif";
+import DeliveryIcon from "../assets/gif/order-delivery.gif";
+import DeliveredIcon from "../assets/gif/order-delivered.gif";
+import OrderConfirmed from "../assets/gif/order-confirmed.gif";
 
 // Firebase
 import { collection, doc, getDoc } from "firebase/firestore";
@@ -16,26 +23,31 @@ const track_order_status = [
     id: 1,
     title: "Order Pending",
     sub_title: "We are processing your order",
+    image: PendingIcon,
   },
   {
     id: 2,
     title: "Order Confirmed",
     sub_title: "Your order has been validated",
+    image: OrderConfirmed,
   },
   {
     id: 3,
     title: "Order Prepared",
     sub_title: "Your order has been prepared",
+    image: PreparingIcon,
   },
   {
     id: 4,
     title: "Delivery on its way",
     sub_title: "Hang on! Your food is on the way",
+    image: DeliveryIcon,
   },
   {
     id: 5,
     title: "Delivered",
     sub_title: "Enjoy your meal!",
+    image: DeliveredIcon,
   },
 ];
 
@@ -80,95 +92,125 @@ const OrderTracker = (props) => {
   }, [orderData]);
 
   return (
-    <section>
+    <main>
       <Container>
         <Row>
+          <TitlePageBanner title="Order Tracker" />
           <Col lg="8" md="6">
-            <div>
-              <p>Order ID:&nbsp;{orderData?.orderId}</p>
-              <p>
-                Order Date:&nbsp;
-                {orderData?.orderDate
-                  ? moment(orderData?.orderDate.toDate()).format(
-                      "MMM D, YYYY h:mm A"
-                    )
-                  : null}
-              </p>
-              <p>Delivery Address: {orderData?.orderAddress}</p>
-              <p>
-                Delivery Rider:&nbsp;
-                {orderData?.deliveryRiderInfo
-                  ? orderData?.deliveryRiderInfo
-                  : null}
-              </p>
-            </div>
-
-            {track_order_status.map((item, index) => {
-              return (
-                <div key={`StatusList-${index}`}>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      marginVertical: -5,
-                      marginHorizontal: 60,
-                    }}
-                  >
-                    <img
-                      src={CheckCircle}
-                      alt="check circle"
-                      style={{
-                        width: 40,
-                        height: 40,
-                        filter:
-                          index <= currentStep ? "none" : "grayscale(100%)",
-                      }}
-                    />
-                    <div style={{ marginLeft: 10 }}>
-                      <h3 style={{ fontWeight: "bold", color: "red" }}>
-                        {item.title}
-                      </h3>
-                      <p>{item.sub_title}</p>
-                    </div>
-                  </div>
-
-                  {index < track_order_status.length - 1 && (
-                    <div style={{ marginHorizontal: 60 }}>
-                      {index < currentStep && (
-                        <div
-                          style={{
-                            height: 40,
-                            width: 3,
-                            marginLeft: 18,
-                            backgroundColor: "red",
-                            zIndex: -1,
-                          }}
-                        ></div>
-                      )}
-                      {index >= currentStep && (
-                        <img
-                          src={DottedLine}
-                          alt="dotted line"
-                          style={{
-                            width: 4,
-                            height: 40,
-                            marginLeft: 17,
-                            zIndex: -1,
-                          }}
-                        />
-                      )}
-                    </div>
-                  )}
+            <Row>
+              <div className="order__details-container">
+                <h4>Order Details</h4>
+                <div className="order__details-item">
+                  <p>Order ID:&nbsp;</p>
+                  <span>{orderData?.orderId}</span>
                 </div>
-              );
-            })}
+
+                <div className="order__details-item">
+                  <p>Order Date:&nbsp;</p>
+                  <span>
+                    {orderData?.orderDate
+                      ? moment(orderData?.orderDate.toDate()).format(
+                          "MMM D, YYYY h:mm A"
+                        )
+                      : null}
+                  </span>
+                </div>
+
+                <div className="order__details-item">
+                  <p>Delivery Address:&nbsp; </p>
+                  <span>{orderData?.orderAddress}</span>
+                </div>
+
+                <div className="order__details-item">
+                  <p>Delivery Rider:&nbsp;</p>
+                  <span>
+                    {orderData?.deliveryRiderInfo
+                      ? orderData?.deliveryRiderInfo
+                      : null}
+                  </span>
+                </div>
+              </div>
+            </Row>
+
+            <Row>
+              {/* Left Side */}
+              <Col>
+                {track_order_status.map((item, index) => {
+                  return (
+                    <div
+                      key={`StatusList-${index}`}
+                      className="status__image-container"
+                    >
+                      {/* Display image only for the current step */}
+                      {index === currentStep && item.image && (
+                        <div className="status__image-wrapper">
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            // style={{ width: "300px", height: "auto" }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </Col>
+              {/* Right Side */}
+              <Col>
+                {/* Order Status */}
+                {track_order_status.map((item, index) => {
+                  return (
+                    <div key={`StatusList-${index}`}>
+                      <div className="order__status-container">
+                        <img
+                          src={Circle}
+                          alt="check circle"
+                          className={`${
+                            index <= currentStep ? "check-circle" : ""
+                          }`}
+                        />
+
+                        <div className="order__status-text">
+                          <h5>{item.title}</h5>
+                          <p>{item.sub_title}</p>
+                        </div>
+                      </div>
+
+                      {index < track_order_status.length - 1 && (
+                        <div className="order__status-line">
+                          {index < currentStep && <div className="line"></div>}
+                          {index >= currentStep && (
+                            <img
+                              src={DottedLine}
+                              alt="dotted line"
+                              className="dotted-line"
+                            />
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </Col>
+            </Row>
           </Col>
 
+          {/* Order Summary */}
           <Col lg="4" md="6">
             <div className="order__summary">
-              <h6 style={{ textAlign: "center" }}>Order Summary</h6>
-              <hr></hr>
+              <h6
+                style={{
+                  textAlign: "center",
+                  color: "var(--background-color2)",
+                }}
+              >
+                Order Summary
+              </h6>
+              <hr
+                style={{
+                  border: "2px solid var(--background-color2)",
+                }}
+              ></hr>
               {orderData?.orderData.length === 0 ? (
                 <h5 className="text-center">Your Bag is empty</h5>
               ) : (
@@ -180,7 +222,11 @@ const OrderTracker = (props) => {
                   </tbody>
                 </table>
               )}
-              <hr></hr>
+              <hr
+                style={{
+                  border: "2px solid var(--background-color2)",
+                }}
+              ></hr>
               <div className="orderSummary__footer">
                 <h6>
                   Subtotal: ₱{" "}
@@ -209,7 +255,7 @@ const OrderTracker = (props) => {
           </Col>
         </Row>
       </Container>
-    </section>
+    </main>
   );
 };
 

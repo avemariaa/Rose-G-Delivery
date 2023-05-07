@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "../style/Checkout.css";
 import { Container, Row, Col } from "reactstrap";
-
+import CheckingDetails from "../assets/images/profile-details.svg";
+import DeliveryIcon from "../assets/images/delivery.png";
+import PurseIcon from "../assets/images/purse.png";
+import GCashIcon from "../assets/images/GCash.png";
+import TitlePageBanner from "../components/UI/TitlePageBanner";
 // Navigation
 import { useNavigate } from "react-router-dom";
 // Firebase
@@ -119,23 +123,25 @@ const Checkout = () => {
   return (
     <section>
       <Container>
+        <TitlePageBanner title="Check Out" />
         <Row>
+          {/* Left Side */}
           <Col lg="8" md="6">
             {/* Recipient Details */}
-            <div className="recipient__details">
+            {/* <div className="recipient__details">
               <h6>Recipient Details</h6>
               <form>
                 <div className="form__group">
-                  <label>Full Name</label>
+                  <label>Full Name:</label>
                   <input
                     type="text"
-                    placeholder="Full Name:"
+                    placeholder="Full Name"
                     value={`${userData?.firstName} ${userData?.lastName}`}
                   />
                 </div>
 
                 <div className="form__group">
-                  <label>Contact Number</label>
+                  <label>Contact Number:</label>
                   <input
                     type="number"
                     placeholder="Contact Number"
@@ -144,7 +150,7 @@ const Checkout = () => {
                 </div>
 
                 <div className="form__group">
-                  <label>Address: </label>
+                  <label>Address:</label>
                   <input
                     type="text"
                     placeholder="Address Details"
@@ -160,12 +166,45 @@ const Checkout = () => {
                   />
                 </div>
               </form>
+            </div> */}
+            <div className="recipient__details">
+              <div className="recipient__details-header">
+                <h6>Recipient Details</h6>
+                <button className="recipient__details-edit-btn">Edit</button>
+              </div>
+              <form>
+                <div className="form__group">
+                  <label>Full Name:</label>
+                  <span>{`${userData?.firstName} ${userData?.lastName}`}</span>
+                </div>
+
+                <div className="form__group">
+                  <label>Contact Number:</label>
+                  <span>{userData?.contactNumber}</span>
+                </div>
+
+                <div className="form__group">
+                  <label>Address:</label>
+                  <span>{userData?.address}</span>
+                </div>
+
+                <div className="form__group">
+                  <label>Note (optional):</label>
+                  <input
+                    type="textarea"
+                    placeholder="Notes to the store/rider (optional)"
+                  />
+                </div>
+              </form>
             </div>
 
             {/* Payment Methods */}
-            <div className="payment__methods mt-5">
-              <h6>Choose Payment Methods</h6>
+            <div className="payment__methods mt-5 ">
+              <h6 className=".payment__methods-header">
+                Choose Payment Method
+              </h6>
               <form>
+                {/* Cash on pickup */}
                 <div className="form__group">
                   <input
                     type="radio"
@@ -175,8 +214,17 @@ const Checkout = () => {
                     onChange={handlePaymentMethodChange}
                     checked={paymentMethod === "Cash On PickUp"}
                   />
-                  <label htmlFor="cashOnPickup">Cash On PickUp</label>
+                  <label htmlFor="cashOnPickup">
+                    <img
+                      src={PurseIcon}
+                      alt="Purse icon"
+                      className="radio__icon"
+                    />
+                    Cash On PickUp
+                  </label>
                 </div>
+
+                {/* Cash on delivery */}
                 <div className="form__group">
                   <input
                     type="radio"
@@ -186,8 +234,17 @@ const Checkout = () => {
                     onChange={handlePaymentMethodChange}
                     checked={paymentMethod === "Cash On Delivery"}
                   />
-                  <label htmlFor="cashOnDelivery">Cash On Delivery</label>
+                  <label htmlFor="cashOnDelivery">
+                    <img
+                      src={DeliveryIcon}
+                      alt="Delivery icon"
+                      className="radio__icon"
+                    />
+                    Cash On Delivery
+                  </label>
                 </div>
+
+                {/* GCash */}
                 <div className="form__group">
                   <input
                     type="radio"
@@ -197,17 +254,38 @@ const Checkout = () => {
                     onChange={handlePaymentMethodChange}
                     checked={paymentMethod === "GCash"}
                   />
-                  <label htmlFor="gcash">GCash</label>
+                  <label htmlFor="gcash">
+                    <img
+                      src={GCashIcon}
+                      alt="GCash icon"
+                      className="radio__icon"
+                    />
+                    GCash
+                  </label>
                 </div>
               </form>
-              <p>Selected payment method: {paymentMethod}</p>
+              <p className="box__text">
+                Selected payment method: <span>{paymentMethod}</span>
+              </p>
             </div>
           </Col>
 
+          {/* Right Side */}
           <Col lg="4" md="6">
             <div className="order__summary">
-              <h6 style={{ textAlign: "center" }}>Order Summary</h6>
-              <hr></hr>
+              <h6
+                style={{
+                  textAlign: "center",
+                  color: "var(--background-color2)",
+                }}
+              >
+                Order Summary
+              </h6>
+              <hr
+                style={{
+                  border: "2px solid var(--background-color2)",
+                }}
+              ></hr>
               {bagItems.length === 0 ? (
                 <h5 className="text-center">Your Bag is empty</h5>
               ) : (
@@ -219,23 +297,43 @@ const Checkout = () => {
                   </tbody>
                 </table>
               )}
-              <hr></hr>
+              <hr
+                style={{
+                  border: "2px solid var(--background-color2)",
+                }}
+              ></hr>
               <div className="orderSummary__footer">
                 <h6>
                   Subtotal: ₱{" "}
-                  <span>{parseFloat(bagSubTotalAmount).toFixed(2)}</span>
+                  <span>
+                    {parseFloat(bagSubTotalAmount)
+                      .toFixed(2)
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  </span>
                 </h6>
                 <h6>
                   Delivery Fee: <span>₱ 50.00</span>
                 </h6>
                 <h6>
-                  Total: ₱ <span>{parseFloat(bagTotalAmount).toFixed(2)}</span>
+                  Total: ₱{" "}
+                  <span>
+                    {parseFloat(bagTotalAmount)
+                      .toFixed(2)
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  </span>
                 </h6>
               </div>
 
               <button className="place__order" onClick={handlePlaceOrder}>
                 Place Order
               </button>
+            </div>
+            <div className="svg__wrapper">
+              <img
+                src={CheckingDetails}
+                alt="checking-detailsImg"
+                className="svg__image"
+              />
             </div>
           </Col>
         </Row>
@@ -251,7 +349,12 @@ const Tr = (props) => {
     <tr>
       <td className="text-center">{productQty}x</td>
       <td className="text-center">{productName}</td>
-      <td className="text-center">₱ {totalPrice}</td>
+      <td className="text-center">
+        ₱{" "}
+        {parseFloat(totalPrice)
+          .toFixed(2)
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+      </td>
     </tr>
   );
 };

@@ -3,6 +3,14 @@
 @import url("https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Istok+Web&display=swap");
 
+:root {
+  --background-color1: #751c1a;
+  /* --background-color2: #ffd700; */
+  --background-color2: #ffc500;
+  --text-color1: #fff;
+  --text-color2: #000;
+}
+
 /* reset default style */
 
 * {
@@ -16,6 +24,7 @@
 body {
   background: #f5ece7;
   font-family: "Istok Web", sans-serif;
+  /* background-color: #711917; */
 }
 
 h1,
@@ -35,12 +44,13 @@ a {
 
 h1,
 h2 {
-  font-size: 2.1rem;
+  font-size: 2rem;
   font-weight: 600;
   color: #000000;
 }
 
-section {
+section,
+main {
   padding: 30px 0px;
 }
 

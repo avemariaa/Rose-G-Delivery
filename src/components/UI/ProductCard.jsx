@@ -21,7 +21,12 @@ const ProductCard = (props) => {
           </h6>
           <div className="productCard__footer">
             <span className="product__price">
-              <span>₱{parseFloat(price).toFixed(2)}</span>
+              <span>
+                ₱
+                {parseFloat(price)
+                  .toFixed(2)
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              </span>
             </span>
             <Link to={`/productDetails/${id}`}>
               <button className="order__btn">Order</button>

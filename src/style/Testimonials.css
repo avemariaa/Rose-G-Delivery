@@ -10,7 +10,7 @@
   transform: translateY(-25%);
   z-index: 1;
   background: transparent !important;
-  color: #bcc998;
+  color: var(--background-color2);
   font-size: 2.5rem;
   border: 0;
 }
@@ -26,7 +26,7 @@
   align-items: center;
   justify-content: center;
   border: 1px solid #000000;
-  box-shadow: 10px 10px #bcc998;
+  box-shadow: 10px 10px var(--background-color1);
   border-radius: 10px;
 }
 .testimonials__img__name img {

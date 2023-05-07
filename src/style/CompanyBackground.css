@@ -3,7 +3,7 @@
   width: 75%;
 }
 .seeMore__btn {
-  background: #bcc998;
+  background: var(--background-color2);
   color: #000000;
   border-radius: 5px;
   font-size: 1rem;
@@ -15,11 +15,11 @@
 }
 .seeMore__btn a:hover,
 .seeMore__btn button:hover {
-  color: #bcc998;
+  color: var(--background-color2);
 }
 .aboutUs__desc p,
 .aboutUs__desc h2 {
-  color: #000000;
+  color: var(--text-color2);
   text-align: justify;
   text-justify: inter-word;
 }
@@ -34,7 +34,7 @@
   content: "";
   height: 10px;
   width: 90%;
-  background-color: #bcc998;
+  background-color: var(--background-color1);
   border-radius: 5px;
   display: block;
   margin: auto;

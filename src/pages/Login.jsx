@@ -3,7 +3,7 @@ import "../style/Login.css";
 
 // Icons or  Images
 import registerIcon from "../assets/images/registered.png";
-import peopleIcon from "../assets/images/user.png";
+import peopleIcon from "../assets/images/user-dark.png";
 import googleIcon from "../assets/images/googleLogo.png";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -115,14 +115,16 @@ const Login = () => {
         console.log(error);
         var errorMessage = error.message;
         if (email === "" && password === "") {
-          setCustomErrorMsg("Please enter email address and password");
+          setCustomErrorMsg("Please enter your email address and password");
         } else if (
           errorMessage ===
           "Firebase: The email address is badly formatted. (auth/invalid-email)."
         ) {
           setCustomErrorMsg("Please enter a valid email address");
         } else {
-          setCustomErrorMsg("Incorrect email or password");
+          setCustomErrorMsg(
+            "Please enter your correct email address or password"
+          );
         }
       });
   };

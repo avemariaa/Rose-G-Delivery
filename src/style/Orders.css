@@ -1,38 +1,86 @@
 .orderCards__container {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  justify-content: space-evenly;
+  align-items: center;
+  /* border: 1px solid red; */
+  margin-bottom: 30px;
+  padding: 20px;
 }
 
 .orderCard {
+  display: block;
   width: 100%;
-  max-width: 300px;
-  background-color: #f8f9fa;
+  margin: 30px 0;
+  padding: 20px;
+  background: var(--text-color1);
+  border: 1px solid var(--text-color2);
+  box-shadow: 10px 10px 2px var(--background-color1);
   border-radius: 5px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  overflow: hidden;
-  transition: all 0.2s ease-in-out;
-  text-decoration: none;
+  transition: all 0.3s ease-in-out;
 }
 
 .orderCard:hover {
+  box-shadow: 3px 6px 9px var(--background-color1);
   transform: translateY(-5px);
 }
 
 .orderCard__body {
-  padding: 20px;
+  text-align: center;
 }
 
-.orderCard h6 {
+.orderCard__body h4.pending,
+h4.delivery {
+  color: green;
+}
+
+/* .orderCard__body h2.delivery {
+  color: green;
+} */
+
+.orderCard__body h4.preparing,
+h4.confirmed {
+  color: orange;
+}
+
+.orderCard__body h6 {
+  font-size: 18px;
+  font-weight: bold;
   margin-bottom: 10px;
-  color: #007bff;
+}
+.orderCard__body h6.delivered {
+  color: green;
+}
+.orderCard__body h6.cancelled {
+  color: red;
 }
 
-.orderCard p {
-  margin: 0;
-  font-size: 14px;
+.orderCard__body p {
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: black;
 }
 
-.orderCard p:last-child {
-  margin-top: 10px;
+.orderCard__body p:last-child {
+  margin-bottom: 0;
+}
+
+.no-underline {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Empty Orders */
+.order__now {
+  text-align: center;
+  margin-top: 20px;
+}
+.order__now img {
+  width: 400px;
+  height: auto;
+}
+.order__now p {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--text-color2);
 }

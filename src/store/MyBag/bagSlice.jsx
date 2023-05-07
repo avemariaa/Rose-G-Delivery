@@ -76,7 +76,7 @@ const bagSlice = createSlice({
       );
 
       if (existingItem) {
-        if (existingItem.foodQty === 1) {
+        if (existingItem.productQty === 1) {
           state.bagItems = state.bagItems.filter(
             (item) => item.productId !== itemToRemove
           );

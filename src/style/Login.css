@@ -14,9 +14,9 @@
 }
 .authForm__container {
   padding: 3rem !important;
-  border: 5px solid #bcc998;
+  border: 5px solid var(--background-color2);
   border-radius: 50px;
-  background-color: #e8b0af;
+  background-color: var(--background-color1);
   width: 40%;
 }
 /* Email and Password Fields */
@@ -57,12 +57,12 @@
   width: 80%;
   align-self: center;
   border: none;
-  background-color: #bcc998;
+  background-color: var(--background-color2);
   padding: 10px;
-  border-radius: 20px;
+  border-radius: 5px;
   cursor: pointer;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 .createAcc__btn,
 .connectGoogle__btn,
@@ -70,10 +70,10 @@
   width: 70%;
   margin: 10px;
   align-self: center;
-  background-color: white;
+  background-color: var(--text-color1);
   border: none;
   padding: 10px;
-  border-radius: 20px;
+  border-radius: 5px;
   cursor: pointer;
   font-size: 0.9rem;
 }
@@ -84,6 +84,7 @@
 }
 .dontHave__txt {
   font-weight: 600;
+  color: var(--background-color2);
 }
 .youAgree__txt {
   font-size: 0.8rem;
@@ -99,7 +100,7 @@
 .privacyPolicyTxt,
 .forgotPassTxt {
   text-decoration: underline;
-  color: #c26522;
+  color: var(--background-color2);
   cursor: pointer;
 }
 .forgotPassTxt {
@@ -108,4 +109,5 @@
 }
 .or__txt {
   font-weight: 600;
+  color: var(--background-color2);
 }

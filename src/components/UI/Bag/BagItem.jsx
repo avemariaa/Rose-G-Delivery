@@ -137,7 +137,10 @@ const BagItem = ({ item }) => {
               </div>
 
               <span className="bag__product-price">
-                ₱ {parseFloat(price * productQty).toFixed(2)}
+                ₱{" "}
+                {parseFloat(price * productQty)
+                  .toFixed(2)
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
               </span>
             </p>
           </div>
