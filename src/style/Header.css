@@ -4,6 +4,12 @@
   line-height: 100px;
   padding: 0 40px 0 40px;
   background: var(--background-color1);
+  /* background: rgb(117, 28, 26);
+  background: linear-gradient(
+    320deg,
+    rgba(117, 28, 26, 1) 50%,
+    rgba(255, 197, 0, 1) 100%
+  ); */
   position: sticky;
   top: 0;
   left: 0;

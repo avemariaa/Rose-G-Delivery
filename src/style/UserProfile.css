@@ -1,3 +1,10 @@
+.userProfile__details label,
+.userProfile__details span {
+  color: var(--text-color1);
+}
+.userProfile__details label {
+  font-weight: 600;
+}
 .userProfile_btns button {
   display: block;
   margin: 20px 0;

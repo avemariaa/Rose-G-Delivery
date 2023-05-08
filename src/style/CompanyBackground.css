@@ -4,12 +4,13 @@
 }
 .seeMore__btn {
   background: var(--background-color2);
-  color: #000000;
+  color: var(--text-color2);
   border-radius: 5px;
   font-size: 1rem;
   font-weight: 600;
   padding: 5px;
   border: none;
+  padding: 7px 25px;
   display: flex;
   margin-bottom: 5px;
 }
@@ -19,7 +20,7 @@
 }
 .aboutUs__desc p,
 .aboutUs__desc h2 {
-  color: var(--text-color2);
+  color: var(--text-color1);
   text-align: justify;
   text-justify: inter-word;
 }
@@ -32,9 +33,9 @@
 }
 .aboutUs__desc h2:after {
   content: "";
-  height: 10px;
+  height: 5px;
   width: 90%;
-  background-color: var(--background-color1);
+  background-color: var(--background-color2);
   border-radius: 5px;
   display: block;
   margin: auto;

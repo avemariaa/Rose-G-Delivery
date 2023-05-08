@@ -1,0 +1,5 @@
+.extrasProduct__list-container h5 {
+  font-size: 1.5rem;
+  color: var(--background-color2);
+  text-shadow: 2px 2px 2px var(--background-color1);
+}

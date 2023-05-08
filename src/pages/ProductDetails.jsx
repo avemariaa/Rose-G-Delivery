@@ -128,68 +128,82 @@ const ProductDetails = () => {
     <main>
       <Container>
         <Row className="single__product-row mb-5">
-          <Col className="container__leftCol" lg="4" md="4">
-            <div className="foodProduct__image">
-              <img src={productData?.img} alt="product-img" />
-            </div>
+          <Col className="container__leftCol" lg="12" md="4">
+            <Row>
+              <Col>
+                <div className="foodProduct__image">
+                  <img src={productData?.img} alt="product-img" />
+                </div>
+              </Col>
 
-            <div className="single__product-content">
-              <h2 className="foodProduct__title mb-3">
-                {productData?.productName}
-              </h2>
-              <p className="foodProduct__category mb-3 ">
-                <strong>Category:</strong>{" "}
-                <span>{productData?.categoryName}</span>
-              </p>
-              <div className="foodProduct_desc">
-                <h4 className="mb-3">Description:</h4>
-                <p>{productData?.description}</p>
-              </div>
+              <Col className="d-flex align-items-center justify-content-center">
+                <div className="single__product-content">
+                  <h2 className="foodProduct__title mb-3">
+                    {productData?.productName}
+                  </h2>
+                  <p className="foodProduct__category mb-3 ">
+                    <strong>Category:</strong>{" "}
+                    <span>{productData?.categoryName}</span>
+                  </p>
+                  <div className="foodProduct_desc">
+                    <h4
+                      className="mb-3"
+                      style={{ color: "var(--text-color1)" }}
+                    >
+                      Description:
+                    </h4>
+                    <p>{productData?.description}</p>
+                  </div>
 
-              <div className="mt-4">
-                <Row className="align-items-center">
-                  <Col xs="auto">
-                    {/* <p className="foodProduct__price mb-0">
+                  <div className="mt-4">
+                    <Row className="align-items-center">
+                      <Col xs="auto">
+                        {/* <p className="foodProduct__price mb-0">
                       <strong>Price:</strong> ₱
                       {parseFloat(productData?.price).toFixed(2)}
                     </p> */}
-                    <p className="foodProduct__price mb-0">
-                      <strong>Price:</strong>&nbsp; ₱
-                      {parseFloat(productData?.price * quantity)
-                        .toFixed(2)
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                    </p>
-                  </Col>
-                  <Col xs="auto">
-                    <div className="foodProduct__qty">
-                      <button
-                        className="quantity__btn"
-                        onClick={handleDecrease}
-                      >
-                        <RemoveCircleOutlineOutlinedIcon />
-                      </button>
-                      <span className="quantity__label">{quantity}</span>
-                      <button
-                        className="quantity__btn"
-                        onClick={handleIncrease}
-                      >
-                        <AddCircleOutlineOutlinedIcon />
-                      </button>
-                    </div>
-                  </Col>
-                </Row>
-              </div>
+                        <p className="foodProduct__price mb-0">
+                          <strong>Price:</strong>&nbsp; ₱
+                          {parseFloat(productData?.price * quantity)
+                            .toFixed(2)
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        </p>
+                      </Col>
+                      <Col xs="auto">
+                        <div className="foodProduct__qty">
+                          <button
+                            className="quantity__btn"
+                            onClick={handleDecrease}
+                          >
+                            <RemoveCircleOutlineOutlinedIcon />
+                          </button>
+                          <span className="quantity__label">{quantity}</span>
+                          <button
+                            className="quantity__btn"
+                            onClick={handleIncrease}
+                          >
+                            <AddCircleOutlineOutlinedIcon />
+                          </button>
+                        </div>
+                      </Col>
+                    </Row>
+                  </div>
 
-              <button className="foodProduct__addBtn mt-4" onClick={addToBag}>
-                Add to Bag
-              </button>
-            </div>
+                  <button
+                    className="foodProduct__addBtn mt-4"
+                    onClick={addToBag}
+                  >
+                    Add to Bag
+                  </button>
+                </div>
+              </Col>
+            </Row>
           </Col>
 
           {/* Customize Order */}
 
-          <Col className="container__rightCol" lg="6" md="6">
-            <div className="customize__order mb-4">Customize your order:</div>
+          <Col className="container__rightCol" lg="12" md="6">
+            {/* <div className="customize__order mb-4">Customize your order:</div>
             <form>
               <div className="mb-3 row">
                 <div className="col">
@@ -252,8 +266,8 @@ const ProductDetails = () => {
                   />
                 </div>
               </div>
-            </form>
-            <ExtrasProductList categoryName="Extras" />
+            </form> */}
+            <ExtrasProductList categoryName="Extras" title="Add-ons items" />
           </Col>
         </Row>
       </Container>

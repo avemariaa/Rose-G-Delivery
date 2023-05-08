@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
-import logo from "../../assets/images/roseGLogoFooter.png";
+// import logo1 from "../../assets/logo/footerLogo1.png";
+import logo2 from "../../assets/logo/footerLogo2.png";
 import "../../style/Footer.css";
 import { Link } from "react-router-dom";
 
@@ -11,11 +12,7 @@ const Footer = () => {
         <Row>
           <Col lg="3" md="4" sm="6">
             <div className="footer__logo text-start">
-              <img src={logo} alt="logo" />
-              {/* <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quasi,
-                explicabo.
-              </p> */}
+              <img src={logo2} alt="logo" />
             </div>
           </Col>
           <Col lg="3" md="4" sm="6">
@@ -52,12 +49,12 @@ const Footer = () => {
             <ListGroup className="delivery__time-list">
               <ListGroupItem className="delivery__time-item border-0 ps-0">
                 <span>Monday - Friday</span>
-                <p>8:00am - 5:00pm</p>
+                <p>8:00am - 7:00pm</p>
               </ListGroupItem>
 
               <ListGroupItem className="delivery__time-item border-0 ps-0">
                 <span>Saturday - Sunday</span>
-                <p>Off Day</p>
+                <p>8:00am - 8:00pm</p>
               </ListGroupItem>
             </ListGroup>
           </Col>

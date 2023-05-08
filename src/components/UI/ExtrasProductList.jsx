@@ -9,7 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { db } from "../../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 
-const ExtrasProductList = ({ categoryName }) => {
+const ExtrasProductList = ({ categoryName, title }) => {
   const [extraProducts, setExtraProducts] = useState([]);
 
   useEffect(() => {
@@ -36,8 +36,8 @@ const ExtrasProductList = ({ categoryName }) => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 3,
+    slidesToShow: 4,
+    slidesToScroll: 4,
     responsive: [
       {
         breakpoint: 768,
@@ -57,8 +57,8 @@ const ExtrasProductList = ({ categoryName }) => {
   };
 
   return (
-    <div>
-      <h5>{categoryName}</h5>
+    <div className="extrasProduct__list-container mt-5">
+      <h5>{title}</h5>
       <Slider {...sliderSettings}>
         {extraProducts.map((product) => (
           <div key={product.id}>

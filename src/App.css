@@ -5,7 +5,6 @@
 
 :root {
   --background-color1: #751c1a;
-  /* --background-color2: #ffd700; */
   --background-color2: #ffc500;
   --text-color1: #fff;
   --text-color2: #000;
@@ -22,9 +21,23 @@
 /* base style */
 
 body {
-  background: #f5ece7;
+  /* background: #f5ece7; */
+  background-image: url("assets/images/palabok-bg.jpg");
   font-family: "Istok Web", sans-serif;
-  /* background-color: #711917; */
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  position: relative; /* make sure the parent is positioned */
+}
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4); /* set the overlay color and opacity */
+  z-index: -1;
 }
 
 h1,

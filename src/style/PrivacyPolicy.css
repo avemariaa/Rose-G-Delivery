@@ -1,8 +1,15 @@
-.privacyPolicy__content {
+.privacyPolicy__container {
   margin: auto;
   padding: 50px;
   text-align: justify;
+  color: var(--text-color1);
 }
 h2 {
   text-align: center;
+  color: var(--background-color2);
+}
+.privacyPolicy__content {
+  background: rgba(178, 178, 178, 0.5);
+  padding: 20px;
+  border-radius: 20px;
 }

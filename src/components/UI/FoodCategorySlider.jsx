@@ -80,7 +80,7 @@ const FoodCategorySlider = () => {
     ],
   };
   return (
-    <div>
+    <div className="foodCategory__container">
       <h4>Menu</h4>
       <h6>What are you craving for today?</h6>
       <Slider {...settings}>

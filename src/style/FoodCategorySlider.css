@@ -1,3 +1,9 @@
+.foodCategory__container h4 {
+  color: var(--background-color2);
+}
+.foodCategory__container h6 {
+  color: var(--text-color1);
+}
 .foodCategory__slides {
   position: relative;
   width: 100%;
@@ -9,11 +15,11 @@
   padding: 10px;
 }
 .foodCategory__item a {
-  color: var(--text-color2);
+  color: var(--text-color1);
   text-decoration: none;
 }
 .foodCategory__item a:hover {
-  color: var(--background-color1);
+  color: var(--background-color2);
 }
 .foodCategory__item img {
   max-width: 40%;

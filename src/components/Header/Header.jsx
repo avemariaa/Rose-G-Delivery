@@ -5,7 +5,8 @@ import "../../style/Header.css";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 
 // Icons or Images
-import RoseGLogo from "../../assets/images/roseGLogoName.png";
+// import RoseGLogo5 from "../../assets/logo/logo5.png";
+import RoseGLogo6 from "../../assets/logo/logo6.png";
 import userIcon from "../../assets/images/user.png";
 import userDarkIcon from "../../assets/images/user-dark.png";
 import settingIcon from "../../assets/images/setting.png";
@@ -186,8 +187,7 @@ const Header = () => {
         <div className="nav__left d-flex align-items-center me-auto">
           <div className="logo">
             <Link to="/home">
-              <img src={RoseGLogo} alt="rose-g-logo" />
-              {/* <span>Rose G</span> */}
+              <img src={RoseGLogo6} alt="rose-g-logo" />
             </Link>
           </div>
         </div>

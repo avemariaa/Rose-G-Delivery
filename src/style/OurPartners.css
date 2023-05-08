@@ -1,6 +1,7 @@
 /*Our Partner Section*/
 .ourPartners__title {
   text-align: center;
+  color: var(--background-color2);
 }
 .ourPartners__logo {
   text-align: center;

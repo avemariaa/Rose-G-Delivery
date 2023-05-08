@@ -1,13 +1,42 @@
 /*By Category Products*/
+
+.slider__header-title h5 {
+  color: var(--background-color2);
+}
+.slider__header-title p {
+  color: var(--text-color1);
+}
+.slider__header-title p span {
+  color: var(--background-color2);
+  font-size: 1.1rem;
+}
 .categoriesBtn__slides {
   justify-content: center;
   align-items: center;
   width: 100%;
   margin-bottom: 10px;
+  position: relative; /* add this to make the position of the arrows relative to the slider container */
+  padding: 0 50px; /* add some padding to the left and right of the slider container */
 }
-/* .slides__item {
-  width: 100px;
-} */
+.categoryPrev__btn,
+.categoryNext__btn {
+  position: absolute;
+  align-items: center;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  background: transparent !important;
+  color: var(--background-color2);
+  font-size: 1.5rem;
+  border: 0;
+}
+.categoryPrev__btn {
+  left: 1%;
+}
+.categoryNext__btn {
+  right: 2%;
+}
+
 .category__title {
   justify-content: center;
 }

@@ -53,7 +53,7 @@ const Testimonials = () => {
     ],
   };
   return (
-    <div>
+    <div className="testimonials__container">
       <h4>Testimonials</h4>
       <Slider {...settings}>
         <Col className="p-3">

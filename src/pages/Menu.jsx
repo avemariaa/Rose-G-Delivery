@@ -3,6 +3,7 @@ import MenuProductCard from "../components/UI/MenuProductCard";
 import { Container, Row, Col } from "reactstrap";
 import "../style/Menu.css";
 import { useLocation } from "react-router-dom";
+import TitlePageBanner from "../components/UI/TitlePageBanner";
 
 // React Slick
 import Slider from "react-slick";
@@ -81,12 +82,28 @@ const Menu = () => {
   }, [category, productData]);
 
   //------------------ Categories Slider Settings ------------------//
+  const ArrowLeft = (props) => (
+    <button
+      {...props}
+      className={"categoryPrev__btn ri-arrow-left-circle-fill"}
+    />
+  );
+  const ArrowRight = (props) => (
+    <button
+      {...props}
+      className={"categoryNext__btn ri-arrow-right-circle-fill"}
+    />
+  );
+
   const settings = {
     className: "categoriesBtn__slides",
     speed: 500,
     infinite: false,
     slidesToShow: 5,
-    slidesToScroll: 1,
+    slidesToScroll: 5,
+    arrows: true,
+    prevArrow: <ArrowLeft />,
+    nextArrow: <ArrowRight />,
     responsive: [
       {
         breakpoint: 1024,
@@ -119,8 +136,12 @@ const Menu = () => {
       <Container>
         {/*------------------ Category Buttons ------------------*/}
         <Row>
-          <h6 className="slider__title mt-5">Menu Categories</h6>
-          <p className="slider__subtitle">You selected category "{label}"</p>
+          <div className="slider__header-title mt-5">
+            <h5>Menu Categories</h5>
+            <p>
+              You selected category <span>"{label}"</span>
+            </p>
+          </div>
         </Row>
 
         <Slider {...settings}>

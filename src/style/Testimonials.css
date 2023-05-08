@@ -1,3 +1,6 @@
+.testimonials__container h4 {
+  color: var(--background-color2);
+}
 .testimonials__slides {
   width: calc(100% + 30px);
   height: 100%;
@@ -28,6 +31,7 @@
   border: 1px solid #000000;
   box-shadow: 10px 10px var(--background-color1);
   border-radius: 10px;
+  background: var(--text-color1);
 }
 .testimonials__img__name img {
   width: 15%;
@@ -37,7 +41,7 @@
 }
 .testimonials__img__name span {
   font-weight: 600;
-  color: #686d5e;
+  color: var(--background-color1);
 }
 .testimonials__desc {
   margin-top: 10px;

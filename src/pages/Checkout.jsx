@@ -86,6 +86,23 @@ const Checkout = () => {
     setPaymentMethod(e.target.value);
   };
 
+  // Handle Changes
+  const [isEditing, setIsEditing] = useState(false);
+  const [newFirstName, setNewFirstName] = useState("");
+  const [newLastName, setNewLastName] = useState("");
+  const [newContactNumber, setNewContactNumber] = useState("");
+  const [newAddress, setNewAddress] = useState("");
+
+  const handleEdit = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsEditing(false);
+    // You can update the user's data using an API call or any other method here
+  };
+
   // Place order button function
   const handlePlaceOrder = async () => {
     const docRef = doc(
@@ -128,74 +145,85 @@ const Checkout = () => {
           {/* Left Side */}
           <Col lg="8" md="6">
             {/* Recipient Details */}
-            {/* <div className="recipient__details">
-              <h6>Recipient Details</h6>
-              <form>
-                <div className="form__group">
-                  <label>Full Name:</label>
-                  <input
-                    type="text"
-                    placeholder="Full Name"
-                    value={`${userData?.firstName} ${userData?.lastName}`}
-                  />
-                </div>
 
-                <div className="form__group">
-                  <label>Contact Number:</label>
-                  <input
-                    type="number"
-                    placeholder="Contact Number"
-                    value={userData?.contactNumber}
-                  />
-                </div>
+            <div
+              className={`recipient__details ${isEditing ? "is-flipped" : ""}`}
+            >
+              <div className="recipient__details-front">
+                <div className="recipient__details-header">
+                  <h6>Recipient Details</h6>
 
-                <div className="form__group">
-                  <label>Address:</label>
-                  <input
-                    type="text"
-                    placeholder="Address Details"
-                    value={userData?.address}
-                  />
+                  <button
+                    className="recipient__details-edit-btn"
+                    onClick={handleEdit}
+                  >
+                    {isEditing ? "Cancel" : "Edit"}
+                  </button>
                 </div>
+                <form>
+                  <div className="form__group">
+                    <label>Full Name:</label>
+                    <span>{`${userData?.firstName} ${userData?.lastName}`}</span>
+                  </div>
 
-                <div className="form__group">
-                  <label>Note (optional):</label>
-                  <input
-                    type="text"
-                    placeholder="Notes to the store/rider (optional)"
-                  />
-                </div>
-              </form>
-            </div> */}
-            <div className="recipient__details">
-              <div className="recipient__details-header">
-                <h6>Recipient Details</h6>
-                <button className="recipient__details-edit-btn">Edit</button>
+                  <div className="form__group">
+                    <label>Contact Number:</label>
+                    <span>{userData?.contactNumber}</span>
+                  </div>
+
+                  <div className="form__group">
+                    <label>Address:</label>
+                    <span>{userData?.address}</span>
+                  </div>
+                </form>
               </div>
-              <form>
-                <div className="form__group">
-                  <label>Full Name:</label>
-                  <span>{`${userData?.firstName} ${userData?.lastName}`}</span>
+              <div className="recipient__details-back">
+                <div className="recipient__details-header">
+                  <h6>Recipient Details</h6>
+                  <button
+                    className="recipient__details-edit-btn"
+                    onClick={handleEdit}
+                  >
+                    {isEditing ? "Cancel" : "Edit"}
+                  </button>
                 </div>
+                <form onSubmit={handleSubmit}>
+                  <div className="form__group">
+                    <label>Full Name:</label>
+                    <div>
+                      <input
+                        type="text"
+                        value={userData?.firstName}
+                        onChange={(e) => setNewFirstName(e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        value={userData?.lastName}
+                        onChange={(e) => setNewLastName(e.target.value)}
+                      />
+                    </div>
+                  </div>
 
-                <div className="form__group">
-                  <label>Contact Number:</label>
-                  <span>{userData?.contactNumber}</span>
-                </div>
+                  <div className="form__group">
+                    <label>Contact Number:</label>
+                    <input
+                      type="text"
+                      value={userData?.contactNumber}
+                      onChange={(e) => setNewContactNumber(e.target.value)}
+                    />
+                  </div>
 
-                <div className="form__group">
-                  <label>Address:</label>
-                  <span>{userData?.address}</span>
-                </div>
-
-                <div className="form__group">
-                  <label>Note (optional):</label>
-                  <input
-                    type="textarea"
-                    placeholder="Notes to the store/rider (optional)"
-                  />
-                </div>
-              </form>
+                  <div className="form__group">
+                    <label>Address:</label>
+                    <input
+                      type="text"
+                      value={userData?.address}
+                      onChange={(e) => setNewAddress(e.target.value)}
+                    />
+                  </div>
+                  <button type="submit">Save</button>
+                </form>
+              </div>
             </div>
 
             {/* Payment Methods */}
@@ -267,6 +295,11 @@ const Checkout = () => {
               <p className="box__text">
                 Selected payment method: <span>{paymentMethod}</span>
               </p>
+
+              <div className="form__group">
+                <label>Note (optional):</label>
+                <textarea placeholder="Notes to the store/rider (optional)" />
+              </div>
             </div>
           </Col>
 
@@ -287,7 +320,12 @@ const Checkout = () => {
                 }}
               ></hr>
               {bagItems.length === 0 ? (
-                <h5 className="text-center">Your Bag is empty</h5>
+                <h5
+                  className="text-center"
+                  style={{ color: "var(--background-color2)" }}
+                >
+                  Your Bag is empty
+                </h5>
               ) : (
                 <table className="table">
                   <tbody>

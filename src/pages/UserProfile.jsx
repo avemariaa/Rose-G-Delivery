@@ -5,6 +5,7 @@ import { Container, Row, Col } from "reactstrap";
 import EditProfileDetails from "../components/UserProfile/EditProfileDetails";
 import ActivityHistory from "../components/UserProfile/ActivityHistory";
 import ChangePassword from "../components/UserProfile/ChangePassword";
+import TitlePageBanner from "../components/UI/TitlePageBanner";
 
 // Navigation
 import { useNavigate } from "react-router-dom";
@@ -80,26 +81,27 @@ const UserProfile = () => {
   return (
     <section>
       <Container>
+        <TitlePageBanner title="Profile" />
         <Row>
           <Col lg="6" md="6" style={{ border: "1px solid red" }}>
-            <div>
+            <div className="userProfile__details">
               <h5>User Profile</h5>
-              <p>
-                Full Name:&nbsp;
-                {`${userData?.firstName} ${userData?.lastName}`}
-              </p>
-              <p>
-                Email:&nbsp;
-                {userData?.email}
-              </p>
-              <p>
-                Contact Number:&nbsp;
-                {userData?.contactNumber}
-              </p>
-              <p>
-                Address:&nbsp;
-                {userData?.address}
-              </p>
+              <div className="userProfile__name">
+                <label>Full Name:&nbsp;</label>
+                <span>{`${userData?.firstName} ${userData?.lastName}`}</span>
+              </div>
+              <div className="userProfile__email">
+                <label>Email:&nbsp;</label>
+                <span>{userData?.email}</span>
+              </div>
+              <div className="userProfile__contactNumber">
+                <label>Contact Number:&nbsp;</label>
+                <span>{userData?.contactNumber}</span>
+              </div>
+              <div className="userProfile__address">
+                <label>Address:&nbsp;</label>
+                <span>{userData?.address}</span>
+              </div>
             </div>
             <div className="userProfile_btns">
               <button onClick={() => handleSectionClick("editProfile")}>

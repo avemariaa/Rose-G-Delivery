@@ -82,8 +82,8 @@ const FeaturedProducts = () => {
   };
 
   return (
-    <div>
-      <h4 className="ftProd__title">Featured Product</h4>
+    <div className="ftProd__container">
+      <h4>Featured Product</h4>
       <h6>Discover your new favorites here!</h6>
       <Slider {...settings}>
         {productData.map((item) => (

@@ -24,6 +24,9 @@
 .order__details-item span {
   display: inline-block;
 }
+.order__details-item p {
+  font-weight: 500;
+}
 
 /* Order Status */
 /* Left Side */
@@ -53,6 +56,11 @@
 .order__status-container img {
   width: 40px;
   height: 40px;
+  /* box-shadow: 2px 2px 2px var(--background-color2); */
+  border: 3px solid var(--background-color2);
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
 }
 
 .order__status-container img.check-circle {
@@ -62,11 +70,13 @@
 
 .order__status-text {
   margin-left: 10px;
+  color: var(--text-color1);
 }
 
 .order__status-text h5 {
   font-weight: bold;
-  color: var(--background-color1);
+  color: var(--background-color2);
+  text-shadow: 2px 2px 2px var(--background-color1);
 }
 
 .order__status-line {

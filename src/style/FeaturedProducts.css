@@ -24,3 +24,9 @@
 .ftProdNext__btn {
   right: 2%;
 }
+.ftProd__container h4 {
+  color: var(--background-color2);
+}
+.ftProd__container h6 {
+  color: var(--text-color1);
+}

@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import moment from "moment"; //date format
 
 import CheckCircle from "../assets/images/check_circle.png";
-import Circle from "../assets/images/circle.png";
+import Circle from "../assets/images/circle-gray.png";
 import DottedLine from "../assets/images/dotted_line.png";
 import TitlePageBanner from "../components/UI/TitlePageBanner";
 import PendingIcon from "../assets/gif/order-pending.gif";
