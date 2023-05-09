@@ -1,0 +1,94 @@
+.actHistory__container h5 {
+  color: var(--background-color2);
+  text-align: center;
+}
+
+.actHistoryCards__container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 20px;
+}
+
+/* No history */
+.no__history {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.no__history img {
+  width: 60%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.no__history p {
+  font-size: 1.2rem;
+  color: var(--background-color2);
+  margin: 0;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.actHistoryCards {
+  display: block;
+  width: 100%;
+  margin: 30px 0;
+  padding: 20px;
+  background: var(--text-color1);
+  border: 1px solid var(--text-color2);
+  box-shadow: 5px 5px 2px var(--background-color2);
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+.actHistoryCards:hover {
+  box-shadow: 3px 6px 9px var(--background-color2);
+  transform: translateY(-5px);
+}
+
+.actHistoryCard__body {
+  text-align: center;
+}
+
+.actHistoryCard__body h4.pending,
+h4.delivery {
+  color: green;
+}
+
+.actHistoryCard__body h4.preparing,
+h4.confirmed {
+  color: orange;
+}
+
+.actHistoryCard__body h6 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.actHistoryCard__body h6.delivered {
+  color: green;
+}
+.actHistoryCard__body h6.cancelled {
+  color: red;
+}
+
+.actHistoryCard__body p {
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: black;
+}
+
+.actHistoryCard__body p:last-child {
+  margin-bottom: 0;
+}
+
+.no-underline {
+  text-decoration: none;
+  color: inherit;
+}

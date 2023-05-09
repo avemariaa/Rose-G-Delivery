@@ -47,7 +47,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     getProductData();
-  }, []);
+  }, [id]);
 
   // Food Quantity
   const [quantity, setQuantity] = useState(1);
@@ -200,73 +200,7 @@ const ProductDetails = () => {
             </Row>
           </Col>
 
-          {/* Customize Order */}
-
           <Col className="container__rightCol" lg="12" md="6">
-            {/* <div className="customize__order mb-4">Customize your order:</div>
-            <form>
-              <div className="mb-3 row">
-                <div className="col">
-                  <label htmlFor="option1" className="form-label">
-                    Customization Option 1
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="option1"
-                    placeholder="Option 1"
-                  />
-                </div>
-                <div className="col">
-                  <label htmlFor="option2" className="form-label">
-                    Customization Option 2
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="option2"
-                    placeholder="Option 2"
-                  />
-                </div>
-              </div>
-              <div className="mb-3 row">
-                <div className="col">
-                  <label htmlFor="option3" className="form-label">
-                    Customization Option 3
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="option3"
-                    placeholder="Option 3"
-                  />
-                </div>
-                <div className="col">
-                  <label htmlFor="option4" className="form-label">
-                    Customization Option 4
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="option4"
-                    placeholder="Option 4"
-                  />
-                </div>
-              </div>
-              <div className="mb-3 row">
-                <div className="col">
-                  <label htmlFor="option5" className="form-label">
-                    Customization Option 5
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="option5"
-                    placeholder="Option 5"
-                  />
-                </div>
-              </div>
-            </form> */}
             <ExtrasProductList categoryName="Extras" title="Add-ons items" />
           </Col>
         </Row>

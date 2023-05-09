@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { bagActions } from "../../store/MyBag/bagSlice";
 
-// Connect Firebase
+// Firebase
 import { db, auth } from "../../firebase";
 import { getDoc, setDoc, arrayUnion, updateDoc, doc } from "firebase/firestore";
 
@@ -27,61 +27,6 @@ const MenuProductCard = (props) => {
 
   //------------------ Add to Bag Function ------------------//
   const dispatch = useDispatch();
-
-  // const addToBag = () => {
-  //   if (!auth.currentUser) {
-  //     showErrorToast("You need to login first", 2000);
-  //     return;
-  //   }
-
-  //   const newItem = {
-  //     productId: id,
-  //     productName: productName,
-  //     img: img,
-  //     price: price,
-  //     productQty: 1,
-  //   };
-
-  //   // Check if item already exists in bag
-  //   const docRef = doc(db, "UserBag", auth.currentUser.uid);
-  //   getDoc(docRef)
-  //     .then((doc) => {
-  //       if (doc.exists()) {
-  //         const bagItems = doc.data().bag;
-  //         const itemExists = bagItems.some(
-  //           (item) => item.productId === newItem.productId
-  //         );
-
-  //         if (itemExists) {
-  //           showInfoToast("The item is already in the bag");
-  //           return;
-  //         }
-  //       }
-
-  //       dispatch(bagActions.addItem(newItem));
-  //       const totalPrice = price * 1;
-
-  //       // Add item to firebase
-  //       const data1 = {
-  //         ...newItem,
-  //         totalPrice: totalPrice,
-  //       };
-
-  //       // Update document
-  //       updateDoc(docRef, {
-  //         bag: arrayUnion(data1),
-  //       })
-  //         .then(() => {
-  //           showSuccessToast("Item added to bag", 1000);
-  //         })
-  //         .catch((error) => {
-  //           showErrorToast(`Item is not added to bag: ${error}`, 1000);
-  //         });
-  //     })
-  //     .catch((error) => {
-  //       showErrorToast(`The data doesn't exist: ${error}`, 1000);
-  //     });
-  // };
 
   const addToBag = () => {
     if (!auth.currentUser) {
@@ -181,7 +126,6 @@ const MenuProductCard = (props) => {
 
             {/* Add to Bag button */}
             <button className="menu__orderBtn" onClick={addToBag}>
-              {/* Add to bag */}
               <i class="ri-shopping-bag-2-line"></i>
             </button>
           </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ListGroup } from "reactstrap";
 import "../style/Bag.css";
 import BagItem from "../components/UI/Bag/BagItem";
@@ -17,6 +17,7 @@ import { collection, query, where, onSnapshot } from "firebase/firestore";
 
 const Bag = () => {
   const dispatch = useDispatch();
+
   const toggleBag = () => {
     dispatch(bagUiActions.toggle());
   };
@@ -48,13 +49,11 @@ const Bag = () => {
   }, []);
 
   const bagItems = [...bagProducts, ...bagItemsFromFirebase];
-
   useEffect(() => {
     if (JSON.stringify(bagItems) !== JSON.stringify(bagProducts)) {
       dispatch(bagActions.setBagItems(bagItems));
     }
   }, [dispatch, bagItems, bagProducts]);
-
   // console.log("Bag Items:", bagItems);
 
   return (

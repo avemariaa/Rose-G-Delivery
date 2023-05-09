@@ -195,38 +195,38 @@ const Registration = () => {
 
   return (
     <div className="registration__body">
-      <div className="authForm__container">
+      <div className="registrationForm__container">
         <h5 className="mb-3">Create An Account!</h5>
         {/*------------------ Registration Content ----------------- */}
 
         {/*------------------ Custom Error Msg for Firebase Error ----------------- */}
-        {customErrorMsg !== "" && (
-          <label className="customErrorMsg">{customErrorMsg}</label>
-        )}
 
         <form className="registration__form">
+          {customErrorMsg !== "" && (
+            <label className="customErrorMsg">{customErrorMsg}</label>
+          )}
           {/*------------------ First Name Field ----------------- */}
-          <div className="input__field">
-            <label for="fname">First Name</label>
-            <div className="input__container">
-              <input
-                value={firstName}
-                onChange={(e) => handleFirstName(e.target.value)}
-                onFocus={() => {
-                  setFNameFocus(true);
-                  setLNameFocus(false);
-                  setEmailFocus(false);
-                  setPasswordFocus(false);
-                  setCPasswordFocus(false);
-                  setShowPassword(false);
-                  setShowCPassword(false);
-                }}
-                type="text"
-                placeholder="First Name"
-                id="firstName"
-                name="firstName"
-              />
-            </div>
+          <div className="registrationForm__group">
+            <label htmlFor="firstName__input">First Name</label>
+            <input
+              type="text"
+              placeholder="First Name"
+              id="firstName__input"
+              className="registrationForm__input"
+              name="firstName"
+              value={firstName}
+              onChange={(e) => handleFirstName(e.target.value)}
+              onFocus={() => {
+                setFNameFocus(true);
+                setLNameFocus(false);
+                setEmailFocus(false);
+                setPasswordFocus(false);
+                setCPasswordFocus(false);
+                setShowPassword(false);
+                setShowCPassword(false);
+              }}
+            />
+
             {/*------------------ First Name Validation Msg ----------------- */}
             {checkFirstName ? (
               <label className="registration__errorMsg">
@@ -238,27 +238,27 @@ const Registration = () => {
           </div>
 
           {/*------------------ Last Name Field ----------------- */}
-          <div className="input__field">
-            <label for="lastName">Last Name</label>
-            <div className="input__container">
-              <input
-                value={lastName}
-                onChange={(e) => handleLastName(e.target.value)}
-                onFocus={() => {
-                  setFNameFocus(false);
-                  setLNameFocus(true);
-                  setEmailFocus(false);
-                  setPasswordFocus(false);
-                  setCPasswordFocus(false);
-                  setShowPassword(false);
-                  setShowCPassword(false);
-                }}
-                type="text"
-                placeholder="Last Name"
-                id="lastName"
-                name="lastName"
-              />
-            </div>
+          <div className="registrationForm__group">
+            <label htmlFor="lastName__input">Last Name</label>
+            <input
+              type="text"
+              placeholder="Last Name"
+              id="lastName__input"
+              className="registrationForm__input"
+              name="lastName"
+              value={lastName}
+              onChange={(e) => handleLastName(e.target.value)}
+              onFocus={() => {
+                setFNameFocus(false);
+                setLNameFocus(true);
+                setEmailFocus(false);
+                setPasswordFocus(false);
+                setCPasswordFocus(false);
+                setShowPassword(false);
+                setShowCPassword(false);
+              }}
+            />
+
             {/*------------------ Last Name Validation Msg ----------------- */}
             {checkLastName ? (
               <label className="registration__errorMsg">
@@ -270,27 +270,27 @@ const Registration = () => {
           </div>
 
           {/*------------------ Email Field ----------------- */}
-          <div className="input__field">
-            <label for="email">Email</label>
-            <div className="input__container">
-              <input
-                value={email}
-                onChange={(e) => handleCheckEmail(e.target.value)}
-                onFocus={() => {
-                  setFNameFocus(false);
-                  setLNameFocus(false);
-                  setEmailFocus(true);
-                  setPasswordFocus(false);
-                  setCPasswordFocus(false);
-                  setShowPassword(false);
-                  setShowCPassword(false);
-                }}
-                type="email"
-                placeholder="youremail@gmail.com"
-                id="email"
-                name="email"
-              />
-            </div>
+          <div className="registrationForm__group">
+            <label htmlFor="email__input">Email</label>
+            <input
+              type="email"
+              placeholder="youremail@gmail.com"
+              id="email__input"
+              className="registrationForm__input"
+              name="email"
+              value={email}
+              onChange={(e) => handleCheckEmail(e.target.value)}
+              onFocus={() => {
+                setFNameFocus(false);
+                setLNameFocus(false);
+                setEmailFocus(true);
+                setPasswordFocus(false);
+                setCPasswordFocus(false);
+                setShowPassword(false);
+                setShowCPassword(false);
+              }}
+            />
+
             {/*------------------ Email Validation Msg ----------------- */}
             {checkValidEmail ? (
               <label className="registration__errorMsg">
@@ -302,10 +302,15 @@ const Registration = () => {
           </div>
 
           {/*------------------ Password Field ----------------- */}
-          <div className="input__field">
-            <label for="password">Password</label>
-            <div className="input__container">
+          <div className="registrationForm__group">
+            <label htmlFor="password__input">Password</label>
+            <div className="registration__input-container">
               <input
+                type={showPassword ? "text" : "password"}
+                placeholder="**********"
+                id="password__input"
+                className="registrationForm__input"
+                name="password"
                 value={password}
                 onChange={(e) => handleCheckPassword(e.target.value)}
                 onFocus={() => {
@@ -317,27 +322,19 @@ const Registration = () => {
                   setShowPassword(false);
                   setShowCPassword(false);
                 }}
-                type={showPassword ? "text" : "password"}
-                placeholder="**********"
-                id="password"
-                name="password"
               />
+
               {/* Toggle On and Off Eye Icon */}
-              {showPassword ? (
-                <VisibilityOffIcon
-                  className="visibility-icon"
-                  onClick={() => {
-                    setShowPassword(!showPassword);
-                  }}
-                />
-              ) : (
-                <VisibilityIcon
-                  className="visibility-icon"
-                  onClick={() => {
-                    setShowPassword(!showPassword);
-                  }}
-                />
-              )}
+              <div
+                className="registration__input-icon"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <VisibilityOffIcon className="registration__visibility-icon" />
+                ) : (
+                  <VisibilityIcon className="registration__visibility-icon" />
+                )}
+              </div>
             </div>
             {/*------------------ Password Validation Msg ----------------- */}
             {checkValidPassword ? (
@@ -351,10 +348,15 @@ const Registration = () => {
           </div>
 
           {/*------------------ Confirm Password Field ----------------- */}
-          <div className="input__field">
-            <label for="password">Confirm Password</label>
-            <div className="input__container">
+          <div className="registrationForm__group">
+            <label htmlFor="cPassword__input">Confirm Password</label>
+            <div className="registration__input-container">
               <input
+                type={showCPassword ? "text" : "password"}
+                placeholder="**********"
+                id="cPassword__input"
+                className="registrationForm__input"
+                name="confirmPassword"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 onFocus={() => {
@@ -366,27 +368,18 @@ const Registration = () => {
                   setShowPassword(false);
                   setShowCPassword(false);
                 }}
-                type={showCPassword ? "text" : "password"}
-                placeholder="**********"
-                id="confirmPassword"
-                name="confirmPassword"
               />
               {/* Toggle On and Off Eye Icon */}
-              {showCPassword ? (
-                <VisibilityOffIcon
-                  className="visibility-icon"
-                  onClick={() => {
-                    setShowCPassword(!showCPassword);
-                  }}
-                />
-              ) : (
-                <VisibilityIcon
-                  className="visibility-icon"
-                  onClick={() => {
-                    setShowCPassword(!showCPassword);
-                  }}
-                />
-              )}
+              <div
+                className="registration__input-icon"
+                onClick={() => setShowCPassword(!showCPassword)}
+              >
+                {showCPassword ? (
+                  <VisibilityOffIcon className="registration__visibility-icon" />
+                ) : (
+                  <VisibilityIcon className="registration__visibility-icon" />
+                )}
+              </div>
             </div>
           </div>
 
@@ -405,11 +398,7 @@ const Registration = () => {
           </div>
 
           {/*------------------ Sign Up Button ----------------- */}
-          <button
-            className="signUp__btn mt-3"
-            type="submit"
-            onClick={handleSignUp}
-          >
+          <button className="signUp__btn mt-3" onClick={handleSignUp}>
             Sign Up
           </button>
 

@@ -1,5 +1,28 @@
+.extrasList__slides {
+  position: relative;
+  width: 100%;
+  height: auto;
+  margin: 20px 0 0 0;
+}
 .extrasProduct__list-container h5 {
   font-size: 1.5rem;
   color: var(--background-color2);
   text-shadow: 2px 2px 2px var(--background-color1);
+}
+.extrasListPrev__btn,
+.extrasListNext__btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  background: transparent !important;
+  color: var(--background-color2);
+  font-size: 2rem;
+  border: 0;
+}
+.extrasListPrev__btn {
+  left: 1%;
+}
+.extrasListNext__btn {
+  right: 1%;
 }

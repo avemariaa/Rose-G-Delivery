@@ -32,10 +32,28 @@ const ExtrasProductList = ({ categoryName, title }) => {
       });
   }, []);
 
+  // Extras Products Slider
+  const ArrowLeft = (props) => (
+    <button
+      {...props}
+      className={"extrasListPrev__btn ri-arrow-left-circle-fill"}
+    />
+  );
+  const ArrowRight = (props) => (
+    <button
+      {...props}
+      className={"extrasListNext__btn ri-arrow-right-circle-fill"}
+    />
+  );
+
   const sliderSettings = {
-    dots: true,
-    infinite: true,
+    dots: false,
+    infinite: false,
     speed: 500,
+    arrows: true,
+    prevArrow: <ArrowLeft />,
+    nextArrow: <ArrowRight />,
+    className: "extrasList__slides",
     slidesToShow: 4,
     slidesToScroll: 4,
     responsive: [

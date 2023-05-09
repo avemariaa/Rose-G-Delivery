@@ -34,10 +34,6 @@ h4.delivery {
   color: green;
 }
 
-/* .orderCard__body h2.delivery {
-  color: green;
-} */
-
 .orderCard__body h4.preparing,
 h4.confirmed {
   color: orange;
@@ -80,7 +76,7 @@ h4.confirmed {
   height: auto;
 }
 .order__now p {
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: var(--text-color2);
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: var(--text-color1);
 }

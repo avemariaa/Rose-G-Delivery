@@ -3,8 +3,12 @@ import "../style/ForgotPassword.css";
 import ForgotPasswordImg from "../assets/images/forgot-password.png";
 
 // Firebase
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { sendPasswordResetEmail } from "firebase/auth";
+import { collection, where, getDocs, query } from "firebase/firestore";
+
+// Toast
+import { showErrorToast, showSuccessToast } from "../components/Toast/Toast";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState(null);
@@ -25,22 +29,80 @@ const ForgotPassword = () => {
   };
 
   /* -------------------- Forgot Password Button Function -------------------- */
+
+  // const handleSubmit = () => {
+  //   if (email === "") {
+  //     showErrorToast("Please enter your email address", 2000);
+  //   } else if (!/\S+@\S+\.\S+/.test(email)) {
+  //     showErrorToast("Please enter a valid email address format", 2000);
+  //   } else {
+  //     const emailRef = collection(db, "UserData");
+  //     const query = query(emailRef, where("email", "==", email));
+  //     getDocs(query)
+  //       .then((querySnapshot) => {
+  //         if (querySnapshot.empty) {
+  //           showErrorToast("Email does not exist");
+  //         } else {
+  //           sendPasswordResetEmail(auth, email)
+  //             .then(() => {
+  //               showSuccessToast(
+  //                 "Password reset email has been sent successfully"
+  //               );
+  //               setSuccessMsg(
+  //                 "Password reset email has been sent successfully. Check it on spam section"
+  //               );
+  //             })
+  //             .catch((error) => {
+  //               const errorCode = error.code;
+  //               const errorMessage = error.message;
+  //               showErrorToast(error.message);
+  //             });
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.error(error);
+  //         showErrorToast("Failed to check email existence. Please try again.");
+  //       });
+  //   }
+  // };
   const handleSubmit = () => {
-    if (email !== "") {
-      sendPasswordResetEmail(auth, email)
-        .then(() => {
-          alert("Password reset email has been sent successfully");
-          setSuccessMsg(
-            "Password reset email has been sent successfully. Check it on spam section"
-          );
+    if (email === "") {
+      showErrorToast("Please enter your email address", 2000);
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      showErrorToast("Please enter a valid email address format", 2000);
+    } else {
+      const emailRef = collection(db, "UserData");
+      const q = query(emailRef, where("email", "==", email));
+      getDocs(q)
+        .then((querySnapshot) => {
+          if (querySnapshot.empty) {
+            showErrorToast("Email does not exist");
+          } else {
+            sendPasswordResetEmail(auth, email)
+              .then(() => {
+                showSuccessToast(
+                  "Password reset email has been sent successfully"
+                );
+                setSuccessMsg(
+                  "Password reset email has been sent successfully. Check it on spam section"
+                );
+              })
+              .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                showErrorToast(error.message);
+              });
+          }
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          alert(error.message);
+          console.error(error);
+          showErrorToast(
+            "Failed to check email existence. Please try again later."
+          );
         });
     }
   };
+
   return (
     <div className="forgotPassword__body">
       <div className="forgotPassword__container">
@@ -54,23 +116,24 @@ const ForgotPassword = () => {
           </label>
         </div>
 
-        <div className="inputEmail__field">
-          <label for="email">Email</label>
-          <div className="inputEmail__container">
-            <input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              type="email"
-              placeholder="youremail@gmail.com"
-              id="email"
-              name="email"
-            />
-          </div>
+        <div className="forgotPassForm__group">
+          <label htmlFor="email__input">Email</label>
+          <input
+            value={email}
+            onChange={(e) => handleCheckEmail(e.target.value)}
+            type="email"
+            placeholder="youremail@gmail.com"
+            id="email__input"
+            className="forgotPassForm__input"
+            name="email"
+          />
         </div>
 
         {/*------------------ Email Validation Msg ----------------- */}
         {checkValidEmail ? (
-          <label className="errorMsg">Invalid email format</label>
+          <label className="forgotPass__errorMsg">
+            Please enter a valid email address. Example: sample@domain.com
+          </label>
         ) : (
           ""
         )}

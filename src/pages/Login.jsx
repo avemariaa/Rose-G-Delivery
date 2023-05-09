@@ -27,6 +27,7 @@ import {
   query,
   where,
   setDoc,
+  addDoc,
 } from "firebase/firestore";
 
 // Redux
@@ -147,7 +148,7 @@ const Login = () => {
     googleProvider.setCustomParameters({ prompt: "select_account" });
 
     signInWithPopup(auth, googleProvider)
-      .then((result) => {
+      .then(async (result) => {
         const email = result.user.email;
         const googleUid = result.user.uid;
 
@@ -159,30 +160,22 @@ const Login = () => {
         setLastName(names[names.length - 1]);
 
         const userDataRef = collection(db, "UserData"); // getting the UserData collection
-        const queryData = query(userDataRef, where("email", "==", email));
+        const queryData = query(userDataRef, where("uid", "==", googleUid));
 
-        getDocs(queryData)
-          .then((querySnapshot) => {
-            if (querySnapshot.empty) {
-              // user does not exist in database, so add a new document
-              const userRef = doc(userDataRef);
-              setDoc(userRef, {
-                fullName: displayName,
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                uid: googleUid,
-              });
-              showSuccessToast("Succesfully sign-in using google");
-              navigate("/home");
-            } else {
-              showSuccessToast("Succesfully sign-in using google");
-              navigate("/home");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
+        const querySnapshot = await getDocs(queryData);
+        if (querySnapshot.empty) {
+          // user does not exist in database, so add a new document
+          await addDoc(userDataRef, {
+            fullName: displayName,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            uid: googleUid,
           });
+        }
+
+        showSuccessToast("Successfully sign-in using google");
+        navigate("/home");
       })
       .catch((error) => {
         console.log(error);
@@ -203,7 +196,7 @@ const Login = () => {
 
   return (
     <div className="login__body">
-      <div className="authForm__container">
+      <div className="login__container">
         <h5 className="mb-4">Sign in to your account</h5>
 
         {/*------------------ Login Content ----------------- */}
@@ -215,69 +208,67 @@ const Login = () => {
 
         <form className="login__form" onSubmit={handleSignIn}>
           {/*------------------ Email Field ----------------- */}
-          <div className="input__field">
-            <label for="email">Email</label>
-            <div className="input__container">
-              <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                type="email"
-                placeholder="youremail@gmail.com"
-                id="email"
-                name="email"
-                onFocus={() => {
-                  setEmailFocus(true);
-                  setShowPassword(false);
-                  setPasswordFocus(false);
-                }}
-                onKeyDown={handleKeyPress}
-              />
-            </div>
+          <div className="loginForm__group">
+            <label htmlFor="email__input">Email</label>
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              placeholder="youremail@gmail.com"
+              id="email__input"
+              className="loginForm__input"
+              name="email"
+              onFocus={() => {
+                setEmailFocus(true);
+                setShowPassword(false);
+                setPasswordFocus(false);
+              }}
+              onKeyDown={handleKeyPress}
+            />
           </div>
 
           {/*------------------ Password Field ----------------- */}
-          <div className="input__field">
-            <label for="password">Password</label>
-            <div className="input__container">
+          <div className="loginForm__group">
+            <label htmlFor="password__input">Password</label>
+            <div className="login__input-container">
               <input
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 type={showPassword ? "text" : "password"}
                 placeholder="**********"
-                id="password"
-                name="password"
+                id="password__input"
+                className="loginForm__input"
                 onFocus={() => {
                   setEmailFocus(false);
                   setPasswordFocus(true);
                 }}
                 onKeyDown={handleKeyPress}
               />
+
               {/* Toggle On and Off Eye Icon */}
-              {showPassword ? (
-                <VisibilityOffIcon
-                  className="visibility-icon"
-                  onClick={() => {
-                    setShowPassword(!showPassword);
-                  }}
-                />
-              ) : (
-                <VisibilityIcon
-                  className="visibility-icon"
-                  onClick={() => {
-                    setShowPassword(!showPassword);
-                  }}
-                />
-              )}
+              <div
+                className="login__input-icon"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <VisibilityOffIcon className="visibility-icon" />
+                ) : (
+                  <VisibilityIcon className="visibility-icon" />
+                )}
+              </div>
             </div>
           </div>
+
+          {/*------------------ Password Field ----------------- */}
         </form>
 
         {/*------------------ Forgot Password ----------------- */}
-        <Link to="/forgotPassword">
-          <label className="forgotPassTxt d-flex justify-content-end mt-2 mb-3">
-            Forgot Password?
-          </label>
-        </Link>
+
+        <label className="forgotPassTxt mt-2 mb-3">
+          <span className="forgotPassTxt">
+            <Link to="/forgotPassword">Forgot Password?</Link>
+          </span>
+        </label>
 
         {/*------------------ Sign In Button ----------------- */}
         <button className="signIn__btn" onClick={handleSignIn}>

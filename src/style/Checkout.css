@@ -1,63 +1,15 @@
-/* Recipient Details */
-/* .recipient__details {
-  position: relative;
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
-  padding-bottom: 250px;
-}
-
-.recipient__details.is-flipped {
-  transform: rotateY(180deg);
-}
-
-.recipient__details-front,
-.recipient__details-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  background: var(--text-color1);
-}
-
-.recipient__details-back {
-  transform: rotateY(180deg);
-}
-
-.recipient__details-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-.recipient__details-edit-btn {
-  background-color: transparent;
-  border: none;
-  color: #0072c6;
-  cursor: pointer;
-}
-
-.form__group {
+.checkout__details {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
+  height: 100%;
 }
-button[type="submit"] {
-  background-color: #0072c6;
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-button[type="submit"]:hover {
-  background-color: #005ea2;
-} */
 
+/* Recipient Details */
 .recipient__details {
   position: relative;
   transition: transform 0.6s;
   transform-style: preserve-3d;
-  padding-bottom: 250px;
+  min-height: 450px;
 }
 
 .recipient__details.is-flipped {
@@ -68,13 +20,15 @@ button[type="submit"]:hover {
 .recipient__details-back {
   position: absolute;
   width: 100%;
-  height: 100%;
   backface-visibility: hidden;
   background: var(--text-color1);
+  padding: 20px;
+  border-radius: 20px;
 }
 
 .recipient__details-back {
   transform: rotateY(180deg);
+  flex: 0 0 50%;
 }
 
 .recipient__details-header {
@@ -83,22 +37,48 @@ button[type="submit"]:hover {
   align-items: center;
   margin-bottom: 1rem;
 }
-.recipient__details-edit-btn {
-  background-color: transparent;
+.recipient__details-edit-btn,
+.recipient__details-save-btn {
+  background-color: var(--background-color2);
+  color: var(--text-color2);
   border: none;
-  color: var(--background-color1);
   cursor: pointer;
+  padding: 4px 20px;
+  border-radius: 5px;
+  font-weight: 500;
 }
 .recipient__details-cancel-btn {
-  background-color: transparent;
+  background-color: var(--background-color1);
+  color: var(--text-color1);
   border: none;
-  color: #e60000;
   cursor: pointer;
+  padding: 4px 20px;
+  border-radius: 5px;
+  font-weight: 500;
 }
-.form__group {
+
+.detailsForm__group {
   display: flex;
   flex-direction: column;
   margin-bottom: 1rem;
+}
+
+.detailsForm__group label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.detailsForm__input {
+  padding: 0.2rem 1rem;
+  border-radius: 0.5rem;
+  border: 2px solid var(--text-color2);
+  font-size: 1rem;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.detailsForm__input:focus {
+  outline: none;
+  border-color: var(--background-color2);
 }
 button[type="submit"] {
   background-color: #0072c6;
@@ -113,22 +93,8 @@ button[type="submit"]:hover {
   background-color: #005ea2;
 }
 
-/* Media Query for small screens */
-@media only screen and (max-width: 768px) {
-  .recipient__details {
-    padding-bottom: 0;
-  }
-  .recipient__details-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  button[type="submit"] {
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
-}
-
 /* Payment Methods */
+
 .payment__methods {
   background-color: var(--text-color1);
   border: 1px solid #ddd;
@@ -138,10 +104,7 @@ button[type="submit"]:hover {
   animation-name: fade-in;
   animation-duration: 0.5s;
   animation-timing-function: ease-in-out;
-}
-
-.payment__methods .form__group {
-  margin: 20px 0;
+  border-radius: 20px;
 }
 
 .payment__methods label {
@@ -171,6 +134,29 @@ button[type="submit"]:hover {
   height: 30px;
   margin-right: 10px;
   vertical-align: middle;
+}
+.orderNoteForm__group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.orderNoteForm__group label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.orderNoteForm__input {
+  padding: 0.2rem 1rem;
+  border-radius: 0.5rem;
+  border: 2px solid var(--text-color2);
+  font-size: 1rem;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.orderNoteForm__input:focus {
+  outline: none;
+  border-color: var(--background-color2);
 }
 
 /*Order Summary*/
@@ -205,10 +191,10 @@ td {
   justify-content: center;
   height: 40px;
   background: var(--background-color2);
+  color: var(--text-color2);
   border: none;
   padding: 4px 20px;
   border-radius: 5px;
-  color: var(--text-color2);
   font-weight: 500;
 }
 .svg__wrapper {
@@ -221,4 +207,19 @@ td {
   margin: 40px 0;
   height: 350px;
   width: 100%;
+}
+
+/* Media Query for small screens */
+@media only screen and (max-width: 768px) {
+  .recipient__details {
+    padding-bottom: 0;
+  }
+  .recipient__details-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  button[type="submit"] {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
 }

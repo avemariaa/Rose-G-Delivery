@@ -7,51 +7,70 @@
   align-items: center;
   text-align: center;
 }
-.authForm__container,
-.login__form {
-  display: flex;
-  flex-direction: column;
-}
-.authForm__container {
-  padding: 3rem !important;
+.login__container {
+  padding: 3rem;
   border: 5px solid var(--background-color2);
   border-radius: 50px;
   background-color: var(--background-color1);
   width: 40%;
 }
-/* Email and Password Fields */
-.input__field {
+.login__container h5 {
+  color: var(--background-color2);
+}
+.loginForm__container,
+.login__form {
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
-.input__field label {
-  text-align: left;
-  font-size: 1rem;
+
+/* Email and Password Fields */
+.loginForm__group {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  align-self: center;
+  justify-content: center;
+  width: 80%;
+}
+
+.loginForm__group label {
+  margin-bottom: 0.5rem;
   font-weight: 600;
-  width: 80%;
-  margin-bottom: 0.25rem 0;
+  color: var(--text-color1);
+  align-self: flex-start;
 }
-.input__container {
-  position: relative;
-  width: 80%;
-}
-.input__container input {
+.loginForm__input {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 2px solid var(--text-color1);
+  font-size: 1rem;
+  transition: border-color 0.2s ease-in-out;
   width: 100%;
-  padding-right: 30px;
-  margin: 0.5rem 0;
-  padding: 1rem;
-  border: none;
-  border-radius: 10px;
-  font-size: 0.9rem;
+  box-sizing: border-box;
 }
-.visibility-icon {
+
+.login__input-container {
+  position: relative;
+}
+
+.login__input-icon {
   position: absolute;
-  right: 10px;
   top: 50%;
+  right: 1rem;
   transform: translateY(-50%);
   cursor: pointer;
 }
+
+.visibility-icon {
+  color: var(--text-color2);
+}
+
+.loginForm__input:focus {
+  outline: none;
+  border-color: var(--background-color2);
+}
+
 /* Login Buttons */
 .signIn__btn {
   width: 80%;
@@ -97,16 +116,27 @@
   margin-top: 2rem;
 }
 .termsConditionTxt,
-.privacyPolicyTxt,
-.forgotPassTxt {
+.privacyPolicyTxt {
   text-decoration: underline;
   color: var(--background-color2);
   cursor: pointer;
 }
 .forgotPassTxt {
+  display: flex;
+  justify-content: flex-end;
   width: 90%;
   font-size: 0.9rem;
+  cursor: pointer;
 }
+.forgotPassTxt a {
+  text-decoration: none;
+  color: var(--background-color2);
+}
+.forgotPassTxt a:hover {
+  color: var(--background-color2);
+  cursor: pointer;
+}
+
 .or__txt {
   font-weight: 600;
   color: var(--background-color2);

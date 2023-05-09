@@ -107,6 +107,7 @@
   color: #000000;
   font-size: 0.9rem;
 }
+
 @media only screen and (min-width: 769px) {
   .menu__productCards {
     justify-content: center;

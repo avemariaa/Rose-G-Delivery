@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "../style/UserProfile.css";
 import { Container, Row, Col } from "reactstrap";
 
+import PersonalInfoImg from "../assets/images/personal-info.svg";
+import DefaultAvatar from "../assets/images/user.png";
 import EditProfileDetails from "../components/UserProfile/EditProfileDetails";
 import ActivityHistory from "../components/UserProfile/ActivityHistory";
 import ChangePassword from "../components/UserProfile/ChangePassword";
@@ -71,39 +73,76 @@ const UserProfile = () => {
   const [showSection, setShowSection] = useState("");
 
   const handleSectionClick = (section) => {
-    setShowSection(section);
+    if (showSection === section) {
+      setShowSection("");
+    } else {
+      setShowSection(section);
+    }
   };
 
-  const handleSave = () => {
+  const [newProfileImage, setNewProfileImage] = useState("");
+  const [fileName, setFileName] = useState("");
+  const [newFirstName, setNewFirstName] = useState("");
+  const [newLastName, setNewLastName] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [newContactNumber, setNewContactNumber] = useState("");
+  const [newAddress, setNewAddress] = useState("");
+
+  const handleSave = (newUserData) => {
+    // update the user data using new UserData
+    setUserData(newUserData);
+    setShowSection("");
+    getUserData();
+  };
+
+  const handleChangePassSave = () => {
     setShowSection("");
   };
 
   return (
     <section>
-      <Container>
-        <TitlePageBanner title="Profile" />
+      <Container className="mb-5">
+        <TitlePageBanner title="My Account" />
         <Row>
-          <Col lg="6" md="6" style={{ border: "1px solid red" }}>
+          <Col lg="6" md="6" className="userProfile__left-container">
             <div className="userProfile__details">
               <h5>User Profile</h5>
-              <div className="userProfile__name">
-                <label>Full Name:&nbsp;</label>
-                <span>{`${userData?.firstName} ${userData?.lastName}`}</span>
-              </div>
-              <div className="userProfile__email">
-                <label>Email:&nbsp;</label>
-                <span>{userData?.email}</span>
-              </div>
-              <div className="userProfile__contactNumber">
-                <label>Contact Number:&nbsp;</label>
-                <span>{userData?.contactNumber}</span>
-              </div>
-              <div className="userProfile__address">
-                <label>Address:&nbsp;</label>
-                <span>{userData?.address}</span>
-              </div>
+              <Row>
+                <Col lg="12">
+                  {/* <div className="userProfile__avatar">
+                    <img src={DefaultAvatar} alt="Default Avatar" />
+                  </div> */}
+                  <div className="userProfile__avatar">
+                    {userData?.profileImageUrl ? (
+                      <img src={userData.profileImageUrl} alt="User Avatar" />
+                    ) : (
+                      <img src={DefaultAvatar} alt="Default Avatar" />
+                    )}
+                  </div>
+                </Col>
+                <Col lg="12">
+                  <div className="userProfile__group">
+                    <div className="userProfile__item">
+                      <label>Full Name:&nbsp;</label>
+                      <span>{`${userData?.firstName} ${userData?.lastName}`}</span>
+                    </div>
+                    <div className="userProfile__item">
+                      <label>Email:&nbsp;</label>
+                      <span>{userData?.email}</span>
+                    </div>
+                    <div className="userProfile__item">
+                      <label>Contact Number:&nbsp;</label>
+                      <span>{userData?.contactNumber}</span>
+                    </div>
+                    <div className="userProfile__item">
+                      <label>Address:&nbsp;</label>
+                      <span>{userData?.address}</span>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
             </div>
-            <div className="userProfile_btns">
+            <div className="userProfile__btns">
               <button onClick={() => handleSectionClick("editProfile")}>
                 Edit Profile
               </button>
@@ -117,16 +156,42 @@ const UserProfile = () => {
             </div>
           </Col>
 
-          <Col lg="6" md="6" style={{ border: "1px solid red" }}>
+          <Col lg="6" md="6" className="userProfile__right-container">
+            {showSection === "" && (
+              <div className="empty__section">
+                <img src={PersonalInfoImg} alt="Personal Info Image" />
+                <h6>
+                  Welcome to your account page! Click one of the buttons to get
+                  started.
+                </h6>
+              </div>
+            )}
             {showSection === "editProfile" && (
-              <EditProfileDetails userData={userData} onSave={handleSave} />
+              <EditProfileDetails
+                userData={userData}
+                onSave={handleSave}
+                newProfileImage={newProfileImage}
+                setNewProfileImage={setNewProfileImage}
+                fileName={fileName}
+                setFileName={setFileName}
+                newFirstName={newFirstName}
+                setNewFirstName={setNewFirstName}
+                newLastName={newLastName}
+                setNewLastName={setNewLastName}
+                newEmail={newEmail}
+                setNewEmail={setNewEmail}
+                newContactNumber={newContactNumber}
+                setNewContactNumber={setNewContactNumber}
+                newAddress={newAddress}
+                setNewAddress={setNewAddress}
+              />
             )}
             {showSection === "activityHistory" && (
               <ActivityHistory onSave={handleSave} />
             )}
 
             {showSection === "changePassword" && (
-              <ChangePassword onSave={handleSave} />
+              <ChangePassword onSave={handleChangePassSave} />
             )}
           </Col>
         </Row>
