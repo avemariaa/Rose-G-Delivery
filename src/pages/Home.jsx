@@ -3,7 +3,7 @@ import { Container, Row, Col } from "reactstrap";
 import "../style/Home.css";
 import HomeSlider from "../components/UI/HomeSlider";
 import FoodCategorySlider from "../components/UI/FoodCategorySlider";
-import Testimonials from "../components/UI/Testimonials";
+import Feedback from "../components/UI/Feedback";
 import FeaturedProducts from "../components/UI/FeaturedProducts";
 import CompanyBackground from "../components/UI/CompanyBackground";
 import OurPartners from "../components/UI/OurPartners";
@@ -32,10 +32,10 @@ const Home = () => {
         </Container>
       </section>
 
-      {/*Testimonials Section*/}
+      {/*Feedback Section*/}
       <section>
         <Container>
-          <Testimonials />
+          <Feedback />
         </Container>
       </section>
 

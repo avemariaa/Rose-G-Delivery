@@ -1,3 +1,18 @@
+.editProfile__container {
+  animation-name: fade-in;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .editProfile__container h5 {
   color: var(--background-color2);
   text-align: center;
@@ -19,12 +34,18 @@
   display: none;
 }
 .custom__file-upload label {
-  padding: 8px 12px;
+  padding: 7px 20px;
   background-color: var(--background-color2);
-  color: var(--text-color2);
+  color: var(--text-color2) !important;
+  margin-right: 10px;
   border-radius: 4px;
   cursor: pointer;
 }
+.custom__file-upload span {
+  color: var(--text-color1);
+  font-weight: 500;
+}
+
 .editForm__group label {
   margin-bottom: 0.5rem;
   font-weight: 600;

@@ -160,8 +160,8 @@ const Checkout = () => {
       return;
     }
 
-    // If recipient details is required to place their order
-    if (
+    // Recipient details is required to place their order
+    else if (
       !userData?.address ||
       !userData?.contactNumber ||
       !userData?.firstName ||
@@ -172,7 +172,7 @@ const Checkout = () => {
     }
 
     // If any payment method is not selected, they can't place their order
-    if (!paymentMethod) {
+    else if (!paymentMethod) {
       showErrorToast("Please select a payment method.", 2000);
       return;
     }
@@ -198,8 +198,8 @@ const Checkout = () => {
         // changeFor: changeFor,
       });
 
-      showSuccessToast("Order placed", 1000);
-      navigate("/home");
+      showSuccessToast("Order placed", 2000);
+      navigate("/orders");
 
       // Delete the document to reset the bag
       const docRef2 = doc(collection(db, "UserBag"), auth.currentUser.uid);
@@ -232,7 +232,7 @@ const Checkout = () => {
                       className="recipient__details-edit-btn"
                       onClick={handleEdit}
                     >
-                      {isEditing ? "Cancel" : "Edit"}
+                      {isEditing ? <i class="ri-close-fill"></i> : "Edit"}
                     </button>
                   </div>
                   <form>
@@ -264,7 +264,7 @@ const Checkout = () => {
                       className="recipient__details-cancel-btn"
                       onClick={handleEdit}
                     >
-                      {isEditing ? "Cancel" : "Edit"}
+                      {isEditing ? <i class="ri-close-fill"></i> : "Edit"}
                     </button>
                   </div>
                   <form>
@@ -333,7 +333,6 @@ const Checkout = () => {
               </div>
 
               {/* Payment Methods */}
-
               <div className="payment__methods mt-5 ">
                 <h6 className=".payment__methods-header">
                   Choose Payment Method
@@ -455,19 +454,21 @@ const Checkout = () => {
               ></hr>
               <div className="orderSummary__footer">
                 <h6>
-                  Subtotal: ₱{" "}
+                  Subtotal:
                   <span>
+                    ₱
                     {parseFloat(bagSubTotalAmount)
                       .toFixed(2)
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                   </span>
                 </h6>
                 <h6>
-                  Delivery Fee: <span>₱ 50.00</span>
+                  Delivery Fee: <span>₱50.00</span>
                 </h6>
                 <h6>
-                  Total: ₱{" "}
+                  Total:
                   <span>
+                    ₱
                     {parseFloat(bagTotalAmount)
                       .toFixed(2)
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -498,9 +499,9 @@ const Tr = (props) => {
 
   return (
     <tr>
-      <td className="text-center">{productQty}x</td>
-      <td className="text-center">{productName}</td>
-      <td className="text-center">
+      <td style={{ width: "20%" }}>{productQty}x</td>
+      <td style={{ width: "50%" }}>{productName}</td>
+      <td className="text-end" style={{ width: "30%" }}>
         ₱{" "}
         {parseFloat(totalPrice)
           .toFixed(2)

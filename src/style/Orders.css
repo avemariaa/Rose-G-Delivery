@@ -75,8 +75,8 @@ h4.confirmed {
   width: 400px;
   height: auto;
 }
-.order__now p {
-  font-weight: 600;
+.order__now h1 {
+  font-weight: 500;
   font-size: 1.5rem;
   color: var(--text-color1);
 }

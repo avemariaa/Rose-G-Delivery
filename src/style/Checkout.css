@@ -94,7 +94,6 @@ button[type="submit"]:hover {
 }
 
 /* Payment Methods */
-
 .payment__methods {
   background-color: var(--text-color1);
   border: 1px solid #ddd;
@@ -164,6 +163,8 @@ button[type="submit"]:hover {
   background: var(--background-color1);
   border-radius: 20px;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 tr,
@@ -173,14 +174,23 @@ td {
 }
 
 .orderSummary__footer {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
   margin: 30px;
 }
 .orderSummary__footer h6 {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
   color: var(--text-color1);
 }
 .orderSummary__footer h6:last-child {
   color: var(--background-color2);
+}
+.orderSummary__footer span {
+  margin-left: auto;
 }
 
 .place__order {

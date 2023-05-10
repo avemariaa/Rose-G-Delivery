@@ -1,0 +1,109 @@
+.feedbackModal__wrapper {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.6);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.feedbackModal__container {
+  position: relative;
+  background-color: white;
+  border-radius: 20px;
+  min-width: 400px;
+  padding: 20px;
+  box-shadow: 10px 10px 2px var(--background-color2);
+}
+
+.feedbackModal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.feedbackModal__header h6 {
+  margin: 0;
+  color: var(--text-color2);
+}
+
+.feedbackModal__close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-color2);
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.feedbackModal__close-btn:hover {
+  color: var(--background-color2);
+}
+
+.feedbackModal__content {
+  margin-top: 20px;
+}
+
+.feedbackModal__content form {
+  display: flex;
+  flex-direction: column;
+}
+.feedbackModalForm__group:nth-of-type(1) {
+  display: flex;
+  align-items: center;
+}
+.feedbackModalForm__group label {
+  margin-right: 10px;
+}
+.feedbackModalForm__group:nth-of-type(2) {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+}
+
+.feedbackModal__content label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.feedbackModal__content textarea {
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.feedbackModal__actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.feedbackModal__actions button {
+  width: 45%;
+  font-weight: 500;
+  background: var(--text-color1);
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  color: var(--text-color2);
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.feedbackModal__actions button:nth-of-type(1) {
+  background: var(--background-color2);
+}
+
+.feedbackModal__actions button:hover {
+  background-color: var(--background-color1);
+  color: var(--text-color1);
+}

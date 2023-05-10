@@ -8,7 +8,7 @@ import TitlePageBanner from "../components/UI/TitlePageBanner";
 // React Slick
 import Slider from "react-slick";
 
-// Connect Firebase
+// Firebase
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase.js";
 
@@ -158,7 +158,6 @@ const Menu = () => {
             return (
               <div className="slides__item" key={category.productCategoryId}>
                 <button
-                  // className="category__btn"
                   className={`category__btn ${
                     category.categoryName === categories ? "active" : ""
                   }`}

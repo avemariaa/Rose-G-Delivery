@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../style/Orders.css";
-
 import { Container, Row, Col } from "reactstrap";
-
 import { Link } from "react-router-dom";
 import moment from "moment/moment";
 import TitlePageBanner from "../components/UI/TitlePageBanner";
@@ -50,8 +48,7 @@ const Orders = () => {
       unsubscribe();
     };
   }, []);
-
-  console.log(orderData);
+  // console.log(orderData);
 
   return (
     <main>
@@ -61,13 +58,16 @@ const Orders = () => {
             <header>
               <TitlePageBanner title="On-Going Orders" />
             </header>
+
             {orderData.length == 0 ? (
+              // Empty Orders
               <div className="order__now">
                 <img src={OrderNowImg} alt="Order-now-img" />
-                <p>You haven't placed any orders yet.</p>
-                <p>When you do, their status will appear here.</p>
+                <h1>You haven't placed any orders yet.</h1>
+                <h1>When you do, their status will appear here.</h1>
               </div>
             ) : (
+              // Orders not empty
               <div className="orderCards__container ">
                 {orderData.map((order, index) => {
                   return (

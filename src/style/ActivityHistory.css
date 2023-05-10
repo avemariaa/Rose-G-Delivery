@@ -1,3 +1,7 @@
+/* .actHistory__container {
+  height: 70vh;
+  overflow-y: auto;
+} */
 .actHistory__container h5 {
   color: var(--background-color2);
   text-align: center;
@@ -8,8 +12,10 @@
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: center;
-  margin-bottom: 30px;
+
   padding: 20px;
+  height: 75vh;
+  overflow-y: auto;
 }
 
 /* No history */
@@ -27,7 +33,7 @@
   margin-bottom: 20px;
 }
 
-.no__history p {
+.no__history h2 {
   font-size: 1.2rem;
   color: var(--background-color2);
   margin: 0;

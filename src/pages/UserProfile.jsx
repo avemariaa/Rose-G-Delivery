@@ -104,14 +104,13 @@ const UserProfile = () => {
       <Container className="mb-5">
         <TitlePageBanner title="My Account" />
         <Row>
+          {/* Left Column */}
           <Col lg="6" md="6" className="userProfile__left-container">
             <div className="userProfile__details">
               <h5>User Profile</h5>
               <Row>
+                {/* Profile Avatar */}
                 <Col lg="12">
-                  {/* <div className="userProfile__avatar">
-                    <img src={DefaultAvatar} alt="Default Avatar" />
-                  </div> */}
                   <div className="userProfile__avatar">
                     {userData?.profileImageUrl ? (
                       <img src={userData.profileImageUrl} alt="User Avatar" />
@@ -120,20 +119,28 @@ const UserProfile = () => {
                     )}
                   </div>
                 </Col>
+                {/* User Details */}
                 <Col lg="12">
                   <div className="userProfile__group">
+                    {/* Full Name */}
                     <div className="userProfile__item">
                       <label>Full Name:&nbsp;</label>
                       <span>{`${userData?.firstName} ${userData?.lastName}`}</span>
                     </div>
+
+                    {/* Email */}
                     <div className="userProfile__item">
                       <label>Email:&nbsp;</label>
                       <span>{userData?.email}</span>
                     </div>
+
+                    {/* Contact Number */}
                     <div className="userProfile__item">
                       <label>Contact Number:&nbsp;</label>
                       <span>{userData?.contactNumber}</span>
                     </div>
+
+                    {/* Address */}
                     <div className="userProfile__item">
                       <label>Address:&nbsp;</label>
                       <span>{userData?.address}</span>
@@ -142,12 +149,13 @@ const UserProfile = () => {
                 </Col>
               </Row>
             </div>
+            {/* Profile Page Buttons */}
             <div className="userProfile__btns">
               <button onClick={() => handleSectionClick("editProfile")}>
                 Edit Profile
               </button>
               <button onClick={() => handleSectionClick("activityHistory")}>
-                Activity History
+                Order History
               </button>
 
               <button onClick={() => handleSectionClick("changePassword")}>
@@ -156,7 +164,9 @@ const UserProfile = () => {
             </div>
           </Col>
 
+          {/* Right Column */}
           <Col lg="6" md="6" className="userProfile__right-container">
+            {/* Welcome Section */}
             {showSection === "" && (
               <div className="empty__section">
                 <img src={PersonalInfoImg} alt="Personal Info Image" />
@@ -166,6 +176,8 @@ const UserProfile = () => {
                 </h6>
               </div>
             )}
+
+            {/* Edit Profile */}
             {showSection === "editProfile" && (
               <EditProfileDetails
                 userData={userData}
@@ -186,10 +198,13 @@ const UserProfile = () => {
                 setNewAddress={setNewAddress}
               />
             )}
+
+            {/* Activity History / Order History */}
             {showSection === "activityHistory" && (
               <ActivityHistory onSave={handleSave} />
             )}
 
+            {/* Change Password */}
             {showSection === "changePassword" && (
               <ChangePassword onSave={handleChangePassSave} />
             )}

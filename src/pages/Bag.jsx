@@ -59,12 +59,14 @@ const Bag = () => {
   return (
     <div className="bag__container">
       <ListGroup className="bag">
+        {/* Close Button */}
         <div className="bag__close">
           <span onClick={toggleBag}>
             <i class="ri-close-fill"></i>
           </span>
         </div>
 
+        {/* Bag Content */}
         <div className="bag__item-list">
           {bagItems && bagItems.length === 0 ? (
             <h6 className="text-center mt-5">No item added to the cart</h6>
@@ -73,7 +75,9 @@ const Bag = () => {
           )}
         </div>
 
+        {/* Bag Bottom */}
         <div className="bag__bottom">
+          {/* Subtotal */}
           <label className="d-flex align-items-center justify-content-between">
             Subtotal:
             <span>
@@ -83,9 +87,13 @@ const Bag = () => {
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             </span>
           </label>
+
+          {/* Delivery Fee */}
           <label className="d-flex align-items-center justify-content-between">
             Delivery Fee:<span> ₱ 50.00</span>
           </label>
+
+          {/* Total Amount */}
           <h6 className="d-flex align-items-center justify-content-between mt-2">
             Total:{" "}
             <span>
@@ -95,6 +103,8 @@ const Bag = () => {
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             </span>
           </h6>
+
+          {/* Proceed to Checkout Button */}
           <button className="bagCheckout__btn mt-3" onClick={toggleBag}>
             <Link to="/checkout">Proceed to Checkout</Link>
           </button>

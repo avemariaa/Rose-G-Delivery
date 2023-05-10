@@ -1,58 +1,30 @@
 import React, { useState, useEffect } from "react";
 import "../style/OrderTracker.css";
 import { Container, Row, Col } from "reactstrap";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import moment from "moment"; //date format
 
 import CheckCircle from "../assets/images/check_circle.png";
 import Circle from "../assets/images/circle-gray.png";
 import DottedLine from "../assets/images/dotted_line.png";
 import TitlePageBanner from "../components/UI/TitlePageBanner";
-import PendingIcon from "../assets/gif/order-pending.gif";
-import PreparingIcon from "../assets/gif/preparing-food.gif";
-import DeliveryIcon from "../assets/gif/order-delivery.gif";
-import DeliveredIcon from "../assets/gif/order-delivered.gif";
-import OrderConfirmed from "../assets/gif/order-confirmed.gif";
-
+import CancelledImg from "../assets/images/cancel-order.svg";
+import { track_order_status } from "../globals/constant";
+import Modal from "../components/Modal/Modal";
 // Firebase
-import { collection, doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
-const track_order_status = [
-  {
-    id: 1,
-    title: "Order Pending",
-    sub_title: "We are processing your order",
-    image: PendingIcon,
-  },
-  {
-    id: 2,
-    title: "Order Confirmed",
-    sub_title: "Your order has been validated",
-    image: OrderConfirmed,
-  },
-  {
-    id: 3,
-    title: "Order Prepared",
-    sub_title: "Your order has been prepared",
-    image: PreparingIcon,
-  },
-  {
-    id: 4,
-    title: "Delivery on its way",
-    sub_title: "Hang on! Your food is on the way",
-    image: DeliveryIcon,
-  },
-  {
-    id: 5,
-    title: "Delivered",
-    sub_title: "Enjoy your meal!",
-    image: DeliveredIcon,
-  },
-];
+// Toast
+import {
+  showSuccessToast,
+  showErrorToast,
+  showInfoToast,
+} from "../components/Toast/Toast";
 
-const OrderTracker = (props) => {
+const OrderTracker = () => {
   const { orderId } = useParams();
+  const navigate = useNavigate();
 
   const [orderData, setOrderData] = useState(null);
 
@@ -75,29 +47,59 @@ const OrderTracker = (props) => {
       const status = orderData.orderStatus;
       if (status === "Pending") {
         setCurrentStep(0);
-      }
-      if (status === "Confirmed") {
+      } else if (status === "Confirmed") {
         setCurrentStep(1);
-      }
-      if (status === "Prepared") {
+      } else if (status === "Prepared") {
         setCurrentStep(2);
-      }
-      if (status === "Delivery") {
+      } else if (status === "Delivery") {
         setCurrentStep(3);
-      }
-      if (status === "Delivered") {
+      } else if (status === "Delivered") {
         setCurrentStep(4);
       }
     }
   }, [orderData]);
+
+  // Cancel Button Function
+  const handleCancel = async () => {
+    try {
+      const orderRef = doc(collection(db, "UserOrders"), orderId);
+      const orderDoc = await getDoc(orderRef);
+      if (orderDoc.exists()) {
+        const orderData = orderDoc.data();
+        const status = orderData.orderStatus;
+        if (status === "Prepared") {
+          showInfoToast(
+            "Sorry, your order is already prepared and cannot be cancelled."
+          );
+        } else {
+          await updateDoc(orderRef, { orderStatus: "Cancelled" });
+          setCurrentStep(-1);
+          showInfoToast("Your order has been cancelled.", 2000);
+          navigate("/menu");
+          // closeModal();
+        }
+      }
+    } catch (error) {
+      console.error("Error updating order status:", error);
+      showErrorToast("Failed to cancel your order.");
+    }
+  };
+
+  // Pop up modal
+  const [showModal, setShowModal] = useState(false);
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <main>
       <Container>
         <Row>
           <TitlePageBanner title="Order Tracker" />
+          {/* Left Column */}
           <Col lg="8" md="6">
             <Row>
+              {/* Order Details */}
               <div className="order__details-container">
                 <h4>Order Details</h4>
                 <div className="order__details-item">
@@ -133,8 +135,9 @@ const OrderTracker = (props) => {
             </Row>
 
             <Row>
-              {/* Left Side */}
+              {/* Left Side - Order Status*/}
               <Col>
+                {/* Order Status - Image*/}
                 {track_order_status.map((item, index) => {
                   return (
                     <div
@@ -144,20 +147,18 @@ const OrderTracker = (props) => {
                       {/* Display image only for the current step */}
                       {index === currentStep && item.image && (
                         <div className="status__image-wrapper">
-                          <img
-                            src={item.image}
-                            alt={item.title}
-                            // style={{ width: "300px", height: "auto" }}
-                          />
+                          <img src={item.image} alt={item.title} />
                         </div>
                       )}
                     </div>
                   );
                 })}
+                {/* Display CancelledImg image if the order status is Cancelled */}
               </Col>
-              {/* Right Side */}
+
+              {/* Right Side - Order Status */}
               <Col>
-                {/* Order Status */}
+                {/* Order Status - Check & Lines */}
                 {track_order_status.map((item, index) => {
                   return (
                     <div key={`StatusList-${index}`}>
@@ -195,8 +196,9 @@ const OrderTracker = (props) => {
             </Row>
           </Col>
 
-          {/* Order Summary */}
+          {/* Right Column */}
           <Col lg="4" md="6">
+            {/* Order Summary */}
             <div className="order__summary">
               <h6
                 style={{
@@ -229,28 +231,45 @@ const OrderTracker = (props) => {
               ></hr>
               <div className="orderSummary__footer">
                 <h6>
-                  Subtotal: ₱{" "}
+                  Subtotal:
                   <span>
+                    ₱
                     {parseFloat(
                       orderData?.orderData.reduce(
                         (total, item) => total + item.price * item.productQty,
                         0
                       )
-                    ).toFixed(2)}
+                    )
+                      .toFixed(2)
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                   </span>
                 </h6>
                 <h6>
                   Delivery Fee: <span>₱ 50.00</span>
                 </h6>
                 <h6>
-                  Total: ₱{" "}
+                  Total:
                   <span>
-                    {parseFloat(orderData?.orderTotalCost).toFixed(2)}
+                    ₱
+                    {parseFloat(orderData?.orderTotalCost)
+                      .toFixed(2)
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                   </span>
                 </h6>
               </div>
 
-              <button className="place__order">Cancel Order</button>
+              {orderData?.orderStatus !== "Cancelled" && (
+                <button
+                  className="place__order"
+                  onClick={() => setShowModal(true)}
+                >
+                  Cancel Order
+                </button>
+              )}
+
+              {showModal && (
+                <Modal closeModal={closeModal} handleCancel={handleCancel} />
+              )}
             </div>
           </Col>
         </Row>
@@ -264,9 +283,14 @@ const Tr = (props) => {
 
   return (
     <tr>
-      <td className="text-center">{productQty}x</td>
-      <td className="text-center">{productName}</td>
-      <td className="text-center">₱ {totalPrice}</td>
+      <td style={{ width: "20%" }}>{productQty}x</td>
+      <td style={{ width: "50%" }}>{productName}</td>
+      <td className="text-end" style={{ width: "30%" }}>
+        ₱
+        {parseFloat(totalPrice)
+          .toFixed(2)
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+      </td>
     </tr>
   );
 };

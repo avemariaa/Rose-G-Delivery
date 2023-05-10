@@ -33,6 +33,7 @@
   cursor: pointer;
   display: inline-flex;
   margin-top: 5px;
+  color: red;
 }
 .bag__item {
   padding-bottom: 10px;

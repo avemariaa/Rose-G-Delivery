@@ -120,22 +120,30 @@ const BagItem = ({ item }) => {
   return (
     <ListGroupItem className="border-0 bag__item">
       <div className="bag__item-info d-flex gap-2" key={item.productId}>
-        <img src={item.img} alt="product-img" />
+        {/* Product Image */}
+        <img src={item.img} alt="Product Image" />
 
         <div className="bag__product-info w-100 d-flex align-items-center gap-4 justify-content-between">
           <div>
+            {/* Product Name */}
             <h6 className="bag__product-title">{item.productName}</h6>
             <p className="d-flex align-items-center gap-5 ">
               <div className="d-flex align-items-center gap-3 increase__decrease-btn">
+                {/* Increase Button */}
                 <span className="increase__btn" onClick={incrementItem}>
                   <i class="ri-add-circle-fill"></i>
                 </span>
+
+                {/* Product Quantity */}
                 <span className="quantity__title">{productQty}</span>
+
+                {/* Decrease Button */}
                 <span className="decrease__btn" onClick={decrementItem}>
                   <i class="ri-indeterminate-circle-fill"></i>
                 </span>
               </div>
 
+              {/* Product Price * Product Quantity */}
               <span className="bag__product-price">
                 ₱{" "}
                 {parseFloat(price * productQty)
@@ -145,6 +153,7 @@ const BagItem = ({ item }) => {
             </p>
           </div>
 
+          {/* Delete Button */}
           <span className="delete__btn" onClick={deleteItem}>
             <i class="ri-delete-bin-line"></i>
           </span>

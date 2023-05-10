@@ -225,7 +225,20 @@ const Header = () => {
             {/*------------------ User Profile Drop Down ------------------*/}
             <div className="dropdown" ref={dropdownMenuRef}>
               <button className="dropdown__button" onClick={toggleProfileMenu}>
-                <img className="profile__icon" src={userIcon} alt="user-icon" />
+                {userData?.profileImageUrl ? (
+                  <img
+                    className="profile__icon"
+                    src={userData?.profileImageUrl}
+                    alt="Profile Avatar"
+                  />
+                ) : (
+                  <img
+                    className="profile__icon"
+                    src={userIcon}
+                    alt="Profile Avatar"
+                  />
+                )}
+
                 {/* Determine if the user log in as a guest or not  */}
                 <span>
                   {user && user.isAnonymous

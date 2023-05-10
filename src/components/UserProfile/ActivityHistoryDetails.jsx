@@ -5,9 +5,23 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import TitlePageBanner from "../UI/TitlePageBanner";
+import CancelledImg from "../../assets/images/cancel-order.svg";
+import Circle from "../../assets/images/circle-gray.png";
+import DottedLine from "../../assets/images/dotted_line.png";
+import { track_order_status } from "../../globals/constant";
+import FeedbackModal from "../Modal/FeedbackModal";
+
 // Firebase
 import { db } from "../../firebase";
 import { doc, getDoc, collection } from "firebase/firestore";
+
+// Toast
+import {
+  showSuccessToast,
+  showErrorToast,
+  showInfoToast,
+} from "../Toast/Toast";
+import { Feed } from "@mui/icons-material";
 
 const ActivityHistoryDetails = () => {
   const { orderId } = useParams();
@@ -24,38 +38,148 @@ const ActivityHistoryDetails = () => {
     getOrder();
   }, [orderId]);
 
+  const [currentStep, setCurrentStep] = useState("0");
+  useEffect(() => {
+    if (orderData != null) {
+      const status = orderData.orderStatus;
+      if (status === "Pending") {
+        setCurrentStep(0);
+      } else if (status === "Confirmed") {
+        setCurrentStep(1);
+      } else if (status === "Prepared") {
+        setCurrentStep(2);
+      } else if (status === "Delivery") {
+        setCurrentStep(3);
+      } else if (status === "Delivered") {
+        setCurrentStep(4);
+      }
+    }
+  }, [orderData]);
+
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const closeFeedbackModal = () => {
+    setShowFeedbackModal(false);
+  };
+
   return (
     <section>
       <Container>
         <Row>
-          <TitlePageBanner title="Activity History Details" />
-          <Col lg="6" md="6">
-            <div>
-              <h5>Order Details</h5>
-              <div className="orderCards__container">
-                <div className="orderCard__body">
-                  <p>Order ID: {orderData?.orderId}</p>
-                  <p>
-                    Order Date:&nbsp;
-                    {orderData?.orderDate
-                      ? moment(orderData?.orderDate.toDate()).format(
-                          "MMM D, YYYY h:mm A"
-                        )
-                      : null}
-                  </p>
+          <TitlePageBanner title="Order History Details" />
+          <Col lg="8" md="4">
+            {/* Order Details */}
+            <Row>
+              <div className="orderHistory__container">
+                <h5>Order Details</h5>
+                <div className="orderHistory__group">
+                  <div className="orderHistory__item">
+                    <label>Order ID:&nbsp;</label>
+                    <span>{orderData?.orderId}</span>
+                  </div>
 
-                  <p className={`orderStatus${orderData?.orderStatus}`}>
-                    Order Status:&nbsp;
-                    <span>{orderData?.orderStatus}</span>
-                  </p>
+                  <div className="orderHistory__item">
+                    <label>Order Date:&nbsp;</label>
+                    <span>
+                      {orderData?.orderDate
+                        ? moment(orderData?.orderDate.toDate()).format(
+                            "MMM D, YYYY h:mm A"
+                          )
+                        : "No Date"}
+                    </span>
+                  </div>
 
-                  <p>Delivery Address:&nbsp;{orderData?.orderAddress}</p>
+                  <div className="orderHistory__item">
+                    <label>Order Status:&nbsp;</label>
+                    <span className={`orderStatus${orderData?.orderStatus}`}>
+                      {orderData?.orderStatus}
+                    </span>
+                  </div>
+
+                  <div className="orderHistory__item">
+                    <label>Delivery Address:&nbsp;</label>
+                    <span>{orderData?.orderAddress}</span>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Row>
+            {/* Order Status  */}
+            <Row>
+              {/* Left Side - Order Status */}
+              <Col>
+                {track_order_status.map((item, index) => {
+                  return (
+                    <div
+                      key={`StatusList-${index}`}
+                      className="status__image-container"
+                    >
+                      {/* Display image only for the current step */}
+                      {index === currentStep && item.image && (
+                        <div className="status__image-wrapper">
+                          <img src={item.image} alt={item.title} />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+
+                {/* Display CancelledImg image if the order status is Cancelled */}
+                {orderData?.orderStatus === "Cancelled" && (
+                  <div className="cancelled__image-container">
+                    <img src={CancelledImg} alt="Cancelled" />
+                  </div>
+                )}
+              </Col>
+
+              {/* Right Side - Order Status */}
+              {orderData?.orderStatus === "Delivered" ? (
+                <Col>
+                  {/* Order Status - Check & Lines */}
+                  {track_order_status.map((item, index) => {
+                    return (
+                      <div key={`StatusList-${index}`}>
+                        <div className="order__status-container">
+                          <img
+                            src={Circle}
+                            alt="check circle"
+                            className={`${
+                              index <= currentStep ? "check-circle" : ""
+                            }`}
+                          />
+
+                          <div className="order__status-text">
+                            <h5>{item.title}</h5>
+                            <p>{item.sub_title}</p>
+                          </div>
+                        </div>
+
+                        {index < track_order_status.length - 1 && (
+                          <div className="order__status-line">
+                            {index < currentStep && (
+                              <div className="line"></div>
+                            )}
+                            {index >= currentStep && (
+                              <img
+                                src={DottedLine}
+                                alt="dotted line"
+                                className="dotted-line"
+                              />
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </Col>
+              ) : (
+                <Col className="cancelled__msg-container">
+                  <h2>Your order has been cancelled</h2>
+                </Col>
+              )}
+            </Row>
           </Col>
 
-          <Col lg="6" md="6">
+          {/* Right Side */}
+          <Col lg="4" md="6">
             <div className="order__summary">
               <h6
                 style={{
@@ -88,8 +212,9 @@ const ActivityHistoryDetails = () => {
               ></hr>
               <div className="orderSummary__footer">
                 <h6>
-                  Subtotal: ₱{" "}
+                  Subtotal:
                   <span>
+                    ₱
                     {parseFloat(
                       orderData?.orderData.reduce(
                         (total, item) => total + item.price * item.productQty,
@@ -102,16 +227,36 @@ const ActivityHistoryDetails = () => {
                   Delivery Fee: <span>₱ 50.00</span>
                 </h6>
                 <h6>
-                  Total: ₱{" "}
+                  Total:
                   <span>
-                    {parseFloat(orderData?.orderTotalCost).toFixed(2)}
+                    ₱{parseFloat(orderData?.orderTotalCost).toFixed(2)}
                   </span>
                 </h6>
               </div>
 
-              <button className="footer__msg">
-                Thank you for ordering with us
-              </button>
+              {orderData?.orderStatus === "Delivered" ? (
+                <>
+                  <h6 className="footer__msg">
+                    Thank you for ordering with us
+                  </h6>
+                  <button
+                    className="footer__btn"
+                    onClick={() => setShowFeedbackModal(true)}
+                  >
+                    Leave a Review
+                  </button>
+                  {showFeedbackModal && (
+                    <FeedbackModal
+                      closeFeedbackModal={closeFeedbackModal}
+                      orderData={orderData}
+                    />
+                  )}
+                </>
+              ) : (
+                <>
+                  <h6 className="footer__msg">Sorry for the inconvenience</h6>
+                </>
+              )}
             </div>
           </Col>
         </Row>

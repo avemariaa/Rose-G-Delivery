@@ -138,6 +138,8 @@
   height: 30px;
   margin-right: 8px;
   margin-left: -10px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .dropdown__icon {
@@ -198,8 +200,9 @@
   content: url("../assets//images/logout.png");
 }
 
-@media (max-width: 992px) {
+@media only screen and (max-width: 992px) {
   .navigation {
+    margin: 0;
     position: fixed;
     top: 0;
     left: 0;
@@ -221,6 +224,7 @@
   }
 
   .menu {
+    margin: 0;
     padding: 20px;
     flex-direction: column;
     justify-content: center;
@@ -230,54 +234,45 @@
   .menu a {
     font-size: 1rem;
   }
-
   .menu a:after {
+    bottom: 0;
     width: 10%;
   }
 
   .mobile__menu {
+    display: block;
     height: 100px;
   }
-
   .bag__icon i,
   .mobile__menu i {
     font-size: 1.5rem;
   }
 }
 
-@media (max-width: 768px) {
+@media only screen and (max-width: 768px) {
   .header {
     width: 100%;
     padding: 0;
   }
   .dropdown span {
     display: none;
-  }
-  .bag__badge {
-    right: 1px;
-    top: 30px;
   }
 }
 
-@media (max-width: 576px) {
+@media only screen and (max-width: 576px) {
   .header {
     width: 100%;
     padding: 0;
   }
-  .navigation {
-    display: block;
-  }
-
   .dropdown span {
     display: none;
   }
   .bag__badge {
-    right: 46px; /* Adjust the distance between the bag icon and badge */
-    top: 30px;
+    right: 0;
   }
 }
 
-@media (max-width: 320px) {
+@media only screen and (max-width: 320px) {
   .header {
     width: 100%;
     padding: 0;
@@ -286,7 +281,6 @@
     display: none;
   }
   .bag__badge {
-    right: 30px; /* Adjust the distance between the bag icon and badge */
-    top: 30px;
+    right: 0;
   }
 }

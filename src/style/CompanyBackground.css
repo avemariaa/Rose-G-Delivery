@@ -1,6 +1,7 @@
 /*About Us Section*/
 .aboutUs__img img {
   width: 75%;
+  border-radius: 20px;
 }
 .seeMore__btn {
   background: var(--background-color2);

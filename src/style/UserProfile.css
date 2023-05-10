@@ -12,8 +12,8 @@
 
 .userProfile__avatar img {
   height: auto;
-  max-width: 15%;
-  border-radius: 50%;
+  max-width: 20%;
+  border-radius: 10%;
   object-fit: cover;
 }
 

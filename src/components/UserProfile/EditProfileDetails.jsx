@@ -143,27 +143,28 @@ const EditProfileDetails = ({
     if (newProfileImage) {
       const storageRef = ref(
         storage,
-        `profileImages/${userData.uid}/${newProfileImage.name}`
+        `userProfile_images/${userData.uid}/${newProfileImage.name}`
       );
       const uploadTask = uploadBytesResumable(storageRef, newProfileImage);
 
-      // Delete old profile image if it exists
-      if (userData.profileImageUrl) {
-        const oldProfileImageRef = ref(storage, userData.profileImageUrl);
-        deleteObject(oldProfileImageRef)
-          .then(() => {
-            console.log("Old profile image deleted successfully");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-
-      Promise.all([uploadTask, userDataRef])
+      Promise.all([uploadTask])
         .then(([snapshot]) => {
           return getDownloadURL(snapshot.ref);
         })
         .then((profileImageUrl) => {
+          // Delete old profile image if it exists
+          if (userData.profileImageUrl) {
+            const oldProfileImageRef = ref(storage, userData.profileImageUrl);
+            deleteObject(oldProfileImageRef)
+              .then(() => {
+                console.log("Old profile image deleted successfully");
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
+
+          // Update the document with the new data and profile image URL
           newData.profileImageUrl = profileImageUrl;
           return updateDoc(userDataRef, newData);
         })
@@ -195,20 +196,7 @@ const EditProfileDetails = ({
     <div className="editProfile__container">
       <h5>Edit Profile Details</h5>
       <form className="editProfile__form">
-        {/*------------------ Profile Image ----------------- */}
-        {/* <div className="editForm__group">
-          <label htmlFor="profileImage__input">Profile Image:&nbsp;</label>
-          <div className="custom__file-upload">
-            <input
-              type="file"
-              accept="image/*"
-              id="profileImage__input"
-              onChange={(e) => handleNewProfileImage(e.target.files[0])}
-            />
-            <label htmlFor="profileImage__input">Choose File</label>
-            <span>{fileName}</span>
-          </div>
-        </div> */}
+        {/* Profile Image */}
         <div className="editForm__group">
           <label htmlFor="profileImage__input">Profile Image:&nbsp;</label>
           <div className="custom__file-upload">
@@ -218,12 +206,12 @@ const EditProfileDetails = ({
               id="profileImage__input"
               onChange={(e) => handleNewProfileImage(e.target.files[0])}
             />
-            <label htmlFor="profileImage__input">
-              {fileName || "Choose File"}
-            </label>
+            <label htmlFor="profileImage__input">Choose a file</label>
+            <span>{fileName}</span>
           </div>
         </div>
-        {/*------------------ First Name ----------------- */}
+
+        {/* First Name */}
         <div className="editForm__group">
           <label htmlFor="firstName__input">First Name:&nbsp;</label>
           <input
@@ -245,7 +233,7 @@ const EditProfileDetails = ({
           )}
         </div>
 
-        {/*------------------ Last Name ----------------- */}
+        {/* Last Name */}
         <div className="editForm__group">
           <label htmlFor="lastName__input">Last Name:&nbsp;</label>
           <input
@@ -267,7 +255,7 @@ const EditProfileDetails = ({
           )}
         </div>
 
-        {/*------------------ Email ----------------- */}
+        {/* Email */}
         <div className="editForm__group">
           <label htmlFor="email__input">Email:&nbsp;</label>
           <input
@@ -288,7 +276,7 @@ const EditProfileDetails = ({
           )}
         </div>
 
-        {/*------------------ Contact Number ----------------- */}
+        {/* Contact Number */}
         <div className="editForm__group">
           <label htmlFor="contactNumber__input">Contact Number:&nbsp;</label>
           <input
@@ -311,7 +299,7 @@ const EditProfileDetails = ({
           )}
         </div>
 
-        {/*------------------ Address ----------------- */}
+        {/* Address */}
         <div className="editForm__group">
           <label htmlFor="address__input">Address:&nbsp;</label>
           <input
@@ -324,6 +312,8 @@ const EditProfileDetails = ({
           />
         </div>
       </form>
+
+      {/* Save Button */}
       <div className="editProfile__btns">
         <button onClick={handleSave}>Save</button>
       </div>
