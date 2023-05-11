@@ -4,8 +4,7 @@ import { Container, Row, Col } from "reactstrap";
 import "../style/Menu.css";
 import { useLocation } from "react-router-dom";
 import TitlePageBanner from "../components/UI/TitlePageBanner";
-
-// React Slick
+import { CustomPrevArrow, CustomNextArrow } from "../globals/Slider";
 import Slider from "react-slick";
 
 // Firebase
@@ -82,19 +81,6 @@ const Menu = () => {
   }, [category, productData]);
 
   //------------------ Categories Slider Settings ------------------//
-  const ArrowLeft = (props) => (
-    <button
-      {...props}
-      className={"categoryPrev__btn ri-arrow-left-circle-fill"}
-    />
-  );
-  const ArrowRight = (props) => (
-    <button
-      {...props}
-      className={"categoryNext__btn ri-arrow-right-circle-fill"}
-    />
-  );
-
   const settings = {
     className: "categoriesBtn__slides",
     speed: 500,
@@ -102,8 +88,8 @@ const Menu = () => {
     slidesToShow: 5,
     slidesToScroll: 5,
     arrows: true,
-    prevArrow: <ArrowLeft />,
-    nextArrow: <ArrowRight />,
+    prevArrow: <CustomPrevArrow arrowSize={25} />,
+    nextArrow: <CustomNextArrow arrowSize={25} />,
     responsive: [
       {
         breakpoint: 1024,
@@ -117,7 +103,7 @@ const Menu = () => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          initialSlide: 2,
+          arrows: false,
         },
       },
       {
@@ -125,7 +111,7 @@ const Menu = () => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          initialSlide: 2,
+          arrows: false,
         },
       },
     ],
@@ -185,7 +171,7 @@ const Menu = () => {
                 }
               })
               .map((item) => (
-                <Col lg="3" md="6" sm="6" key={item.id}>
+                <Col lg="4" md="6" sm="6" key={item.id}>
                   <MenuProductCard item={item} />
                 </Col>
               ))}

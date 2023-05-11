@@ -4,7 +4,7 @@ import "../style/Bag.css";
 import BagItem from "../components/UI/Bag/BagItem";
 
 // Navigation
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -15,8 +15,12 @@ import { bagActions } from "../store/MyBag/bagSlice";
 import { db, auth } from "../firebase";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 
+// Toast
+import { showSuccesToast, showErrorToast } from "../components/Toast/Toast";
+
 const Bag = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const toggleBag = () => {
     dispatch(bagUiActions.toggle());

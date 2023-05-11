@@ -4,6 +4,7 @@ import HomeSliderImg1 from "../../assets/images/homeSliderImg1.jpg";
 import HomeSliderImg2 from "../../assets/images/homeSliderImg2.png";
 import HomeSliderImg3 from "../../assets/images/homeSliderImg3.jpg";
 import "../../style/HomeSlider.css";
+import { CustomPrevArrow, CustomNextArrow } from "../../globals/Slider";
 
 const HomeSlider = () => {
   const ArrowLeft = (props) => (
@@ -21,12 +22,26 @@ const HomeSlider = () => {
     slideToShow: 1,
     slidesToScroll: 1,
     arrows: true,
-    prevArrow: <ArrowLeft />,
-    nextArrow: <ArrowRight />,
+    prevArrow: <CustomPrevArrow arrowSize={40} />,
+    nextArrow: <CustomNextArrow arrowSize={40} />,
     className: "home__slides",
+    responsive: [
+      {
+        breakpoint: 600,
+        settings: {
+          arrows: false,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          arrows: false,
+        },
+      },
+    ],
   };
   return (
-    <Slider {...settings}>
+    <Slider centerMode={true} {...settings}>
       <div className="homeSlider__img">
         <img src={HomeSliderImg1} />
       </div>

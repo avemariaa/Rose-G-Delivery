@@ -13,7 +13,14 @@ import FeedbackModal from "../Modal/FeedbackModal";
 
 // Firebase
 import { db } from "../../firebase";
-import { doc, getDoc, collection } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 
 // Toast
 import {
@@ -60,6 +67,26 @@ const ActivityHistoryDetails = () => {
   const closeFeedbackModal = () => {
     setShowFeedbackModal(false);
   };
+
+  const [hasReviewed, setHasReviewed] = useState(false);
+  const handleHasReviewedChange = (value) => {
+    setHasReviewed(value);
+  };
+
+  const [feedbackData, setFeedbackData] = useState([]);
+  useEffect(() => {
+    const fetchFeedbackData = async () => {
+      const feedbackRef = collection(db, "FeedbackData");
+      const feedbackQuery = query(
+        feedbackRef,
+        where("orderId", "==", orderData?.orderId),
+        where("hasReviewed", "==", true)
+      );
+      const feedbackSnapshot = await getDocs(feedbackQuery);
+      setFeedbackData(feedbackSnapshot.docs.map((doc) => doc.data()));
+    };
+    fetchFeedbackData();
+  }, [orderData?.orderId]);
 
   return (
     <section>
@@ -242,13 +269,18 @@ const ActivityHistoryDetails = () => {
                   <button
                     className="footer__btn"
                     onClick={() => setShowFeedbackModal(true)}
+                    disabled={feedbackData.length > 0}
                   >
-                    Leave a Review
+                    {feedbackData.length > 0
+                      ? "Thank you for giving a review!"
+                      : "Leave a Review"}
                   </button>
                   {showFeedbackModal && (
                     <FeedbackModal
                       closeFeedbackModal={closeFeedbackModal}
                       orderData={orderData}
+                      hasReviewed={hasReviewed}
+                      handleHasReviewedChange={handleHasReviewedChange}
                     />
                   )}
                 </>

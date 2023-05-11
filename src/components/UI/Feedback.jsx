@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
-import TestimonialsImg1 from "../../assets/images/sungJinwoo.jpg";
+import DefaultAvatar from "../../assets/images/user-dark.png";
 import "../../style/Feedback.css";
 import { Row, Col } from "reactstrap";
 import Rating from "@mui/material/Rating";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
+import { CustomPrevArrow, CustomNextArrow } from "../../globals/Slider";
 
 // Firebase
 import { collection, getDocs } from "firebase/firestore";
@@ -30,18 +31,6 @@ const Feedback = () => {
   console.log(feedbackData);
 
   // Slider Settings
-  const ArrowLeft = (props) => (
-    <button
-      {...props}
-      className={"feedbackPrev__btn ri-arrow-left-circle-fill"}
-    />
-  );
-  const ArrowRight = (props) => (
-    <button
-      {...props}
-      className={"feedbackNext__btn ri-arrow-right-circle-fill"}
-    />
-  );
   const settings = {
     infinite: false,
     speed: 500,
@@ -49,16 +38,15 @@ const Feedback = () => {
     slidesToScroll: 4,
     initialSlide: 0,
     arrows: true,
-    prevArrow: <ArrowLeft />,
-    nextArrow: <ArrowRight />,
+    prevArrow: <CustomPrevArrow arrowSize={40} />,
+    nextArrow: <CustomNextArrow arrowSize={40} />,
     className: "feedback__slides",
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
+          slidesToShow: 2,
+          slidesToScroll: 2,
         },
       },
       {
@@ -66,7 +54,7 @@ const Feedback = () => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          initialSlide: 2,
+          arrows: false,
         },
       },
       {
@@ -74,6 +62,7 @@ const Feedback = () => {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
+          arrows: false,
         },
       },
     ],
@@ -81,13 +70,18 @@ const Feedback = () => {
 
   return (
     <div className="feedback__container">
-      <h4>Testimonials</h4>
+      <h4>Customer Feedback</h4>
       <Slider {...settings}>
         {feedbackData.map((feedback) => {
           return (
             <div className="feedback__slides-item" key={feedback.uid}>
               <div className="feedback__content">
-                <img src={TestimonialsImg1} alt="testimonials-img" />
+                {feedback?.profileImageUrl ? (
+                  <img src={feedback?.profileImageUrl} alt="User Avatar" />
+                ) : (
+                  <img src={DefaultAvatar} alt="Default Avatar" />
+                )}
+
                 <div className="feedback__group">
                   <label>{`${feedback?.firstName} ${feedback?.lastName}`}</label>
                   <Rating

@@ -4,6 +4,7 @@ import "../../style/ExtrasProductList.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { CustomPrevArrow, CustomNextArrow } from "../../globals/Slider";
 
 // Firebase
 import { db } from "../../firebase";
@@ -51,24 +52,33 @@ const ExtrasProductList = ({ categoryName, title }) => {
     infinite: false,
     speed: 500,
     arrows: true,
-    prevArrow: <ArrowLeft />,
-    nextArrow: <ArrowRight />,
+    prevArrow: <CustomPrevArrow arrowSize={35} />,
+    nextArrow: <CustomNextArrow arrowSize={35} />,
     className: "extrasList__slides",
     slidesToShow: 4,
     slidesToScroll: 4,
     responsive: [
       {
-        breakpoint: 768,
+        breakpoint: 1024,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
         },
       },
       {
-        breakpoint: 576,
+        breakpoint: 600,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
+          arrows: false,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          arrows: false,
         },
       },
     ],

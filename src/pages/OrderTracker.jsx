@@ -258,14 +258,15 @@ const OrderTracker = () => {
                 </h6>
               </div>
 
-              {orderData?.orderStatus !== "Cancelled" && (
+              {orderData?.orderStatus === "Pending" ||
+              orderData?.orderStatus === "Confirmed" ? (
                 <button
                   className="place__order"
                   onClick={() => setShowModal(true)}
                 >
                   Cancel Order
                 </button>
-              )}
+              ) : null}
 
               {showModal && (
                 <Modal closeModal={closeModal} handleCancel={handleCancel} />

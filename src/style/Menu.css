@@ -1,5 +1,4 @@
-/*By Category Products*/
-
+/*Category Products Slider*/
 .slider__header-title h5 {
   color: var(--background-color2);
 }
@@ -11,48 +10,28 @@
   font-size: 1.1rem;
 }
 .categoriesBtn__slides {
-  justify-content: center;
-  align-items: center;
+  /* position: relative; */
+  /* justify-content: center;
+  align-items: center; */
   width: 100%;
-  margin-bottom: 10px;
-  position: relative; /* add this to make the position of the arrows relative to the slider container */
-  padding: 0 50px; /* add some padding to the left and right of the slider container */
-}
-.categoryPrev__btn,
-.categoryNext__btn {
-  position: absolute;
-  align-items: center;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1;
-  background: transparent !important;
-  color: var(--background-color2);
-  font-size: 1.5rem;
-  border: 0;
-}
-.categoryPrev__btn {
-  left: 1%;
-}
-.categoryNext__btn {
-  right: 2%;
 }
 
 .category__title {
   justify-content: center;
 }
 .category__btn {
-  width: 80%;
+  width: 100%;
   height: auto;
+  /* display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
   background: var(--background-color1);
   color: var(--text-color1);
   border-radius: 5px;
   font-size: 1rem;
   font-weight: 600;
-  padding: 8px;
+  padding: 10px 0;
   border: 2px solid var(--background-color2);
-  display: flex;
 }
 .category__btn:active,
 .category__btn:focus {
@@ -60,12 +39,12 @@
   color: var(--text-color2);
 }
 
-.menu__Title {
+/* .menu__Title {
   display: none;
 }
 
 .menu__search {
   background: #c4cab7;
   width: 50%;
-  height: 100px;
-}
+  height: 150px;
+} */

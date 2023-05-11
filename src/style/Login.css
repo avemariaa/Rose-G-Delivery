@@ -9,7 +9,7 @@
 }
 .login__container {
   padding: 3rem;
-  border: 5px solid var(--background-color2);
+  border: 3px solid var(--background-color2);
   border-radius: 50px;
   background-color: var(--background-color1);
   width: 40%;
@@ -44,10 +44,16 @@
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   border: 2px solid var(--text-color1);
+  box-shadow: 3px 3px var(--background-color2);
+  color: var(--text-color2);
   font-size: 1rem;
   transition: border-color 0.2s ease-in-out;
   width: 100%;
   box-sizing: border-box;
+}
+.loginForm__input:focus {
+  outline: none;
+  border-color: var(--background-color2);
 }
 
 .login__input-container {
@@ -64,11 +70,6 @@
 
 .visibility-icon {
   color: var(--text-color2);
-}
-
-.loginForm__input:focus {
-  outline: none;
-  border-color: var(--background-color2);
 }
 
 /* Login Buttons */

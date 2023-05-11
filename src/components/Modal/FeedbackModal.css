@@ -75,12 +75,15 @@
 
 .feedbackModal__content textarea {
   border-radius: 5px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(0, 0, 0, 0.1);
   padding: 10px;
   margin-bottom: 10px;
   font-size: 1rem;
 }
-
+.feedbackModal__content textarea:focus {
+  outline: none;
+  border: 2px solid var(--background-color2);
+}
 .feedbackModal__actions {
   display: flex;
   justify-content: space-between;

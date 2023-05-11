@@ -1,6 +1,7 @@
 .checkout__details {
   display: flex;
   flex-direction: column;
+  flex: wrap;
   height: 100%;
 }
 
@@ -24,6 +25,13 @@
   background: var(--text-color1);
   padding: 20px;
   border-radius: 20px;
+}
+
+.recipient__details-front {
+  min-height: 450px;
+}
+.recipient__details-front .detailsForm__input {
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .recipient__details-back {
@@ -74,6 +82,7 @@
   border: 2px solid var(--text-color2);
   font-size: 1rem;
   transition: border-color 0.2s ease-in-out;
+  box-shadow: 3px 3px var(--background-color2);
 }
 
 .detailsForm__input:focus {
@@ -95,6 +104,7 @@ button[type="submit"]:hover {
 
 /* Payment Methods */
 .payment__methods {
+  position: relative;
   background-color: var(--text-color1);
   border: 1px solid #ddd;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
@@ -104,6 +114,9 @@ button[type="submit"]:hover {
   animation-duration: 0.5s;
   animation-timing-function: ease-in-out;
   border-radius: 20px;
+}
+.paymentMethod__group {
+  margin: 15px 0;
 }
 
 .payment__methods label {
@@ -137,7 +150,7 @@ button[type="submit"]:hover {
 .orderNoteForm__group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
+  margin: 1rem 0;
 }
 
 .orderNoteForm__group label {
@@ -149,6 +162,7 @@ button[type="submit"]:hover {
   padding: 0.2rem 1rem;
   border-radius: 0.5rem;
   border: 2px solid var(--text-color2);
+  box-shadow: 3px 3px var(--background-color2);
   font-size: 1rem;
   transition: border-color 0.2s ease-in-out;
 }

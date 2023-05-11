@@ -1,36 +1,17 @@
 .feedback__container h4 {
   color: var(--background-color2);
 }
-
-.feedback__slides {
-  position: relative;
-  margin-top: 20px;
-}
-.feedbackPrev__btn,
-.feedbackNext__btn {
-  position: absolute;
-  top: 25%;
-  transform: translateY(-25%);
-  z-index: 1;
-  background: transparent !important;
-  color: var(--background-color2);
-  font-size: 2.5rem;
-  border: 0;
-}
-.feedbackPrev__btn {
-  left: 2%;
-}
-.feedbackNext__btn {
-  right: 2%;
-}
-
 .feedback__slides-item {
   width: 100%;
-  height: 300px;
+  height: 350px;
   border: 1px solid var(--text-color2);
   box-shadow: 10px 10px var(--background-color1);
   border-radius: 10px;
   background: var(--text-color1);
+  overflow: hidden;
+}
+.slick-slide > div {
+  margin: 0 15px;
 }
 
 .feedback__content img {
@@ -56,4 +37,5 @@
 .feedback__content p {
   padding: 3%;
   text-align: center;
+  box-sizing: border-box;
 }

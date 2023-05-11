@@ -58,6 +58,7 @@
   border: 2px solid var(--text-color1);
   font-size: 1rem;
   transition: border-color 0.2s ease-in-out;
+  box-shadow: 3px 3px var(--background-color2);
   width: 100%;
   box-sizing: border-box;
 }

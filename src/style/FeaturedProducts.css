@@ -1,29 +1,10 @@
-.featuredProduct__slides {
-  position: relative;
+/* .featuredProduct__slides {
   width: 100%;
   height: 300px;
   margin-top: 20px;
   padding: 0 60px;
-}
+} */
 
-.ftProdPrev__btn,
-.ftProdNext__btn {
-  position: absolute;
-  align-items: center;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1;
-  background: transparent !important;
-  color: var(--background-color2);
-  font-size: 2.5rem;
-  border: 0;
-}
-.ftProdPrev__btn {
-  left: 2%;
-}
-.ftProdNext__btn {
-  right: 2%;
-}
 .ftProd__container h4 {
   color: var(--background-color2);
 }

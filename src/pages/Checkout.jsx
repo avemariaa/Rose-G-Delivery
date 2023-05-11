@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "../style/Checkout.css";
 import { Container, Row, Col } from "reactstrap";
 import CheckingDetails from "../assets/images/profile-details.svg";
@@ -209,6 +209,14 @@ const Checkout = () => {
     }
   };
 
+  // const recipientDetails = document.querySelector(".recipient__details");
+  // const paymentMethods = document.querySelector(".payment__methods");
+
+  // recipientDetails.addEventListener("transitionend", () => {
+  //   const recipientDetailsHeight = recipientDetails.offsetHeight;
+  //   paymentMethods.style.top = `calc(${recipientDetailsHeight}px + 20px)`;
+  // });
+
   return (
     <section>
       <Container>
@@ -238,20 +246,52 @@ const Checkout = () => {
                   <form>
                     {/* Full Name */}
                     <div className="detailsForm__group">
-                      <label>Full Name:&nbsp;</label>
-                      <span>{`${userData?.firstName} ${userData?.lastName}`}</span>
+                      {/* <label>Full Name:&nbsp;</label>
+                      <span>{`${userData?.firstName} ${userData?.lastName}`}</span> */}
+                      <label htmlFor="first__name-input">Full Name:</label>
+                      <input
+                        disabled
+                        type="text"
+                        id="first__name-input"
+                        className="detailsForm__input"
+                        required
+                        value={`${userData?.firstName} ${userData?.lastName}`}
+                        onChange={(e) => setNewFirstName(e.target.value)}
+                      />
                     </div>
 
                     {/* Contact Number */}
                     <div className="detailsForm__group">
-                      <label>Contact Number:&nbsp;</label>
-                      <span>{userData?.contactNumber}</span>
+                      {/* <label>Contact Number:&nbsp;</label>
+                      <span>{userData?.contactNumber}</span> */}
+                      <label htmlFor="contact__number-input">
+                        Contact Number:
+                      </label>
+                      <input
+                        disabled
+                        type="text"
+                        maxLength={11}
+                        pattern="[0-9]*"
+                        id="contact__number-input"
+                        className="detailsForm__input"
+                        value={userData?.contactNumber}
+                        onChange={(e) => handleNewContactNumber(e.target.value)}
+                      />
                     </div>
 
                     {/* Address */}
                     <div className="detailsForm__group">
-                      <label>Address:&nbsp;</label>
-                      <span>{userData?.address}</span>
+                      {/* <label>Address:&nbsp;</label>
+                      <span>{userData?.address}</span> */}
+                      <label htmlFor="address-input">Address:</label>
+                      <input
+                        type="text"
+                        disabled
+                        id="address-input"
+                        className="detailsForm__input"
+                        defaultValue={userData?.address}
+                        onChange={(e) => setNewAddress(e.target.value)}
+                      />
                     </div>
                   </form>
                 </div>
@@ -259,7 +299,7 @@ const Checkout = () => {
                 {/* Recipient Details Back */}
                 <div className="recipient__details-back">
                   <div className="recipient__details-header">
-                    <h6>Recipient Details</h6>
+                    <h6>Edit Recipient Details</h6>
                     <button
                       className="recipient__details-cancel-btn"
                       onClick={handleEdit}
@@ -398,9 +438,9 @@ const Checkout = () => {
                     </label>
                   </div>
                 </form>
-                <p className="box__text">
+                {/* <p className="box__text">
                   Selected payment method: <span>{paymentMethod}</span>
-                </p>
+                </p> */}
 
                 <div className="orderNoteForm__group">
                   <label htmlFor="order__note">Note (optional):</label>

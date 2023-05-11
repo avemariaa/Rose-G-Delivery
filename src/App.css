@@ -7,6 +7,7 @@
   --background-color1: #751c1a;
   --background-color2: #ffc500;
   --text-color1: #fff;
+  /* --text-color1: #faf9f6; */
   --text-color2: #000;
 }
 
@@ -65,6 +66,17 @@ h2 {
 section,
 main {
   padding: 30px 0px;
+}
+
+/* Default Arrow of React-Slick Slider */
+.slick-prev,
+.slick-next {
+  font-size: 15px !important;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  content: "" !important;
 }
 
 @media only screen and (max-width: 768px) {

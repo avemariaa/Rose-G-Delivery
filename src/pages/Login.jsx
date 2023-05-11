@@ -144,7 +144,7 @@ const Login = () => {
   const handleGoogleLogin = () => {
     const googleProvider = new GoogleAuthProvider();
 
-    // this custom parameter will let the user to select the google account they want to use for signing in
+    // this custom parameter will let the user select the Google account they want to use for signing in
     googleProvider.setCustomParameters({ prompt: "select_account" });
 
     signInWithPopup(auth, googleProvider)
@@ -153,19 +153,16 @@ const Login = () => {
         const googleUid = result.user.uid;
 
         const displayName = result.user.displayName;
-        setDisplayName(displayName);
-        // Split the display name into first and last name
-        const names = displayName.split(" ");
-        setFirstName(names[0]);
-        setLastName(names[names.length - 1]);
+        const [firstName, ...lastNameArr] = displayName.split(" ");
+        const lastName = lastNameArr.join(" ");
 
         const userDataRef = collection(db, "UserData"); // getting the UserData collection
         const queryData = query(userDataRef, where("uid", "==", googleUid));
 
         const querySnapshot = await getDocs(queryData);
         if (querySnapshot.empty) {
-          // user does not exist in database, so add a new document
-          await addDoc(userDataRef, {
+          // user does not exist in database, so add a new document with document id and user id having the same value
+          await setDoc(doc(userDataRef, googleUid), {
             fullName: displayName,
             firstName: firstName,
             lastName: lastName,
@@ -174,11 +171,14 @@ const Login = () => {
           });
         }
 
-        showSuccessToast("Successfully sign-in using google");
+        showSuccessToast("Successfully sign-in using Google");
         navigate("/home");
       })
       .catch((error) => {
         console.log(error);
+        showErrorToast(
+          "An error occurred while signing in with Google. Please try again."
+        );
       });
   };
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../../style/FoodCategorySlider.css";
 import Slider from "react-slick";
 import { Link } from "react-router-dom";
+import { CustomPrevArrow, CustomNextArrow } from "../../globals/Slider";
 
 // Firebase
 import { collection, onSnapshot } from "firebase/firestore";
@@ -50,16 +51,15 @@ const FoodCategorySlider = () => {
     slidesToScroll: 4,
     initialSlide: 0,
     arrows: true,
-    prevArrow: <ArrowLeft />,
-    nextArrow: <ArrowRight />,
+    prevArrow: <CustomPrevArrow arrowSize={40} />,
+    nextArrow: <CustomNextArrow arrowSize={40} />,
     className: "foodCategory__slides",
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
+          slidesToShow: 2,
+          slidesToScroll: 2,
         },
       },
       {
@@ -67,14 +67,15 @@ const FoodCategorySlider = () => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          initialSlide: 2,
+          arrows: false,
         },
       },
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          arrows: false,
         },
       },
     ],

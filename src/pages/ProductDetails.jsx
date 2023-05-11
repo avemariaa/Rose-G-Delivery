@@ -128,7 +128,7 @@ const ProductDetails = () => {
     <main>
       <Container>
         <Row className="single__product-row mb-5">
-          <Col className="container__leftCol" lg="12" md="4">
+          <Col className="container__leftCol" lg="12">
             <Row>
               <Col>
                 <div className="foodProduct__image">
@@ -200,7 +200,7 @@ const ProductDetails = () => {
             </Row>
           </Col>
 
-          <Col className="container__rightCol" lg="12" md="6">
+          <Col className="container__rightCol" lg="12">
             <ExtrasProductList categoryName="Extras" title="Add-ons items" />
           </Col>
         </Row>

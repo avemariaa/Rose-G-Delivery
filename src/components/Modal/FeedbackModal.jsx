@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./FeedbackModal.css";
 import Rating from "@mui/material/Rating";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
@@ -11,6 +11,9 @@ import {
   serverTimestamp,
   setDoc,
   collection,
+  query,
+  where,
+  getDocs,
 } from "firebase/firestore";
 import { db, auth } from "../../firebase";
 
@@ -21,9 +24,33 @@ import {
   showInfoToast,
 } from "../Toast/Toast";
 
-const FeedbackModal = ({ closeFeedbackModal, orderData }) => {
+const FeedbackModal = ({
+  closeFeedbackModal,
+  orderData,
+  hasReviewed,
+  handleHasReviewedChange,
+}) => {
   const [rating, setRating] = useState(0);
   const [message, setMessage] = useState("");
+
+  const [existingFeedbackId, setExistingFeedbackId] = useState(null);
+
+  useEffect(() => {
+    const checkIfReviewed = async () => {
+      const feedbackRef = collection(db, "FeedbackData");
+      const feedbackQuery = query(
+        feedbackRef,
+        where("uid", "==", auth.currentUser.uid),
+        where("orderId", "==", orderData.orderId)
+      );
+      const feedbackSnapshot = await getDocs(feedbackQuery);
+      if (feedbackSnapshot.size > 0) {
+        handleHasReviewedChange(true); // Update hasReviewed in parent component
+        setExistingFeedbackId(feedbackSnapshot.docs[0].id);
+      }
+    };
+    checkIfReviewed();
+  }, []);
 
   const handleRatingChange = (e) => {
     setRating(e.target.value);
@@ -35,30 +62,30 @@ const FeedbackModal = ({ closeFeedbackModal, orderData }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      // Save the review to the server here
-      const feedbackId = new Date();
-      const feedbackRef = collection(db, "FeedbackData");
-      await addDoc(feedbackRef, {
+      // Save feedback to database
+      await addDoc(collection(db, "FeedbackData"), {
+        orderId: orderData.orderId,
         uid: auth.currentUser.uid,
         firstName: orderData?.orderFirstName,
         lastName: orderData?.orderLastName,
         rating: rating,
         message: message,
-        submittedDate: feedbackId,
+        hasReviewed: true, // Mark as reviewed
+        submittedDate: serverTimestamp(),
       });
+      handleHasReviewedChange(true); // Update hasReviewed in parent component
+      showSuccessToast(
+        "Thank you for taking the time to leave your feedback!",
+        2000
+      );
 
-      // Display a success message
-      showSuccessToast("Feedback saved successfully!");
-
-      // Close the feedback modal
       closeFeedbackModal();
     } catch (error) {
-      // Display an error message
-      console.error("Error saving feedback: ", error);
+      console.error(error);
       showErrorToast(
-        "An error occurred while saving your feedback. Please try again."
+        "An error occurred while saving your feedback. Please try again.",
+        2000
       );
     }
   };
@@ -95,6 +122,7 @@ const FeedbackModal = ({ closeFeedbackModal, orderData }) => {
                 rows="5"
                 value={message}
                 onChange={handleMessageChange}
+                maxlength="200"
               ></textarea>
             </div>
             <div className="feedbackModal__actions">

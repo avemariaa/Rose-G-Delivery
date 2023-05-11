@@ -253,59 +253,52 @@ const Header = () => {
                   <path d="M7 10l5 5 5-5z" />
                 </svg>
               </button>
-              {open && (
-                <div className="dropdown__menu">
-                  {userProfile__links.map((item, index) => (
-                    <>
-                      {/* item.onClick is use to not overlap the onClick function from the NavLink */}
-                      {item.onClick ? (
-                        // Log out Link
-                        <a
-                          className="dropdown__menu__item"
-                          onClick={item.onClick}
-                        >
-                          <img
-                            className="icon-logout"
-                            src={item.icon}
-                            alt={item.display}
-                          />
-                          {item.display}
-                        </a>
-                      ) : (
-                        // Profile & Settings Link
-                        <NavLink
-                          to={item.path}
-                          key={index}
-                          // className="dropdown__menu__item"
-                          className="dropdown__menu__item"
-                          onClick={toggleProfileMenu}
-                        >
-                          <img
-                            className="icon-profile"
-                            src={item.icon}
-                            alt={item.display}
-                          />
-                          {item.display}
-                        </NavLink>
-                      )}
-                    </>
-                  ))}
-                </div>
-              )}
             </div>
-
-            <span
-              className="mobile__menu"
-              onClick={() => setIsMobile(!isMobile)}
-            >
-              {isMobile ? (
-                <i class="ri-close-line"></i>
-              ) : (
-                <i class="ri-menu-line"></i>
-              )}
-            </span>
           </div>
         )}
+        {open && (
+          <div className="dropdown__menu">
+            {userProfile__links.map((item, index) => (
+              <>
+                {/* item.onClick is use to not overlap the onClick function from the NavLink */}
+                {item.onClick ? (
+                  // Log out Link
+                  <a className="dropdown__menu__item" onClick={item.onClick}>
+                    <img
+                      className="icon-logout"
+                      src={item.icon}
+                      alt={item.display}
+                    />
+                    {item.display}
+                  </a>
+                ) : (
+                  // Profile Link
+                  <NavLink
+                    to={item.path}
+                    key={index}
+                    // className="dropdown__menu__item"
+                    className="dropdown__menu__item"
+                    onClick={toggleProfileMenu}
+                  >
+                    <img
+                      className="icon-profile"
+                      src={item.icon}
+                      alt={item.display}
+                    />
+                    {item.display}
+                  </NavLink>
+                )}
+              </>
+            ))}
+          </div>
+        )}
+        <span className="mobile__menu" onClick={() => setIsMobile(!isMobile)}>
+          {isMobile ? (
+            <i class="ri-close-line"></i>
+          ) : (
+            <i class="ri-menu-line"></i>
+          )}
+        </span>
       </div>
     </header>
   );
