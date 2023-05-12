@@ -247,7 +247,9 @@ const ActivityHistoryDetails = () => {
                         (total, item) => total + item.price * item.productQty,
                         0
                       )
-                    ).toFixed(2)}
+                    )
+                      .toFixed(2)
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                   </span>
                 </h6>
                 <h6>
@@ -256,7 +258,10 @@ const ActivityHistoryDetails = () => {
                 <h6>
                   Total:
                   <span>
-                    ₱{parseFloat(orderData?.orderTotalCost).toFixed(2)}
+                    ₱
+                    {parseFloat(orderData?.orderTotalCost)
+                      .toFixed(2)
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                   </span>
                 </h6>
               </div>
@@ -304,7 +309,12 @@ const Tr = (props) => {
     <tr>
       <td className="text-center">{productQty}x</td>
       <td className="text-center">{productName}</td>
-      <td className="text-center">₱ {totalPrice}</td>
+      <td className="text-center">
+        ₱{" "}
+        {parseFloat(totalPrice)
+          .toFixed(2)
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+      </td>
     </tr>
   );
 };
