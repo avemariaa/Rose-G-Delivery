@@ -161,7 +161,7 @@ const Checkout = () => {
     }
 
     // Recipient details is required to place their order
-    else if (
+    if (
       !userData?.address ||
       !userData?.contactNumber ||
       !userData?.firstName ||
@@ -172,7 +172,7 @@ const Checkout = () => {
     }
 
     // If any payment method is not selected, they can't place their order
-    else if (!paymentMethod) {
+    if (!paymentMethod) {
       showErrorToast("Please select a payment method.", 2000);
       return;
     }
@@ -208,14 +208,6 @@ const Checkout = () => {
       console.error(error);
     }
   };
-
-  // const recipientDetails = document.querySelector(".recipient__details");
-  // const paymentMethods = document.querySelector(".payment__methods");
-
-  // recipientDetails.addEventListener("transitionend", () => {
-  //   const recipientDetailsHeight = recipientDetails.offsetHeight;
-  //   paymentMethods.style.top = `calc(${recipientDetailsHeight}px + 20px)`;
-  // });
 
   return (
     <section>

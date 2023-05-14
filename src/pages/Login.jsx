@@ -167,6 +167,7 @@ const Login = () => {
             firstName: firstName,
             lastName: lastName,
             email: email,
+            emailVerified: "Verified",
             uid: googleUid,
           });
         }

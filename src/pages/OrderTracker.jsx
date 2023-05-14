@@ -134,8 +134,9 @@ const OrderTracker = () => {
               </div>
             </Row>
 
+            {/* Order Status */}
             <Row>
-              {/* Left Side - Order Status*/}
+              {/* Left Side - Order Status */}
               <Col>
                 {/* Order Status - Image*/}
                 {track_order_status.map((item, index) => {
