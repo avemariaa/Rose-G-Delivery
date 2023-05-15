@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import HomeSliderImg1 from "../../assets/images/homeSliderImg1.png";
 import HomeSliderImg2 from "../../assets/images/homeSliderImg2.png";
@@ -6,13 +6,26 @@ import HomeSliderImg3 from "../../assets/images/homeSliderImg3.png";
 import "../../style/HomeSlider.css";
 import { CustomPrevArrow, CustomNextArrow } from "../../globals/Slider";
 
+// Firebase
+import { db } from "../../firebase";
+import { collection, getDocs, onSnapshot } from "firebase/firestore";
+
 const HomeSlider = () => {
-  const ArrowLeft = (props) => (
-    <button {...props} className={"prev__btn ri-arrow-left-circle-fill"} />
-  );
-  const ArrowRight = (props) => (
-    <button {...props} className={"next__btn ri-arrow-right-circle-fill"} />
-  );
+  const [bannerData, setBannerData] = useState([]);
+
+  useEffect(() => {
+    const bannerRef = collection(db, "BannerSliderData");
+    const unsubscribe = onSnapshot(bannerRef, (snapshot) => {
+      const bannerDataList = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setBannerData(bannerDataList);
+    });
+
+    return unsubscribe;
+  }, []);
+
   const settings = {
     autoplay: true,
     infinite: true,
@@ -42,15 +55,11 @@ const HomeSlider = () => {
   };
   return (
     <Slider centerMode={true} {...settings}>
-      <div className="homeSlider__img">
-        <img src={HomeSliderImg1} />
-      </div>
-      <div className="homeSlider__img">
-        <img src={HomeSliderImg2} />
-      </div>
-      <div className="homeSlider__img">
-        <img src={HomeSliderImg3} />
-      </div>
+      {bannerData.map((banner) => (
+        <div className="homeSlider__img" key={banner.id}>
+          <img src={banner.imageUrl} alt={banner.content} />
+        </div>
+      ))}
     </Slider>
   );
 };

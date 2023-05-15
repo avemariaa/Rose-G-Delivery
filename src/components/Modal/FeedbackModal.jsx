@@ -3,6 +3,7 @@ import "./FeedbackModal.css";
 import Rating from "@mui/material/Rating";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
+import { useNavigate } from "react-router-dom";
 
 // Firebase
 import {
@@ -34,6 +35,8 @@ const FeedbackModal = ({
   const [message, setMessage] = useState("");
 
   const [existingFeedbackId, setExistingFeedbackId] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkIfReviewed = async () => {
@@ -79,8 +82,8 @@ const FeedbackModal = ({
         "Thank you for taking the time to leave your feedback!",
         2000
       );
-
       closeFeedbackModal();
+      navigate("/userProfile");
     } catch (error) {
       console.error(error);
       showErrorToast(

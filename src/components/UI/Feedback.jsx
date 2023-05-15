@@ -9,26 +9,32 @@ import StarIcon from "@mui/icons-material/Star";
 import { CustomPrevArrow, CustomNextArrow } from "../../globals/Slider";
 
 // Firebase
-import { collection, getDocs } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  onSnapshot,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 const Feedback = () => {
   // Retrieve Feedback Data
   const [feedbackData, setFeedbackData] = useState([]);
   useEffect(() => {
-    const fetchFeedbackData = async () => {
-      const feedbackRef = collection(db, "FeedbackData");
-      const snapshot = await getDocs(feedbackRef);
+    const feedbackRef = collection(db, "FeedbackData");
+    const q = query(feedbackRef, where("posted", "==", true));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
       const feedbackDataList = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
       setFeedbackData(feedbackDataList);
-    };
-
-    fetchFeedbackData();
+    });
+    // Return the data realtime, reloading the page is not needed to reflect
+    return unsubscribe;
   }, []);
 
-  console.log(feedbackData);
+  // console.log(feedbackData);
 
   // Slider Settings
   const settings = {
