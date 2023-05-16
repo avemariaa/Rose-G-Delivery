@@ -3,6 +3,7 @@ import "../../style/OurPartners.css";
 import { Container, Row, Col } from "reactstrap";
 import AiceIceCreamLogo from "../../assets/images/aiceIceCreamLogo.jpg";
 import LalamoveLogo from "../../assets/images/lalamove.png";
+import RonaldsBbqLogo from "../../assets/images/ronaldsBbqLogo.png";
 const OurPartners = () => {
   return (
     <div>
@@ -13,8 +14,8 @@ const OurPartners = () => {
       </Row>
       <Row>
         <Col className="ourPartners__logo">
-          <img src={AiceIceCreamLogo} alt="aice-logo" />
-          <img src={LalamoveLogo} alt="lalamove-logo" />
+          <img src={AiceIceCreamLogo} alt="Aice Logo" />
+          <img src={RonaldsBbqLogo} alt="Ronald's Bbq Logo" />
         </Col>
       </Row>
     </div>

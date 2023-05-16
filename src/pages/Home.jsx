@@ -13,41 +13,41 @@ const Home = () => {
     <div>
       {/*Home Slider Section*/}
       <section>
-        <Container>
+        <Container className="section__container">
           <HomeSlider />
         </Container>
       </section>
 
       {/*Featured Product Slider Section*/}
       <section>
-        <Container>
+        <Container className="section__container">
           <FeaturedProducts />
         </Container>
       </section>
 
       {/*Food Category Slider Section*/}
       <section>
-        <Container>
+        <Container className="section__container">
           <FoodCategorySlider />
         </Container>
       </section>
 
       {/*Feedback Section*/}
       <section>
-        <Container>
+        <Container className="section__container">
           <Feedback />
         </Container>
       </section>
 
       {/*About Us Section*/}
-      <section>
+      <section className="section__container">
         <Container>
           <CompanyBackground />
         </Container>
       </section>
 
       {/* Our Partner Section */}
-      <section>
+      <section className="section__container">
         <Container>
           <OurPartners />
         </Container>

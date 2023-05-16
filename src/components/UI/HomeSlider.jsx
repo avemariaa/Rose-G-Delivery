@@ -43,18 +43,20 @@ const HomeSlider = () => {
         breakpoint: 600,
         settings: {
           arrows: false,
+          dots: true,
         },
       },
       {
         breakpoint: 480,
         settings: {
           arrows: false,
+          dots: true,
         },
       },
     ],
   };
   return (
-    <Slider centerMode={true} {...settings}>
+    <Slider {...settings}>
       {bannerData.map((banner) => (
         <div className="homeSlider__img" key={banner.id}>
           <img src={banner.imageUrl} alt={banner.content} />
