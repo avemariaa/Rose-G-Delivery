@@ -28,6 +28,7 @@ import {
   where,
   setDoc,
   addDoc,
+  updateDoc,
 } from "firebase/firestore";
 
 // Redux
@@ -36,6 +37,7 @@ import {
   userLogInState,
   userLogOutState,
   selectUser,
+  setSignInClicked,
 } from "../store/UserSlice/userSlice";
 import { fetchBagItems } from "../store/MyBag/bagSlice";
 
@@ -93,16 +95,33 @@ const Login = () => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
-        // If email is verified, the user can logged in
+        // If email is verified, update emailVerified to "Verified"
         if (auth.currentUser.emailVerified) {
-          showSuccessToast("Logged in successfully", 1000);
-          navigate("/home");
-          dispatch(fetchBagItems(auth.currentUser.uid));
-          // Prevent user from going back to login page
-          window.history.pushState(null, "", "/home");
-          window.addEventListener("popstate", function (event) {
-            window.history.pushState(null, "", "/home");
-          });
+          // Update user data in Firestore
+          const userDocRef = doc(db, "UserData", auth.currentUser.uid);
+          updateDoc(userDocRef, {
+            emailVerified: "Verified",
+          })
+            .then(() => {
+              showSuccessToast("Logged in successfully", 1000);
+              navigate("/home");
+              dispatch(fetchBagItems(auth.currentUser.uid));
+              // Prevent user from going back to login page
+              window.history.pushState(null, "", "/home");
+              window.addEventListener("popstate", function (event) {
+                window.history.pushState(null, "", "/home");
+              });
+              dispatch(setSignInClicked(true));
+            })
+            .catch((error) => {
+              showErrorToast(
+                "Error updating email verification status",
+                error.message
+              );
+              setEmail("");
+              setPassword("");
+              setCustomErrorMsg("");
+            });
         }
         // Verify email first to login
         else {
@@ -117,18 +136,25 @@ const Login = () => {
         var errorMessage = error.message;
         if (email === "" && password === "") {
           setCustomErrorMsg("Please enter your email address and password");
+          setEmail("");
+          setPassword("");
         } else if (
           errorMessage ===
           "Firebase: The email address is badly formatted. (auth/invalid-email)."
         ) {
           setCustomErrorMsg("Please enter a valid email address");
+          setEmail("");
+          setPassword("");
         } else {
           setCustomErrorMsg(
             "Please enter your correct email address or password"
           );
+          setEmail("");
+          setPassword("");
         }
       });
   };
+
   // When "Enter" pressed, handleSignIn will be working
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -137,10 +163,6 @@ const Login = () => {
   };
 
   // Sign in With Google
-  const [displayName, setDisplayName] = useState(null);
-  const [firstName, setFirstName] = useState(null);
-  const [lastName, setLastName] = useState(null);
-
   const handleGoogleLogin = () => {
     const googleProvider = new GoogleAuthProvider();
 
@@ -169,11 +191,13 @@ const Login = () => {
             email: email,
             emailVerified: "Verified",
             uid: googleUid,
+            role: "Customer",
           });
         }
 
         showSuccessToast("Successfully sign-in using Google");
         navigate("/home");
+        dispatch(setSignInClicked(true));
       })
       .catch((error) => {
         console.log(error);
@@ -189,6 +213,7 @@ const Login = () => {
       .then(() => {
         showSuccessToast("Signed in as guest", 1000);
         navigate("/home");
+        dispatch(setSignInClicked(true));
       })
       .catch((error) => {
         console.error("Error signing in as guest: ", error);

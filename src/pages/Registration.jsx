@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../style/Registration.css";
+import bcrypt from "bcryptjs";
 
 // Icons or  Images
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -29,6 +30,7 @@ const Registration = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  // Visibility
   const [fNameFocus, setFNameFocus] = useState(false);
   const [lNameFocus, setLNameFocus] = useState(false);
   const [emailFocus, setEmailFocus] = useState(false);
@@ -37,11 +39,17 @@ const Registration = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showCPassword, setShowCPassword] = useState(false);
 
+  // Validation
+  const [checkFirstName, setCheckFirstName] = useState(false);
+  const [checkLastName, setCheckLastName] = useState(false);
+  const [checkValidEmail, setCheckValidEmail] = useState(false);
+  const [checkValidPassword, setCheckValidPassword] = useState(false);
+
+  // Error Message
   const [customErrorMsg, setCustomErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState(null);
 
   /* -------------------- First Name Validation -------------------- */
-  const [checkFirstName, setCheckFirstName] = useState(false);
   const handleFirstName = (text) => {
     setFirstName(text);
     let reg = /^[A-Za-z ]+$/; // valid alphabet with space
@@ -53,7 +61,6 @@ const Registration = () => {
   };
 
   /* -------------------- Last Name Validation -------------------- */
-  const [checkLastName, setCheckLastName] = useState(false);
   const handleLastName = (text) => {
     setLastName(text);
     let reg = /^[A-Za-z ]+$/; // valid alphabet with space
@@ -65,7 +72,6 @@ const Registration = () => {
   };
 
   /* -------------------- Email Validation -------------------- */
-  const [checkValidEmail, setCheckValidEmail] = useState(false);
   const handleCheckEmail = (text) => {
     let re = /\S+@\S+\.\S+/;
     let regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
@@ -79,7 +85,6 @@ const Registration = () => {
   };
 
   /* -------------------- Password Validation -------------------- */
-  const [checkValidPassword, setCheckValidPassword] = useState(false);
   const handleCheckPassword = (text) => {
     let regex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,}$/;
@@ -93,7 +98,8 @@ const Registration = () => {
   };
 
   /* -------------------- Sign Up Button Fucntion -------------------- */
-  const handleSignUp = (e) => {
+  var bcrypt = require("bcryptjs");
+  const handleSignUp = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setCustomErrorMsg("Password doesn't match");
@@ -110,86 +116,76 @@ const Registration = () => {
     }
 
     try {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(async (userCredential) => {
-          const user = userCredential.user;
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
 
-          // Add user data to Firestore
-          const userDocRef = doc(db, "UserData", user.uid);
-          await setDoc(userDocRef, {
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            password: password,
-            role: "User",
-            uid: user.uid,
-          });
+      const hashedPassword = await bcrypt.hash(password, 10);
 
-          // Send email verification
-          await sendEmailVerification(auth.currentUser);
-          showSuccessToast("Send an email verification", 1000);
+      // Add user data to Firestore
+      const userDocRef = doc(db, "UserData", user.uid);
+      await setDoc(userDocRef, {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: hashedPassword,
+        role: "Customer",
+        uid: user.uid,
+        emailVerified: "Not Verified",
+      });
 
-          // Listen for changes in authentication state
-          onAuthStateChanged(auth, async (user) => {
-            if (user && user.emailVerified) {
-              // Update user data in Firestore
-              const userDocRef = doc(db, "UserData", user.uid);
-              await updateDoc(userDocRef, {
-                emailVerified: "Verified",
-              });
+      // Send email verification
+      await sendEmailVerification(auth.currentUser);
+      showSuccessToast("Send an email verification", 1000);
 
-              showSuccessToast("Email verified", 1000);
-            }
-          });
-
-          signOut(auth);
-          setFirstName("");
-          setLastName("");
-          setEmail("");
-          setPassword("");
-          setConfirmPassword("");
-          navigate("/login");
-        })
-        .catch((error) => {
-          showErrorToast("Sign up firebase error", error.message);
-          if (
-            firstName.length === 0 &&
-            lastName.length === 0 &&
-            email.length === 0 &&
-            password.length === 0 &&
-            confirmPassword.length === 0
-          ) {
-            setCustomErrorMsg("Fill out the form");
-          } else if (
-            (firstName.length === 0 &&
-              lastName.length === 0 &&
-              email.length === 0) ||
-            password.length === 0 ||
-            confirmPassword.length === 0
-          ) {
-            setCustomErrorMsg("Fill out the form");
-          } else if (
-            error.message ===
-            "Firebase: The email address is already in use by another account. (auth/email-already-in-use)."
-          ) {
-            setCustomErrorMsg("Email already exists");
-          } else if (
-            error.message ===
-            "Firebase: The email address is badly formatted. (auth/invalid-email)."
-          ) {
-            setCustomErrorMsg("Invalid Email");
-          } else if (
-            error.message ===
-            "Firebase: Password should be at least 6 characters (auth/weak-password)."
-          ) {
-            setCustomErrorMsg(`Password should be at least 8 characters, 1 numeric character, 1 lowercase letter, 1
-              uppercase letter, 1 special character`);
-          } else {
-            setCustomErrorMsg(error.message);
-          }
-        });
+      signOut(auth);
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      navigate("/login");
     } catch (error) {
-      showErrorToast("Sign up system error", error.message);
+      showErrorToast("Sign up firebase error", error.message);
+      if (
+        firstName.length === 0 &&
+        lastName.length === 0 &&
+        email.length === 0 &&
+        password.length === 0 &&
+        confirmPassword.length === 0
+      ) {
+        setCustomErrorMsg("Fill out the form");
+      } else if (
+        (firstName.length === 0 &&
+          lastName.length === 0 &&
+          email.length === 0) ||
+        password.length === 0 ||
+        confirmPassword.length === 0
+      ) {
+        setCustomErrorMsg("Fill out the form");
+      } else if (
+        error.message ===
+        "Firebase: The email address is already in use by another account. (auth/email-already-in-use)."
+      ) {
+        setCustomErrorMsg("Email already exists");
+      } else if (
+        error.message ===
+        "Firebase: The email address is badly formatted. (auth/invalid-email)."
+      ) {
+        setCustomErrorMsg("Invalid Email");
+      } else if (
+        error.message ===
+        "Firebase: Password should be at least 6 characters (auth/weak-password)."
+      ) {
+        setCustomErrorMsg(
+          `Password should be at least 8 characters, 1 numeric character, 1 lowercase letter, 1 uppercase letter, 1 special character`
+        );
+      } else {
+        setCustomErrorMsg(error.message);
+      }
     }
   };
 

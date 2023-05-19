@@ -12,7 +12,13 @@ export const fetchBagItems = createAsyncThunk(
     if (userBagDoc.exists()) {
       const bagItems = userBagDoc.data().bag;
       const totalQuantity = bagItems.length; // count the number of items in the bag
-      return { bagItems, totalQuantity };
+
+      // Fetch delivery fee
+      const deliveryFeeRef = doc(db, "DeliveryFee", "deliveryFee");
+      const deliveryFeeDoc = await getDoc(deliveryFeeRef);
+      const deliveryFee = deliveryFeeDoc.data().value;
+
+      return { bagItems, totalQuantity, deliveryFee };
     }
     return initialState;
   }
@@ -146,11 +152,13 @@ const bagSlice = createSlice({
           subTotal + Number(item.price) * Number(item.productQty),
         0
       );
-      state.totalAmount = state.bagItems.reduce(
-        (total, item) => total + Number(item.price) * Number(item.productQty),
-        +50,
-        0
-      );
+
+      const deliveryFee = action.payload.deliveryFee;
+      state.totalAmount =
+        state.bagItems.reduce(
+          (total, item) => total + Number(item.price) * Number(item.productQty),
+          0
+        ) + deliveryFee;
     });
   },
 });

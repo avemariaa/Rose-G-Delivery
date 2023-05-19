@@ -13,10 +13,14 @@ import { bagActions } from "../store/MyBag/bagSlice";
 
 // Firebase
 import { db, auth } from "../firebase";
-import { collection, query, where, onSnapshot } from "firebase/firestore";
-
-// Toast
-import { showSuccesToast, showErrorToast } from "../components/Toast/Toast";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 
 const Bag = () => {
   const dispatch = useDispatch();
@@ -60,6 +64,21 @@ const Bag = () => {
   }, [dispatch, bagItems, bagProducts]);
   // console.log("Bag Items:", bagItems);
 
+  const [deliveryFee, setDeliveryFee] = useState(0);
+
+  useEffect(() => {
+    const fetchDeliveryFee = async () => {
+      const deliveryFeeRef = doc(db, "DeliveryFee", "deliveryFee");
+      const deliveryFeeDoc = await getDoc(deliveryFeeRef);
+      if (deliveryFeeDoc.exists()) {
+        const fee = deliveryFeeDoc.data().value;
+        setDeliveryFee(fee);
+      }
+    };
+
+    fetchDeliveryFee();
+  }, []);
+
   return (
     <div className="bag__container">
       <ListGroup className="bag">
@@ -94,7 +113,14 @@ const Bag = () => {
 
           {/* Delivery Fee */}
           <label className="d-flex align-items-center justify-content-between">
-            Delivery Fee:<span> ₱ 50.00</span>
+            Delivery Fee:
+            <span>
+              {" "}
+              ₱&nbsp;
+              {parseFloat(deliveryFee)
+                .toFixed(2)
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            </span>
           </label>
 
           {/* Total Amount */}

@@ -16,7 +16,13 @@ import logoutDarkIcon from "../../assets/images/logout-dark.png";
 // Firebase
 import { auth, db } from "../../firebase";
 import { signOut } from "firebase/auth";
-import { collection, where, getDocs, query } from "firebase/firestore";
+import {
+  collection,
+  where,
+  getDocs,
+  query,
+  onSnapshot,
+} from "firebase/firestore";
 
 // Redux
 import { bagUiActions } from "../../store/MyBag/bagUiSlice";
@@ -57,9 +63,8 @@ const nav__links = [
 const Header = () => {
   const menuRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
-
-  //------------------ Navigation ------------------//
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Navigation
+  const signInClicked = useSelector((state) => state.user.signInClicked);
 
   //------------------ User Profile Drop Down ------------------//
   const [open, setOpen] = useState(false);
@@ -91,7 +96,7 @@ const Header = () => {
     const userDataRef = collection(db, "UserData"); // getting the UserData collection
     const queryData = query(userDataRef, where("uid", "==", userLoggedUid));
 
-    getDocs(queryData).then((querySnapshot) => {
+    const unsubscribe = onSnapshot(queryData, (querySnapshot) => {
       if (!querySnapshot.empty) {
         querySnapshot.forEach((doc) => {
           setUserData(doc.data());
@@ -101,10 +106,34 @@ const Header = () => {
         console.log("Empty user document");
       }
     });
+
+    return unsubscribe;
   };
   useEffect(() => {
-    getUserData();
+    const unsubscribe = getUserData();
+    return () => {
+      unsubscribe();
+    };
   }, [userLoggedUid]);
+
+  // const getUserData = () => {
+  //   const userDataRef = collection(db, "UserData"); // getting the UserData collection
+  //   const queryData = query(userDataRef, where("uid", "==", userLoggedUid));
+
+  //   getDocs(queryData).then((querySnapshot) => {
+  //     if (!querySnapshot.empty) {
+  //       querySnapshot.forEach((doc) => {
+  //         setUserData(doc.data());
+  //       });
+  //     } else {
+  //       //navigation.navigate("Login");
+  //       console.log("Empty user document");
+  //     }
+  //   });
+  // };
+  // useEffect(() => {
+  //   getUserData();
+  // }, [userLoggedUid]);
 
   //------------------ User Bag ------------------//
   const totalQuantity = useSelector((state) => state.bag.totalQuantity);
@@ -115,7 +144,6 @@ const Header = () => {
 
   //------------------ Redux ------------------//
   const user = useSelector(selectUser);
-
   // onAuthChanged
   useEffect(() => {
     auth.onAuthStateChanged((authUser) => {
@@ -124,8 +152,7 @@ const Header = () => {
         dispatch(
           userLogInState({
             email: authUser.email,
-            lastSignIn: authUser.metadata.lastSignInTime,
-            emailVerified: authUser.emailVerified.toString(),
+            firstName: authUser.firstName,
           })
         );
         setUserLoggedUid(authUser.uid);
@@ -136,21 +163,6 @@ const Header = () => {
       }
     });
   }, []);
-
-  // Only show login and sign up links when user is not logged in
-  const authLinks = user ? null : (
-    <>
-      <NavLink
-        to="/login"
-        className={(navClass) => (navClass.isActive ? "active__menu" : "")}
-      >
-        Login
-      </NavLink>
-      {/* <NavLink to="/registration"  className={(navClass) => (navClass.isActive ? "active__menu" : "")}>
-        Sign up
-      </NavLink> */}
-    </>
-  );
 
   //------------------ Sign Out Function ------------------//
   const handleSignOut = () => {
@@ -192,7 +204,7 @@ const Header = () => {
           </div>
         </div>
 
-        {/*------------------ Menu ------------------*/}
+        {/*------------------ Navigation Links ------------------*/}
         <div
           className={isMobile ? "menu-mobile" : "navigation"}
           ref={menuRef}
@@ -210,11 +222,26 @@ const Header = () => {
                 {item.display}
               </NavLink>
             ))}
-            {authLinks}
+            {/* Only show login and sign up links when user is not logged in */}
+            {user && signInClicked ? null : (
+              <>
+                <NavLink
+                  to="/login"
+                  className={(navClass) =>
+                    navClass.isActive ? "active__menu" : ""
+                  }
+                >
+                  Login
+                </NavLink>
+                {/* <NavLink to="/registration"  className={(navClass) => (navClass.isActive ? "active__menu" : "")}>
+                Sign up
+              </NavLink> */}
+              </>
+            )}
           </div>
         </div>
 
-        {user && (
+        {user && signInClicked && (
           <div className="nav__icons d-flex align-items-center gap-4">
             {/*------------------ Bag ------------------*/}
             <span className="bag__icon" onClick={toggleBag}>
@@ -256,6 +283,7 @@ const Header = () => {
             </div>
           </div>
         )}
+
         {open && (
           <div className="dropdown__menu">
             {userProfile__links.map((item, index) => (

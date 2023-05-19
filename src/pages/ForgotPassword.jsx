@@ -144,7 +144,11 @@ const ForgotPassword = () => {
         </button>
 
         {/* -------------------- Success Message -------------------- */}
-        {successMsg !== "" && <label>{successMsg}</label>}
+        {successMsg !== "" && (
+          <div className="successMsg">
+            <label>{successMsg}</label>
+          </div>
+        )}
       </div>
     </div>
   );
